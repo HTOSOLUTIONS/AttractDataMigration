@@ -1,0 +1,82 @@
+﻿@model TargetDDContext.Models.Table
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <a asp-action="Edit" asp-route-route-tableschema="@Model?.TableSchema" asp-route-route-tablename="@Model?.TableName">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<div>
+    <h4>MigrationHistory</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TableSchema)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TableSchema)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TableName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TableName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NeedsMigration)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NeedsMigration)
+        </dd>
+    </dl>
+</div>
+
+@if (Model.Columns != null)
+{
+<table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => Model.Columns.FirstOrDefault().ColumnName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => Model.Columns.FirstOrDefault().DataType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => Model.Columns.FirstOrDefault().NonNulls)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => Model.Columns.FirstOrDefault().DistinctValues)
+                </th>
+                <th></th>
+            </tr>
+        </thead>        @foreach (var item in Model.Columns.OrderBy(c => c.ColumnName))
+        {
+
+            <tr>
+
+                <td>@Html.DisplayFor(c => item.ColumnName)</td>
+                <td>@Html.DisplayFor(c => item.DataType)</td>
+                <td>@Html.DisplayFor(c => item.NonNulls)</td>
+                <td>@Html.DisplayFor(c => item.DistinctValues)</td>
+
+            </tr>
+
+
+        }
+
+</table>
+    
+}
+

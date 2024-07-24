@@ -1,0 +1,56 @@
+﻿@model IEnumerable<TargetDDContext.Models.Table>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TableSchema)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TableName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NeedsMigration)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TableSchema)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TableName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NeedsMigration)
+            </td>
+            <td>
+                    <a asp-action="Details" asp-route-tableschema="@item?.TableSchema" asp-route-tablename="@item?.TableName">Details</a> |
+                    <a asp-action="Edit" asp-route-tableschema="@item?.TableSchema" asp-route-tablename="@item?.TableName">Edit</a> |
+                    @*
+                <a asp-action="Edit" asp-route-id="@item.MigrationHistoryId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.MigrationHistoryId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.MigrationHistoryId">Delete</a>
+
+                *@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
