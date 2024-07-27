@@ -1,0 +1,298 @@
+﻿
+/* Used in home-tile-inner */
+.htobg1 {
+    background-color: #c2c5d0;
+}
+
+/* Used in .apptools */
+.htobg2 {
+    background-color: lightgrey;
+}
+
+.htobg9 {
+    background: #f5f5dc;
+}
+
+.txtclr1 {
+    color: #454c90;
+}
+
+.wstitle {
+    color: #454c90;
+}
+
+
+.hto-view-cmdbar {
+    background-color: rgb(187, 189, 195);
+}
+
+.hto-view-cmdbar .nav > li > a {
+    color: #454c90;
+}
+
+.hto-view-cmdbar .nav > li > a.disabled {
+    color: #a29e9e;
+}
+
+.hto-pg-title {
+    color: #454c90;
+}
+
+
+.htx-ilist-header .row {
+
+    background-color: #888787;
+
+}
+
+.htx-ilist-footer .row {
+
+    background-color: #888787;
+
+}
+
+
+.htx-ilist-title, .htx-ilist-title .glyphicons {
+    color: white;
+}
+
+.htx-ilist-title .badge {
+    background-color: white;
+    color: black;
+}
+
+
+.htx-ilist-row {
+    background-color: #ffffff;
+}
+
+
+.htx-ilist-row:hover {
+    background-color: #c2c5d0;
+}
+
+.htx-ilist-row-ctrls ul {
+    background-color: rgba(77, 87, 121, 0.75) ;
+}
+
+.htx-ilist-row:hover .htx-ilist-row-ctrls ul {
+}
+
+
+.htx-ilist-row-ctrls .glyphicons {
+    color: white ;
+}
+
+
+.ht_table_div {
+	background-color: rgba(224, 218, 218, 0.44);
+}
+
+.top-nav {
+	background-color: #454c90;
+}
+
+.top-nav.cnw {
+    background-color: #313661;
+}
+
+.top-nav a {
+    color: #ffffff;
+}
+
+
+.btn-link:hover {
+    background-color: #2f3461 !important;
+}
+
+#pgheader_wrapper {
+    background: white;
+}
+
+#leftmenu_wrapper {
+    /*
+    background-color: #f3aa53;
+
+    */
+    background-color: #bdbdbd;
+}
+
+.left-menu-subhead1 {
+  /*
+  background-color: #e6840e;
+  color:white;
+
+  */
+    background-color: #bdbdbd;
+    color: #5a5a5a;
+    font-weight: bold;
+}
+
+.left-menu-subhead1 a:hover {
+    background-color: inherit !important;
+    color: white !important;
+}
+
+.left-menu-subhead1 a {
+    padding-left: 0 !important;
+}
+
+
+.left-menu-subhead1.menuheader a { 
+    /*
+    <-- This is not a seperate style currently, but add it so you can target that first header element easily -->
+
+    */
+    font-size: 2.2rem;
+    color: #fff;
+}
+
+
+.left-menubar {
+    /*
+    background-color: #f3aa53;
+
+    */
+    background-color: #dadada;
+}
+
+.left-menubar a {
+    /*
+  color:#ffffff;
+
+    */
+    color: #616161;
+}
+
+.left-menubar a:hover {
+    /*
+  background-color:#dddddd;
+  color:#000000;
+
+    */
+    background-color: #f1f1f1;
+    color: #000000;
+
+}
+
+.left-menubar a.active {
+  background-color:#dddddd;
+  color:#000000;
+  background-color:#cccccc;
+  color:#000000;
+  background-color:#808080;
+  color:#ffffff;  
+}
+
+.leftmenu_hidden {
+  background: rgba(173, 108, 108, 0.14);
+}
+
+.top-nav a:hover:not(.active) {
+    background-color: #2f3461;
+}
+
+#pgmain_wrapper a {
+
+    color: #1d2798;
+}
+
+#belowtopnav_wrapper, #pgfooter_wrapper {
+    /*
+    background: #f5f5dc;
+
+    */
+}
+
+body {
+
+}
+
+.btn-link {
+    color: #ffffff !important;
+}
+
+.btn-link:hover {
+    background-color: #2f3461 !important;
+}
+
+.hto-btn:after {
+    color: darkslategray;
+}
+
+.accordion-toggle:after {
+    color: grey;         /* adjust as needed */
+}
+
+.ht-hide a {
+    color: rgba(95, 77, 77, 0.75);
+}
+
+.hto-tab-in-display {
+    background-color: #f5f5f5;
+}
+
+.hto-tab-in-display .row {
+    border: none;
+}
+
+.hto-card-rec {
+
+    background-color: #ffffff;
+
+}
+
+
+
+/*
+.hto-tab-in-display li a {
+    background-color: black;
+}
+
+.hto-tab-in-display li.active a {
+    background-color: purple;
+}
+
+*/
+
+
+.login-box {
+    border: 1px solid #bfb3b3;
+    background-color: #efeaea;
+}
+
+#StopTips {
+    color: red;
+}
+
+.button-wrap {
+    background: linear-gradient(#aba0a0, white);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.button-raised.button-primary {
+    border-color: #088ef0 !important;
+    background: linear-gradient(#454c90, #80868a) !important;
+}
+
+.button-raised.disabled {
+    border-color: rgba(9, 9, 9, 0.76) !important;
+    background: linear-gradient(#c6c6c7, #80868a) !important;
+    color: #948e8e !important;
+}
+
+
+.button-raised.button-primary:hover, .button-raised.button-primary:focus {
+    background: -webkit-gradient(linear, left top, left bottom, from(#42abf8), to(#0888e6)) !important;
+    background: linear-gradient(top, #42abf8, #0888e6) !important;
+}
+
+.button-raised.disabled:hover {
+    border-color: rgba(9, 9, 9, 0.76) !important;
+    background: linear-gradient(#c6c6c7, #80868a) !important;
+    color: #948e8e !important;
+}
+
+.pseudo-input {
+    background-color: #d3d3d357;
+}

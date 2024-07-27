@@ -1,0 +1,67 @@
+﻿@model Sakura.AspNetCore.IPagedList<SourceDDContext.Models.Table>
+
+@{
+    ViewData["Title"] = "Index";
+
+    var viewList = Model.Select(c => new SourceTableWithColumnsViewModel(c)).ToList();
+
+}
+
+<h1>Source Tables</h1>
+
+<pager />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => viewList.FirstOrDefault().TableSchema)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => viewList.FirstOrDefault().TableName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => viewList.FirstOrDefault().DestinationTable)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => viewList.FirstOrDefault().Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => viewList.FirstOrDefault().NeedsMigration)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in viewList)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TableSchema)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TableName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DestinationTable)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NeedsMigration)
+            </td>
+            <td>
+                    <a asp-action="Details" asp-route-tableschema="@item?.TableSchema" asp-route-tablename="@item?.TableName">Details</a> |
+                    <a asp-action="Edit" asp-route-tableschema="@item?.TableSchema" asp-route-tablename="@item?.TableName">Edit</a> |
+                    @*
+                <a asp-action="Edit" asp-route-id="@item.MigrationHistoryId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.MigrationHistoryId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.MigrationHistoryId">Delete</a>
+
+                *@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

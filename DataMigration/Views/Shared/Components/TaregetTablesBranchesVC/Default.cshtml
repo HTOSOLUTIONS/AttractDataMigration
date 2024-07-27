@@ -1,0 +1,40 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model TargetDDContext.Models.Table
+
+
+@if (Model.ChildPaths != null && Model.ChildPaths.Count > 0)
+{
+    <div class="hto-rtitle">Child Paths</div>
+    @foreach (var item in Model.ChildPaths)
+    {
+        <p>@Html.DisplayFor(c => item.Fullpath)</p>
+    }
+}
+
+@if (Model.ParentPaths != null && Model.ParentPaths.Count > 0)
+{
+    <div class="hto-rtitle">Parent Paths</div>
+    <table class="table">
+
+        @foreach (var item in Model.ParentPaths)
+        {
+            <tr>
+                <td>
+                    <p>@Html.DisplayFor(c => item.Fullpath, "TablePaths")</p>
+                </td>
+                <td>
+                    <p>@Html.DisplayFor(c => item.PktableName)</p>
+                </td>
+                <td>
+                    <p>@Html.DisplayFor(c => item.FktableName)</p>
+                </td>
+            </tr>
+        }
+
+
+    </table>
+}

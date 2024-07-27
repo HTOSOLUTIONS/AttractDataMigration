@@ -2,7 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using DataMigration.Data;
 using TargetDDContext.Data;
-
+using SourceDDContext.Data;
+using Sakura.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,9 +14,30 @@ builder.Services.AddDbContext<TargetDDDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("TargetDDDbContext") ?? throw new InvalidOperationException("Connection string 'TargetDDDbContext' not found.")));
 
 
+builder.Services.AddDbContext<SourceDDDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SourceDDDbContext") ?? throw new InvalidOperationException("Connection string 'SourceDDDbContext' not found.")));
+
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+    
+//;
+
+builder.Services.AddSession(options => {
+    options.IdleTimeout = TimeSpan.FromDays(7);
+});
+
+//Allows for Dependency Injection of IHttpContext
+builder.Services.AddHttpContextAccessor();
+
+//Required for Sakura TagHelper
+builder.Services.AddBootstrapPagerGenerator(options =>
+{
+    // Use default pager options.
+    options.ConfigureDefault();
+});
+
 
 var app = builder.Build();
 
@@ -33,6 +55,9 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
+
 
 app.MapControllerRoute(
     name: "default",

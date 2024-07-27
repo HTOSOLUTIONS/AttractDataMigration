@@ -1,0 +1,45 @@
+
+
+#leftmenu_hidden {
+    z-index: 1000;
+    position: fixed;
+    left: 200px;
+    width: 15px;
+    height: 100%;
+    margin-left: -200px;
+    overflow-y: auto;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#leftmenu_hidden:after {
+
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+    /*--adjust as necessary--*/
+    color: rgba(95, 77, 77, 0.45);
+    font-size: 30px;
+    padding-right: 0.5em;
+    position: absolute;
+    top: 10px;
+    left: 0;
+}
+
+
+
+@media(min-width:768px) {
+
+
+    /*
+    */
+
+
+    /*
+    */
+
+
+}

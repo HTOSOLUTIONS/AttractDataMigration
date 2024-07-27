@@ -1,0 +1,173 @@
+﻿
+
+@model SourceTableWithColumnsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Source Table Details";
+
+    Model.RowCtrls.Controls.Add(new HTORowEdit());
+
+
+}
+
+@section Scripts {
+
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("a.pathpart").on("click", function () {
+
+                var tablewithschema = $(this).html();
+                var nameparts = tablewithschema.split(".");
+                $(".targetColumns").load("/TargetTables/TargetTableColumnsVC?tablename=" + nameparts[1]);
+
+            });
+
+        });
+
+
+
+
+    </script>
+
+
+}
+
+
+
+<div class="hto-pgtitle">Details</div>
+
+<crud-links record-controls="@Model.RowCtrls" last-action="@ActionHistory.GetLastHistoryItem(ViewContext.HttpContext)" class="crudctrls"></crud-links>
+
+
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="col">
+            <div class="hto-rtitle">Source Table</div>
+            <div class="hto-details">
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.TableSchema)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.TableSchema)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.TableName)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.TableName)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.DestinationTable)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.DestinationTable)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Description)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Description)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.NeedsMigration)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.NeedsMigration)
+                    </dd>
+                </dl>
+            </div>
+
+        </div>
+        <div class="col">
+            @if (!string.IsNullOrEmpty(Model?.DestinationTable))
+            {
+                @await Component.InvokeAsync(nameof(TaregetTablesBranchesVC), new { tablename = Model.DestinationTable })
+
+
+            }
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col">
+            @if (Model?.Columns?.FirstOrDefault() != null)
+            {
+                <table class="table relatedlist">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => Model.Columns.FirstOrDefault().ColumnName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => Model.Columns.FirstOrDefault().DataType)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => Model.Columns.FirstOrDefault().DestinationTable)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => Model.Columns.FirstOrDefault().DestinationColumn)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => Model.Columns.FirstOrDefault().NonNulls)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => Model.Columns.FirstOrDefault().DistinctValues)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    @foreach (var item in Model.Columns.OrderBy(c => c.ColumnName))
+                    {
+
+                        <tr>
+                            @*
+
+                    <a asp-controller="SourceColumns" asp-action="Details" asp-route-tablename="@item.TableName" asp-route-tableschema="@item.TableSchema" asp-route-columnname="@item.ColumnName">
+                    @Html.DisplayFor(c => item.ColumnName)
+                    </a>
+
+                    *@
+
+                            <td>
+                                <a asp-controller="SourceColumns" asp-action="Details" asp-all-route-data=@item.RouteValues>
+                                    @Html.DisplayFor(c => item.ColumnName)
+                                </a>
+                            </td>
+                            <td>@Html.DisplayFor(c => item.DataType)</td>
+                            <td>@Html.DisplayFor(c => item.DestinationTable)</td>
+                            <td>@Html.DisplayFor(c => item.DestinationColumn)</td>
+                            <td>@Html.DisplayFor(c => item.NonNulls)</td>
+                            <td>@Html.DisplayFor(c => item.DistinctValues)</td>
+
+                        </tr>
+
+
+                    }
+
+                </table>
+
+            }
+
+        </div>
+
+        <div class="col">
+            <div class="targetColumns">
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+

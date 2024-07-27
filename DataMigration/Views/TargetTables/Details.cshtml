@@ -2,6 +2,9 @@
 
 @{
     ViewData["Title"] = "Details";
+    var baseColumn = Model?.Columns != null ? Model.Columns.FirstOrDefault() : new TargetDDContext.Models.Column();
+
+
 }
 
 <h1>Details</h1>
@@ -12,7 +15,7 @@
 </div>
 
 <div>
-    <h4>MigrationHistory</h4>
+    <h4>Source Table</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -42,32 +45,42 @@
     </dl>
 </div>
 
-@if (Model.Columns != null)
+@if (baseColumn != null && Model != null)
 {
 <table class="table">
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => Model.Columns.FirstOrDefault().ColumnName)
+                    @Html.DisplayNameFor(model => baseColumn.ColumnName)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => Model.Columns.FirstOrDefault().DataType)
+                    @Html.DisplayNameFor(model => baseColumn.DataType)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => Model.Columns.FirstOrDefault().NonNulls)
+                    @Html.DisplayNameFor(model => baseColumn.SourceTable)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => Model.Columns.FirstOrDefault().DistinctValues)
+                    @Html.DisplayNameFor(model => baseColumn.SourceColumn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => baseColumn.NonNulls)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => baseColumn.DistinctValues)
                 </th>
                 <th></th>
             </tr>
-        </thead>        @foreach (var item in Model.Columns.OrderBy(c => c.ColumnName))
+        </thead>
+        
+        @foreach (var item in Model.Columns.OrderBy(c => c.ColumnName))
         {
 
             <tr>
 
                 <td>@Html.DisplayFor(c => item.ColumnName)</td>
                 <td>@Html.DisplayFor(c => item.DataType)</td>
+                <td>@Html.DisplayFor(c => item.SourceTable)</td>
+                <td>@Html.DisplayFor(c => item.SourceColumn)</td>
                 <td>@Html.DisplayFor(c => item.NonNulls)</td>
                 <td>@Html.DisplayFor(c => item.DistinctValues)</td>
 

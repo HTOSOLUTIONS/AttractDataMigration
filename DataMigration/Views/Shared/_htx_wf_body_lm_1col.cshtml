@@ -1,0 +1,81 @@
+﻿@{
+
+
+    @*
+    SiteInfo siteinfo = ViewContext.HttpContext.Session.GetObjectFromJson<SiteInfo>("siteinfo");
+    *@
+
+
+
+    //var lmClass = sitesettings.Value.IsClassUX ? "" : "";
+    //var lmClass = "class = toggled";
+    var lmClass = "";
+
+}
+
+<!-- START BODY WIREFRAME-->
+<!DOCTYPE html>
+<!-- Start: _htx_wf_body_lm_1col -->
+<html>
+<head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - DataMigration</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/DataMigration.styles.css" asp-append-version="true" />
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    @await Html.PartialAsync("_Layout_head_section")
+
+
+
+
+</head>
+	<body>
+
+        <div id="wf20_lm" class="@ViewBag.FrameClass">
+            @await Html.PartialAsync("_htx_pgheader")
+
+            <div id="topnav_wrapper">
+                @await Html.PartialAsync("_htx_topnav")
+                <!-- Start: Added cmdbar_wrapper -->
+                <div id="cmdbar_wrapper" class="hto-view-cmdbar">
+                    <span id="cmdbar_help" class="pull-right"></span>
+                </div>
+                <!-- End: Added cmdbar_wrapper -->
+            </div>
+
+            <div id="belowtopnav_wrapper" @lmClass>
+                <!-- Start: RenderBody() -->
+                @await Html.PartialAsync("_htx_leftmenu")
+                <div id="pgmain_wrapper">
+                    <div id="htcol2_wrapper">
+                        @RenderBody()
+                    </div>
+                    <!-- End: RenderBody() -->
+                </div>
+            </div>
+
+            <div id="pgfooter_wrapper">
+                <div id="pgfooter">
+                </div>
+            </div>
+
+
+        </div>
+
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await Html.PartialAsync("_hto_uiutils")
+    @await RenderSectionAsync("Scripts", required: false)
+
+
+	</body>
+
+</html>
+<!-- End: _htx_wf_body_lm_1col -->

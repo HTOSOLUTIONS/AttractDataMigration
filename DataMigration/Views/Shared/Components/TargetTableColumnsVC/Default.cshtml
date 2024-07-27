@@ -1,0 +1,37 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model TargetTableWithColumnsViewModel
+
+@if (Model?.Columns != null)
+{
+    <table class="table">
+
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(c => Model.Columns.FirstOrDefault().ColumnName)</th>
+                <th>@Html.DisplayNameFor(c => Model.Columns.FirstOrDefault().DataType)</th>
+                <th>@Html.DisplayNameFor(c => Model.Columns.FirstOrDefault().NonNulls)</th>
+                <th>@Html.DisplayNameFor(c => Model.Columns.FirstOrDefault().DistinctValues)</th>
+            </tr>
+        </thead>
+
+
+        @foreach (var column in Model.Columns)
+        {
+            <tr>
+                <td>@Html.DisplayFor(c => column.ColumnName)</td>
+                <td>@Html.DisplayFor(c => column.DataType)</td>
+                <td>@Html.DisplayFor(c => column.NonNulls)</td>
+                <td>@Html.DisplayFor(c => column.DistinctValues)</td>
+            </tr>
+           
+        }
+
+
+    </table>
+
+    
+}

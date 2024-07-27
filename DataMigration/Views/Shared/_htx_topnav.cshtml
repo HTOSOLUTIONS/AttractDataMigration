@@ -1,0 +1,17 @@
+
+@{
+    string hideClass  = "class=ht-hide";
+
+}
+
+
+<div class="top-nav" style="height: 50px;">
+    <ul>
+
+        <li><a href="javascript:void(0)" @hideClass Title="Menu" onClick="openLeftnav()"><i class="fa fa-th-list fa-2x"></i></a></li>
+
+        <li><a asp-controller="Home" asp-action="Index" id="topnav_link_home"><i class="fa fa-home fa-2x"></i></a></li>
+
+
+    </ul>
+</div>

@@ -1,45 +1,45 @@
 ﻿using DataMigration.Constants;
-using DataMigration.Data;
-using DataMigration.Models;
-using DataMigration.Services.HTOTools.Implementations;
 using DataMigration.ViewModels;
 using HTOTools;
+using HTOTools.Implementations;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using TargetDDContext.Data;
-using TargetDDContext.Models;
+using Sakura.AspNetCore;
+using SourceDDContext.Data;
+
 
 
 namespace DataMigration.Controllers
 {
-    public class TargetTablesController : Controller
+    public class SourceTablesController : Controller
     {
-        private readonly TargetDDDbContext _dbcontext;
 
-        public TargetTablesController(TargetDDDbContext dbcontext) { 
+        private SourceDDDbContext _dbcontext;
 
-            _dbcontext = dbcontext;
+        public SourceTablesController(SourceDDDbContext dbContext) { 
+
+            _dbcontext = dbContext;
+
         }
 
 
         [ClearHistory(Order = 1)]
-        [AddHistory("Target Tables",ClassNames.TargetTable, Order = 2)]
-        public async Task<IActionResult> Index()
+        [AddHistory("Source Tables", ClassNames.SourceTable, Order = 2)]
+        public async Task<IActionResult> Index(int? page)
         {
+            var pageSize = 10;
+            int pageNumber = (page ?? 1);
 
-            var returnlist = await _dbcontext.Tables.ToListAsync();
+            var returnlist = await _dbcontext.Tables.ToPagedListAsync(pageSize,pageNumber);
 
-
+            //var pgList = returnlist.Select(c => new SourceTableViewModel(c)).ToDynamicPagedList(pageSize,pageNumber);
 
             return View(returnlist);
 
 
         }
 
-
-
-        [AddHistory("Target Table Details", ClassNames.TargetTable, 1, Order = 2)]
+        [AddHistory("Source Table Details", ClassNames.SourceTable)]
         public async Task<IActionResult> Details(string tableschema, string tablename)
         {
             if (string.IsNullOrEmpty(tableschema) || string.IsNullOrEmpty(tablename))
@@ -54,12 +54,10 @@ namespace DataMigration.Controllers
                 return NotFound();
             }
 
-            return View(dbrecord);
+            return View(new SourceTableWithColumnsViewModel(dbrecord));
 
 
         }
-
-
 
 
         public async Task<IActionResult> Edit(string tableschema, string tablename)
@@ -77,14 +75,14 @@ namespace DataMigration.Controllers
             }
 
 
-            return View(dbrecord);
+            return View(new SourceTableWithColumnsViewModel(dbrecord));
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[Bind("MigrationHistoryId,Description,DateTime")]
-        public async Task<IActionResult> Edit(string tableschema, string tablename, TargetDDContext.Models.Table viewmodel)
+        public async Task<IActionResult> Edit(string tableschema, string tablename, SourceDDContext.Models.Table viewmodel)
         {
             if (string.IsNullOrEmpty(tableschema) || string.IsNullOrEmpty(tablename))
             {
@@ -104,6 +102,7 @@ namespace DataMigration.Controllers
                 {
                     dbrecord.Description = viewmodel.Description;
                     dbrecord.NeedsMigration = viewmodel.NeedsMigration;
+                    dbrecord.DestinationTable = viewmodel.DestinationTable;
                     _dbcontext.Update(dbrecord);
                     await _dbcontext.SaveChangesAsync();
                 }
@@ -112,32 +111,23 @@ namespace DataMigration.Controllers
 
                     throw;
                 }
-                //return RedirectToAction(nameof(Index));
                 return ActionHistory.ReturntoPreviousAction(HttpContext);
-
+                //return RedirectToAction(nameof(Index));
             }
             return View(viewmodel);
         }
 
 
-        public IActionResult TargetTableColumnsVC(string tablename)
-        {
-            return ViewComponent(nameof(TargetTableColumnsVC), new { tablename });
-        } 
 
-
-        private async Task<TargetDDContext.Models.Table?> _getRecord(string tableschema, string tablename)
+        private async Task<SourceDDContext.Models.Table> _getRecord(string tableschema, string tablename)
         {
             var dbrecord = await _dbcontext.Tables
                 .Include(m => m.Columns)
-                .Include(m => m.ChildPaths)
-                .Include(m => m.ParentPaths)
                 .FirstOrDefaultAsync(m => m.TableSchema == tableschema && m.TableName == tablename);
 
             return dbrecord;
 
         }
-
 
     }
 }

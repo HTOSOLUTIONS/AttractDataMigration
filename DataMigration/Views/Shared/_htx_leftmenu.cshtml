@@ -1,0 +1,56 @@
+
+
+@{
+
+
+
+}
+
+<script>
+    
+    $(document).ready(function () {
+
+        console.log("Formatted the left menu.");
+
+
+        $(".left-menu-subhead1").not(".collapsible").each(function () {
+            if ($(this).siblings().length == 0) {
+                $(this).hide();
+            }
+        });
+
+        $(".left-menu-subhead1.collapsible").each(function () {
+            var targetid = $(this).find("a").attr("href");
+            if (typeof targetid == "string") {
+                if ($(targetid).find("li").length == 0) {
+                    $(this).hide();
+                }
+            }
+        });
+
+        //$("#leftmenu_wrapper").css("overflow", "visible");
+        $("#leftmenu_wrapper").css("z-index", "1");
+        $("#pgmain_wrapper").css("z-index", "0");
+
+
+    });
+
+</script>
+
+<div id="leftmenu_wrapper">
+    <div class="left-menubar">
+ 
+        <div class="left-menu-subhead1 collapsible"><a data-bs-toggle="collapse" href="#datadictionary" aria-expanded="true" aria-controls="datadictionary">Data Dictionary</a></div>
+        <div id="datadictionary" class="panel-collapse collapse show">
+            <ul>
+                <li><a asp-controller="SourceTables" asp-action="Index">Source Tables</a></li>
+                <li><a asp-controller="TargetTables" asp-action="Index">Target Tables</a></li>
+            </ul>
+
+        </div>
+
+
+    </div>
+</div>
+<div id="leftmenu_hidden">
+</div>

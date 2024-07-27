@@ -1,4 +1,5 @@
 using DataMigration.Models;
+using HTOTools;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -13,6 +14,7 @@ namespace DataMigration.Controllers
             _logger = logger;
         }
 
+        [ClearHistory(Order = 1)]
         public IActionResult Index()
         {
             return View();

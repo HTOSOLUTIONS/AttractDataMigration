@@ -1,0 +1,354 @@
+* {
+    box-sizing: border-box;
+}
+
+#pgheader_wrapper, #topnav_wrapper, #pgfooter_wrapper, #belowtopnav_wrapper {
+    width: 100%;
+}
+
+/*2017-08-04 Keep the footer at the bottom */
+body, html {
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    /*
+    background-color: purple;
+
+    */
+}
+
+#wf20_lm, #wf20_bo {
+    padding-bottom: 45px;
+    /*
+    border: 3px solid red;
+    */
+    position: relative;
+    min-height: 100vh;
+
+}
+
+#cmdbar_wrapper {
+    position: relative;
+}
+
+#cmdbar_help {
+    height: 100%;
+    position: absolute;
+    right: 0;
+    padding: 3px 3px 0 0;
+}
+
+
+#pgfooter_wrapper {
+    background-color: #f5f5f5;
+    text-align: center;
+    /*
+    height: 40px;
+    */
+    height: 50px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+/*2017-08-04 (end) */
+
+#pgfooter {
+    padding-top: 5px;
+    font-size: 12px;
+}
+
+
+#pgheader_wrapper:after, #topnav_wrapper:after, #pgfooter_wrapper:after, #belowtopnav_wrapper {
+    content: "";
+    clear: both;
+    display: block;
+}
+
+#topnav_wrapper {
+    /* 2018-02-05 Changed z-index.  It creates problems for modal dialog box.
+    z-index: 1500;
+    */
+    z-index: 99;
+    /*
+        Removed on 2017.09.07.  Was causing strange effects because when the cmdbar was added, the combined height of contents
+        was greater than 50px.
+    	height: 50px;
+    */
+}
+
+#pgheader_wrapper {
+    padding-top: 15px;
+    padding-left: 10px;
+    z-index: 1400 ;
+    height: 80px;
+
+}
+
+#pgfooter{
+    padding-left: 10px;
+}
+
+
+#belowtopnav_wrapper {
+	/* Removed position: relative to accomodate the wf20_lm wireframe model */
+    position: relative;
+    overflow: auto;
+}
+
+.hto-form-main {
+    /*
+    max-width: 700px;
+    */
+}
+
+#htcol1_wrapper {
+    width: auto;
+    float: none;
+}
+
+#htcol2_wrapper {
+    padding-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    /*Added 2017-09-21 */
+    width: 100%;
+    padding: 20px;
+    /*
+    background-color: purple;
+
+    */
+
+}
+
+#htcol3_wrapper {
+    width: auto;
+    position: relative;
+    top: 0;
+    right: 0;
+}
+
+
+
+
+@media (min-width: 600px) {
+    #htcol1_wrapper {
+        width: 200px;
+        float: left;
+    }
+    #wf20_stacker #htcol2_wrapper {
+		margin-left: 210px;
+		//clear: both;
+    } 
+	#htcol3_wrapper {
+		margin-left: 210px;
+	}
+}
+
+@media (min-width: 800px) {
+    #htcol3_wrapper {
+        width: 180px;
+        bottom: 0;
+        position: absolute;
+    } 
+
+    #htcol2_wrapper {
+		margin-right: 10%;
+    }       
+
+}
+
+@media (min-width: 1100px) {
+
+    #htcol2_wrapper {
+		margin-right: 150px;
+    }       
+}
+
+
+
+/* Left Menu Bar Wireframe Styles */
+#wf20_lm #belowtopnav_wrapper {
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wf20_lm #belowtopnav_wrapper.toggled,  #wf20_lm #pgfooter_wrapper.toggled {
+    padding-left: 200px;
+}
+
+.belownav_wrapper {
+    padding-left: 30px;
+    max-width: 900px;
+}
+
+#wf20_bo #belowtopnav_wrapper {
+    overflow: inherit;
+    margin-bottom: 20px;
+}
+
+
+#leftmenu_wrapper {
+    /* 2018-02-05 No longer need z-index.  It creates problems for modal dialog box.
+    z-index: 1000;
+    */
+    position: fixed;
+    left: 200px;
+    width: 0px;
+    /*
+	padding-top: 10px;
+
+    */
+    height: 100%;
+    margin-left: -200px;
+    overflow-y: auto;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+
+#wf20_lm #belowtopnav_wrapper.toggled  #leftmenu_wrapper {
+    width: 200px;
+}
+
+#pgmain_wrapper {
+    width: 100%;
+    /*
+    position: absolute;
+    padding: 15px;
+
+    */
+    /* Removed 2017-09-21 
+	padding-left: 10px;
+
+    */
+}
+
+#wf20_lm #belowtopnav_wrapper.toggled #pgmain_wrapper {
+    //position: absolute;
+    margin-right: -200px;
+}
+
+
+#wf20_lm #htcol2_wrapper h1:first-child {
+	margin-top: 0px;
+	padding-top: 10px;
+}
+
+#wf20_lm #pgfooter_wrapper {
+	padding-left: 3px;
+}
+
+
+.htx-show {
+    display: none !important;
+}
+
+.htx-ilist-pagectrl {
+    text-align: left;
+}
+
+.hto-docpage {
+    border: 1px solid gray;
+    background-color: white;
+    margin-bottom: 100px;
+    margin-top: 15px;
+    padding: 15px;
+}
+
+.hto-doctitle {
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.topnavdrawer {
+    right: -200px;
+}
+
+
+@media (min-width: 992px) {
+    .htx-ilist-pagectrl {
+        text-align: right;
+    }
+}
+
+
+@media(min-width:768px) {
+
+
+	.ht-hide {
+		display: none !important;
+	}
+
+    .htx-show {
+        display: inline-block !important;
+    }
+
+    .hto-docpage {
+        padding: 50px 10px 50px 75px;
+    }
+
+    .top-nav.cnw {
+        height: 50px;
+    }
+
+    .topnavdrawer {
+        right: 26px;
+    }
+
+
+    #wf20_bo .belowtopnavwrapper, #wf20_bo #pgfooter_wrapper {
+        padding-left: 75px;
+        padding-right: 100px;
+    }
+
+
+    #wf20_lm #belowtopnav_wrapper, #wf20_lm #pgfooter_wrapper {
+        padding-left: 200px;
+    }
+
+        #wf20_lm #belowtopnav_wrapper.toggled, #wf20_lm #pgfooter_wrapper.toggled {
+            padding-left: 0;
+        }
+
+    #leftmenu_wrapper {
+        width: 200px;
+    }
+
+    #leftmenu_hidden {
+        width: 0;
+    }
+
+        #leftmenu_hidden:after {
+            content: " ";
+        }
+
+    #wf20_lm #belowtopnav_wrapper.toggled #leftmenu_wrapper {
+        width: 0;
+    }
+
+    #pgmain_wrapper {
+        //padding: 20px;
+        position: relative;
+    }
+
+    #wf20_lm #belowtopnav_wrapper.toggled #pgmain_wrapper {
+        position: relative;
+        margin-right: 0;
+    }
+
+
+
+
+
+}
+
+
+
