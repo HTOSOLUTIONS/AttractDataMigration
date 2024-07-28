@@ -1,6 +1,7 @@
 ﻿using HTOTools;
 using TargetDDContext.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace DataMigration.ViewModels
 {
@@ -25,6 +26,23 @@ namespace DataMigration.ViewModels
             _sourcetable = targetTable.SourceTable;
             _needsmigration = targetTable.NeedsMigration;
             _routeValues = new Dictionary<string, string>() { { "tableschema", _targetTable.TableSchema }, { "tablename", _targetTable.TableName } };
+
+            if (targetTable.ParentPaths != null )
+            {
+                ParentPaths = targetTable.ParentPaths;
+            } else
+            {
+                ParentPaths = new List<FamilyPath>();
+            }
+
+            if (targetTable.ChildPaths != null)
+            {
+                ChildPaths = targetTable.ChildPaths;
+            }
+            else
+            {
+                ChildPaths = new List<FamilyPath>();
+            }
 
 
             RowCtrls = new HTORowCtrlList()
@@ -71,6 +89,13 @@ namespace DataMigration.ViewModels
 
         public HTORowCtrlList RowCtrls { get; set; }
 
+
+        [JsonIgnore]
+        public IEnumerable<TargetDDContext.Models.FamilyPath> ParentPaths { get; set; }
+
+
+        [JsonIgnore]
+        public IEnumerable<TargetDDContext.Models.FamilyPath> ChildPaths { get; set; }
 
 
 

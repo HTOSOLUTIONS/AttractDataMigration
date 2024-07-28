@@ -30,5 +30,25 @@ namespace DataMigration.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
+        public IActionResult AjaxNotFound(string message)
+        {
+            ///The callback function will find the data as text
+            ///It can be parsed with:  JSON.parse(data).responseText
+            Response.StatusCode = 404;
+            return new JsonResult(new { responseText = message });
+
+            ///The callback function will find the data as text
+            ///No parsing is needed.  It can be displayed directly.
+            /*
+            Response.StatusCode = 404;
+            return Content(message);
+          
+             */
+
+        }
+
+
     }
 }

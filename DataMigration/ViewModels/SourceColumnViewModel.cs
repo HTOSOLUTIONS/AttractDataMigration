@@ -18,6 +18,10 @@ namespace DataMigration.ViewModels
 
         private bool? _needsmigration;
 
+        private bool? _needsfollowup;
+
+        private string? _notes;
+
         private IDictionary<string, string> _routeValues;
 
         public SourceColumnViewModel(Column sourceColumn)
@@ -28,6 +32,8 @@ namespace DataMigration.ViewModels
             _destinationtable = sourceColumn.DestinationTable;
             _destinationcolumn = sourceColumn.DestinationColumn;
             _needsmigration = sourceColumn.NeedsMigration;
+            _needsfollowup = sourceColumn.NeedsFollowUp;
+            _notes = sourceColumn.Notes;
             _routeValues = new Dictionary<string, string>() { { "tableschema", _sourceColumn.TableSchema }, { "tablename", _sourceColumn.TableName }, { "columnname", _sourceColumn.ColumnName } };
 
             RowCtrls = new HTORowCtrlList()
@@ -86,6 +92,13 @@ namespace DataMigration.ViewModels
 
         [Display(Name = "Needs Migration")]
         public bool? NeedsMigration { get => _needsmigration; set => _needsmigration = value; }
+
+
+        [Display(Name = "Needs Follow Up")]
+        public bool? NeedsFollowUp { get => _needsfollowup; set => _needsfollowup = value; }
+
+
+        public string? Notes { get => _notes; set => _notes = value; }
 
 
         public virtual SourceTableViewModel SourceTable { get; set; }

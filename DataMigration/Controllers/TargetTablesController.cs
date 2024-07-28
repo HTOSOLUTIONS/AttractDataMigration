@@ -123,7 +123,14 @@ namespace DataMigration.Controllers
         public IActionResult TargetTableColumnsVC(string tablename)
         {
             return ViewComponent(nameof(TargetTableColumnsVC), new { tablename });
-        } 
+        }
+
+
+        public IActionResult TargetTableVC(string tablename)
+        {
+            return ViewComponent(nameof(TargetTableVC), new { tablename });
+        }
+
 
 
         private async Task<TargetDDContext.Models.Table?> _getRecord(string tableschema, string tablename)

@@ -1,0 +1,108 @@
+﻿@using System.Text.Json
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+    JsonSerializerOptions jsonoptions = new()
+    {
+        MaxDepth = 3
+    };
+
+}
+@model TargetTableWithColumnsViewModel
+
+
+@if (Model.ChildPaths != null && Model.ChildPaths.ToList().Count > 0)
+{
+    <div class="hto-rtitle">Child Paths</div>
+    <table class="table">
+        @foreach (var item in Model.ChildPaths)
+        {
+            <tr>
+                <td>
+                    <p>@Html.DisplayFor(c => item.Fullpath, "TablePaths")</p>
+                </td>
+                <td>
+                    <p>@Html.DisplayFor(c => item.PktableName)</p>
+                </td>
+                <td>
+                    <p>@Html.DisplayFor(c => item.FktableName)</p>
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
+@if (Model.ParentPaths != null && Model.ParentPaths.ToList().Count > 0)
+{
+    <div class="hto-rtitle">Parent Paths</div>
+    <table class="table">
+
+        @foreach (var item in Model.ParentPaths)
+        {
+            <tr>
+                <td>
+                    <p>@Html.DisplayFor(c => item.Fullpath, "TablePaths")</p>
+                </td>
+                <td>
+                    <p>@Html.DisplayFor(c => item.PktableName)</p>
+                </td>
+                <td>
+                    <p>@Html.DisplayFor(c => item.FktableName)</p>
+                </td>
+            </tr>
+        }
+
+
+    </table>
+}
+
+
+
+@if (Model?.Columns != null)
+{
+    <table class="table targetcolumns matchers">
+
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(c => Model.Columns.FirstOrDefault().ColumnName)</th>
+                <th>@Html.DisplayNameFor(c => Model.Columns.FirstOrDefault().DataType)</th>
+                <th>@Html.DisplayNameFor(c => Model.Columns.FirstOrDefault().NonNulls)</th>
+                <th>@Html.DisplayNameFor(c => Model.Columns.FirstOrDefault().DistinctValues)</th>
+            </tr>
+        </thead>
+
+
+        @foreach (var column in Model.Columns)
+        {
+            @*
+    '
+            *@
+
+            @*             
+            try
+            {
+                var colJson = JsonSerializer.Serialize(column);
+            }
+            catch (Exception oe)
+            {
+                var myErr = oe;
+            } 
+            *@
+
+            <tr data-targetcolumn='@JsonSerializer.Serialize(column)'>
+                <td>@Html.DisplayFor(c => column.ColumnName)</td>
+                <td>@Html.DisplayFor(c => column.DataType)</td>
+                <td>@Html.DisplayFor(c => column.NonNulls)</td>
+                <td>@Html.DisplayFor(c => column.DistinctValues)</td>
+            </tr>
+           
+        }
+
+
+    </table>
+
+    
+}

@@ -1,0 +1,102 @@
+﻿@model MatchedColumnsViewModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<form id="linkcolumns">
+
+
+
+</form>
+
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col">
+            <div class="hto-rtitle">Source Column</div>
+            <div class="hto-details">
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.SourceColumn.TableSchema)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.SourceColumn.TableSchema)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.SourceColumn.TableName)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.SourceColumn.TableName)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.SourceColumn.ColumnName)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.SourceColumn.ColumnName)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.SourceColumn.DestinationTable)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.SourceColumn.DestinationTable)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.SourceColumn.DestinationColumn)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.SourceColumn.DestinationColumn)
+                    </dd>
+
+                </dl>
+            </div>
+
+
+        </div>
+        <div class="col">
+            <div class="hto-rtitle">Target Column</div>
+            <div class="hto-details">
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.TargetColumn.TableSchema)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.TargetColumn.TableSchema)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.TargetColumn.TableName)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.TargetColumn.TableName)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.TargetColumn.ColumnName)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.TargetColumn.ColumnName)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.TargetColumn.SourceTable)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.TargetColumn.SourceTable)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.TargetColumn.SourceColumn)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.TargetColumn.SourceColumn)
+                    </dd>
+
+                </dl>
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</div>

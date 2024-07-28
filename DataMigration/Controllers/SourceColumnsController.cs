@@ -3,7 +3,9 @@ using DataMigration.ViewModels;
 using HTOTools;
 using HTOTools.Implementations;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Sakura.AspNetCore;
 using SourceDDContext.Data;
 
@@ -86,6 +88,8 @@ namespace DataMigration.Controllers
                 return NotFound();
             }
 
+            ModelState.Remove<SourceDDContext.Models.Column>(c => c.Table);
+
             if (ModelState.IsValid)
             {
                 var dbrecord = await _getRecord(tableschema, tablename, columnname);
@@ -101,6 +105,9 @@ namespace DataMigration.Controllers
                     dbrecord.NeedsMigration = viewmodel.NeedsMigration;
                     dbrecord.DestinationTable = viewmodel.DestinationTable;
                     dbrecord.DestinationColumn = viewmodel.DestinationColumn;
+                    dbrecord.NeedsFollowUp = viewmodel.NeedsFollowUp;
+                    dbrecord.Notes = viewmodel.Notes;
+
                     _dbcontext.Update(dbrecord);
                     await _dbcontext.SaveChangesAsync();
                 }

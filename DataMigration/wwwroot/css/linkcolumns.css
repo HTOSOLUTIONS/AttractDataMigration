@@ -1,0 +1,15 @@
+﻿
+
+.matchers tr:hover {
+
+    background-color: lightgray;
+
+}
+
+.matchers tr.selected {
+    background-color: darkgray;
+    color: white;
+}
+
+
+

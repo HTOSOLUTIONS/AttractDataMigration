@@ -4,6 +4,7 @@ using DataMigration.Data;
 using TargetDDContext.Data;
 using SourceDDContext.Data;
 using Sakura.AspNetCore.Mvc;
+using DataMigration.Services.KitchenSink;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +39,7 @@ builder.Services.AddBootstrapPagerGenerator(options =>
     options.ConfigureDefault();
 });
 
+builder.Services.AddTransient<IKitchenSink, KitchenSink>();
 
 var app = builder.Build();
 
