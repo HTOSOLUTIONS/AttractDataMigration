@@ -1,4 +1,5 @@
-﻿
+﻿@using System.Text.Json
+
 
 @model SourceTableWithColumnsViewModel
 
@@ -25,6 +26,16 @@
 
 
     <script>
+
+        var htoconfigbuilder = new htoModalConfigBuilder();
+        var previewlinkmodalconfig = htoconfigbuilder.getPreviewLinkModalConfig();
+        previewlinkmodalconfig.successpost = function (data) {
+            processPostedMatch(data);
+        }
+
+        var previewlinkmoalmgr = new htoModalMgr(previewlinkmodalconfig);
+
+
 
 
 
@@ -135,7 +146,7 @@
                     @foreach (var item in Model.Columns.OrderBy(c => c.ColumnName))
                     {
 
-                        <tr data-targetcolumn='@Json.Serialize(item)'>
+                        <tr data-sourcecolumn='@JsonSerializer.Serialize(item)'>
                             @*
 
                     <a asp-controller="SourceColumns" asp-action="Details" asp-route-tablename="@item.TableName" asp-route-tableschema="@item.TableSchema" asp-route-columnname="@item.ColumnName">
@@ -155,8 +166,8 @@
                                 </a>
                             </td>
                             <td>@Html.DisplayFor(c => item.DataType)</td>
-                            <td>@Html.DisplayFor(c => item.DestinationTable)</td>
-                            <td>@Html.DisplayFor(c => item.DestinationColumn)</td>
+                            <td class="destinationtable">@Html.DisplayFor(c => item.DestinationTable)</td>
+                            <td class="destinationcolumn">@Html.DisplayFor(c => item.DestinationColumn)</td>
                             <td>@Html.DisplayFor(c => item.NonNulls)</td>
                             <td>@Html.DisplayFor(c => item.DistinctValues)</td>
                             <td>

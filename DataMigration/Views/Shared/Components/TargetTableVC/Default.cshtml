@@ -4,10 +4,6 @@
 *@
 @{
 
-    JsonSerializerOptions jsonoptions = new()
-    {
-        MaxDepth = 3
-    };
 
 }
 @model TargetTableWithColumnsViewModel
@@ -77,20 +73,7 @@
 
         @foreach (var column in Model.Columns)
         {
-            @*
-    '
-            *@
 
-            @*             
-            try
-            {
-                var colJson = JsonSerializer.Serialize(column);
-            }
-            catch (Exception oe)
-            {
-                var myErr = oe;
-            } 
-            *@
 
             <tr data-targetcolumn='@JsonSerializer.Serialize(column)'>
                 <td>@Html.DisplayFor(c => column.ColumnName)</td>

@@ -1,4 +1,6 @@
-﻿namespace DataMigration.ViewModels
+﻿using DataMigration.ParameterModels;
+
+namespace DataMigration.ViewModels
 {
     public class MatchedColumnsViewModel
     {
@@ -20,7 +22,7 @@
 
         public bool? ReadyToLink { get; set; }
 
-
+        public MatchColumnsParms MatchColumnsParms { get; set; }
 
 
 

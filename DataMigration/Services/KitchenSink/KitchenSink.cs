@@ -33,7 +33,11 @@ namespace DataMigration.Services.KitchenSink
             {
                 throw new Exception("Target Column Not Found.");
             }
-            return new MatchedColumnsViewModel(new SourceColumnViewModel(srcc), new TargetColumnViewModel(tgtc));
+
+            var vm = new MatchedColumnsViewModel(new SourceColumnViewModel(srcc), new TargetColumnViewModel(tgtc)) ;
+            vm.MatchColumnsParms = parms;
+
+            return vm;
 
         }
 

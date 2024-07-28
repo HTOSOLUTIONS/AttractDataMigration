@@ -168,7 +168,7 @@ function htoModalConfigBuilder() {
 
     this.getPreviewLinkModalConfig = function () {
         var modalconfig = {
-            formid: "#modalInvestmentForm",
+            formid: "#linkcolumns",
             configBeforeOpen: true,
             openAfterLoad: true,
             baseurl: "/KitchenSink/PreviewLink",

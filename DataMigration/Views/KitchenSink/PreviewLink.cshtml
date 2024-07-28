@@ -1,13 +1,24 @@
-﻿@model MatchedColumnsViewModel
+﻿
+@using Newtonsoft.Json
+
+@model MatchedColumnsViewModel
+
+
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    
+    var json = JsonConvert.SerializeObject(Model.MatchColumnsParms);
+    var dictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+
 }
 
-<form id="linkcolumns">
+<form id="linkcolumns" asp-action="LinkColumns" asp-all-route-data="@dictionary">
 
-
+    <div class="form-group">
+        <input type="submit" value="Submit" class="btn btn-primary" />
+    </div>
 
 </form>
 

@@ -46,6 +46,32 @@ namespace DataMigration.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<JsonResult> LinkColumns(MatchColumnsParms parms)
+        {
+            if (!parms.AllThere)
+            {
+                Response.StatusCode = 404;
+                return new JsonResult(new { responseText = "Insufficient Parameters" });
+
+            }
+            try
+            {
+                var vm = await _kitchensink.GetMatchPreviewVM(parms);
+                return new JsonResult(vm);
+
+            }
+            catch (Exception oe)
+            {
+                Response.StatusCode = 404;
+                return new JsonResult(new { responseText = oe.Message });
+            }
+
+        }
+
+
+
+
         private async Task<SourceDDContext.Models.Column> _getSrcColumn(string tableschema, string tablename, string columnname)
         {
             var dbrecord = await _srcdbcontext.Columns
