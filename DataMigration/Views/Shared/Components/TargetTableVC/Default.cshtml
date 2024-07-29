@@ -65,6 +65,8 @@
             <tr>
                 <th>@Html.DisplayNameFor(c => Model.Columns.FirstOrDefault().ColumnName)</th>
                 <th>@Html.DisplayNameFor(c => Model.Columns.FirstOrDefault().DataType)</th>
+                <th>@Html.DisplayNameFor(c => Model.Columns.FirstOrDefault().SourceTable)</th>
+                <th>@Html.DisplayNameFor(c => Model.Columns.FirstOrDefault().SourceColumn)</th>
                 <th>@Html.DisplayNameFor(c => Model.Columns.FirstOrDefault().NonNulls)</th>
                 <th>@Html.DisplayNameFor(c => Model.Columns.FirstOrDefault().DistinctValues)</th>
             </tr>
@@ -73,11 +75,13 @@
 
         @foreach (var column in Model.Columns)
         {
+            var dClass = column.DistinctValues == null || column.DistinctValues < 2 ? " class=lowvalue" : "";
 
-
-            <tr data-targetcolumn='@JsonSerializer.Serialize(column)'>
+            <tr data-targetcolumn='@JsonSerializer.Serialize(column)' @dClass>
                 <td>@Html.DisplayFor(c => column.ColumnName)</td>
                 <td>@Html.DisplayFor(c => column.DataType)</td>
+                <td class="sourcetable">@Html.DisplayFor(c => column.SourceTable)</td>
+                <td class="sourcecolumn">@Html.DisplayFor(c => column.SourceColumn)</td>
                 <td>@Html.DisplayFor(c => column.NonNulls)</td>
                 <td>@Html.DisplayFor(c => column.DistinctValues)</td>
             </tr>

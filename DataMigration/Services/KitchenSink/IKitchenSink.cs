@@ -7,6 +7,7 @@ namespace DataMigration.Services.KitchenSink
     {
         Task<MatchedColumnsViewModel> GetMatchPreviewVM(MatchColumnsParms parms);
 
+        Task<MatchedColumnsViewModel> LinkColumns(MatchColumnsParms parms);
 
     }
 }

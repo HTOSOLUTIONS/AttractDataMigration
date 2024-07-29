@@ -25,6 +25,11 @@ function processPostedMatch(data) {
     $("[data-sourcecolumn].selected .destinationtable").html(model.targetColumn.tableName);
     $("[data-sourcecolumn].selected .destinationcolumn").html(model.targetColumn.columnName);
 
+    $("[data-targetcolumn].selected .sourcetable").html(model.sourceColumn.tableName);
+    $("[data-targetcolumn].selected .sourcecolumn").html(model.sourceColumn.columnName);
+
+
+
     $("[data-sourcecolumn].selected").data("sourcecolumn", model.sourceColumn);
     $("[data-targetcolumn].selected").data("targetcolumn", model.targetColumn);
 

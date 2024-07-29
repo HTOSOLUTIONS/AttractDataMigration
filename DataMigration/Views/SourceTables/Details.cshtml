@@ -145,8 +145,9 @@
 
                     @foreach (var item in Model.Columns.OrderBy(c => c.ColumnName))
                     {
+                        var dClass = item.DistinctValues == null || item.DistinctValues < 2 ? " class=lowvalue" : "";
 
-                        <tr data-sourcecolumn='@JsonSerializer.Serialize(item)'>
+                        <tr data-sourcecolumn='@JsonSerializer.Serialize(item)' @dClass>
                             @*
 
                     <a asp-controller="SourceColumns" asp-action="Details" asp-route-tablename="@item.TableName" asp-route-tableschema="@item.TableSchema" asp-route-columnname="@item.ColumnName">

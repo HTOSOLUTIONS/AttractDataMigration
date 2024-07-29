@@ -18,7 +18,7 @@ namespace DataMigration.ViewModels
             }
 
         }
-        public virtual List<TargetColumnViewModel> Columns { get; set; }
+        public virtual List<TargetColumnViewModel> Columns { get; set; } = new List<TargetColumnViewModel>();
 
 
     }

@@ -6,8 +6,14 @@
 
 }
 
+.matchers tr.lowvalue {
+    background-color: darkgrey;
+}
+
+
+
 .matchers tr.selected {
-    background-color: darkgray;
+    background-color: darkblue;
     color: white;
 }
 

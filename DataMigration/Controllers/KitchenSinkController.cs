@@ -57,7 +57,7 @@ namespace DataMigration.Controllers
             }
             try
             {
-                var vm = await _kitchensink.GetMatchPreviewVM(parms);
+                var vm = await _kitchensink.LinkColumns(parms);
                 return new JsonResult(vm);
 
             }
@@ -68,8 +68,6 @@ namespace DataMigration.Controllers
             }
 
         }
-
-
 
 
         private async Task<SourceDDContext.Models.Column> _getSrcColumn(string tableschema, string tablename, string columnname)
