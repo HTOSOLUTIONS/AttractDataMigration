@@ -63,8 +63,13 @@ function configsourcecolumns() {
 
     $(".sourcecolumns tr").on("click", function () {
 
-        $(".sourcecolumns .selected").removeClass("selected");
-        $(this).addClass("selected");
+        if ($(this).is(".selected")) {
+            $(this).removeClass("selected");
+        } else {
+            $(".sourcecolumns .selected").removeClass("selected");
+            $(this).addClass("selected");
+        }
+
 
     });
 

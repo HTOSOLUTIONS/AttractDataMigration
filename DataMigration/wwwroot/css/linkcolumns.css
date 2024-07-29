@@ -17,5 +17,7 @@
     color: white;
 }
 
-
+.matchers tr.selected a {
+    color: white !important;
+}
 

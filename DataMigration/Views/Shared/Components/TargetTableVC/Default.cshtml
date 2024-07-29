@@ -8,51 +8,68 @@
 }
 @model TargetTableWithColumnsViewModel
 
+<h4>@Html.DisplayFor(c => Model.TableName)</h4>
 
 @if (Model.ChildPaths != null && Model.ChildPaths.ToList().Count > 0)
 {
-    <div class="hto-rtitle">Child Paths</div>
-    <table class="table">
-        @foreach (var item in Model.ChildPaths)
-        {
-            <tr>
-                <td>
-                    <p>@Html.DisplayFor(c => item.Fullpath, "TablePaths")</p>
-                </td>
-                <td>
-                    <p>@Html.DisplayFor(c => item.PktableName)</p>
-                </td>
-                <td>
-                    <p>@Html.DisplayFor(c => item.FktableName)</p>
-                </td>
-            </tr>
-        }
+    @*
 
-    </table>
+    //To start open:
+        a tag:
+        - aria-expaned="true"
+        - class does not include 'collapsed'
+        referenced item:
+        - include 'show' in the class
+    <div class="left-menu-subhead1 collapsible"><a data-bs-toggle="collapse" href="#childpathspane" aria-expanded="true" aria-controls="childpathspane" style="text-decoration: none;">Child Paths</a></div>
+    <div id="childpathspane" class="panel-collapse collapse show">
+
+
+    *@
+
+
+    <div class="left-menu-subhead1 collapsible"><a data-bs-toggle="collapse" href="#childpathspane" aria-expanded="false" aria-controls="childpathspane" class="collapsed" style="text-decoration: none;">Child Paths</a></div>
+    <div id="childpathspane" class="panel-collapse collapse">
+        <table class="table">
+            @foreach (var item in Model.ChildPaths)
+            {
+                <tr>
+                    <td>
+                        <p>@Html.DisplayFor(c => item.Fullpath, "TablePaths")</p>
+                    </td>
+                    <td>
+                        <p>@Html.DisplayFor(c => item.FktableName)</p>
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+    </div>
 }
 
 @if (Model.ParentPaths != null && Model.ParentPaths.ToList().Count > 0)
 {
-    <div class="hto-rtitle">Parent Paths</div>
-    <table class="table">
+    <div class="left-menu-subhead1 collapsible"><a data-bs-toggle="collapse" href="#parentpathspane" aria-expanded="false" aria-controls="parentpathspane" class="collapsed" style="text-decoration: none;">Parent Paths</a></div>
+    <div id="parentpathspane" class="panel-collapse collapse">
+        <table class="table">
 
-        @foreach (var item in Model.ParentPaths)
-        {
-            <tr>
-                <td>
-                    <p>@Html.DisplayFor(c => item.Fullpath, "TablePaths")</p>
-                </td>
-                <td>
-                    <p>@Html.DisplayFor(c => item.PktableName)</p>
-                </td>
-                <td>
-                    <p>@Html.DisplayFor(c => item.FktableName)</p>
-                </td>
-            </tr>
-        }
+            @foreach (var item in Model.ParentPaths)
+            {
+                <tr>
+                    <td>
+                        <p>@Html.DisplayFor(c => item.Parentpath, "TablePaths")</p>
+                    </td>
+                    <td>
+                        <p>@Html.DisplayFor(c => item.PktableName)</p>
+                    </td>
+                </tr>
+            }
 
 
-    </table>
+        </table>
+
+    </div>
+
 }
 
 
