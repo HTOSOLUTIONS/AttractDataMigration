@@ -1,35 +1,37 @@
-﻿@model IEnumerable<TargetDDContext.Models.Table>
+﻿@model Sakura.AspNetCore.IPagedList<TargetDDContext.Models.Table>
 
 @{
     ViewData["Title"] = "Index";
+    var viewList = Model.Select(c => new TargetTableWithColumnsViewModel(c)).ToList();
 }
 
-<h1>Index</h1>
+<h1>Target Tables</h1>
 
+<pager />
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TableSchema)
+                @Html.DisplayNameFor(model => viewList.FirstOrDefault().TableSchema)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TableName)
+                @Html.DisplayNameFor(model => viewList.FirstOrDefault().TableName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                @Html.DisplayNameFor(model => viewList.FirstOrDefault().Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RowCount)
+                @Html.DisplayNameFor(model => viewList.FirstOrDefault().RowCount)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NeedsMigration)
+                @Html.DisplayNameFor(model => viewList.FirstOrDefault().NeedsMigration)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in viewList) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.TableSchema)

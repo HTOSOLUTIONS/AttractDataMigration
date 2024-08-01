@@ -39,7 +39,7 @@ namespace DataMigration.ViewModels
             {
                 ChildPaths = targetTable.ChildPaths.Select(c => new FamilyPathViewModel(c));
 
-                ChildPathsView = ChildPaths.Select(c => new ChildPathViewModel(c.FktableOwner, c.FktableName, c.ChildPath))
+                ChildPathsView = targetTable.ChildPaths.Select(c => new ChildPathViewModel(c))
                     .GroupBy(c => new {c.ChildPath, c.FktableName }).Select(g => g.First());
             }
             else

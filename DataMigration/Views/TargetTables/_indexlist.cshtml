@@ -1,0 +1,134 @@
+﻿@*
+    @model IEnumerable<MyTrader.Models.Stock>
+
+*@
+
+@addTagHelper *, Sakura.AspNetCore.Mvc.PagedList
+@model Sakura.AspNetCore.IPagedList<Trade>
+<div id="pagerTemplate" data-openfilter="@ViewBag.openFilter" style="display: none;">
+    <pager setting-list-attr-data-totalCount="@Model.TotalCount" 
+           setting-link-attr-data-ajax="true" 
+           setting-link-attr-data-ajax-update="#htxAjaxList" 
+           setting-link-attr-data-ajax-loading="#htoajaxloadspinner" 
+           setting-link-attr-data-ajax-success="movePagers" />
+</div>
+
+
+
+<div class="container-fluid">
+    <div class="row htx-ilist-col-header">
+        <div class="col-sm-1">
+            @Html.DisplayNameFor(model => model.FirstOrDefault().TradeID)
+        </div>
+        <div class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstOrDefault().OpenDateTime)
+        </div>
+        <div class="col-sm-1">
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Symbol)
+        </div>
+        <div class="col-sm-1">
+            @Html.DisplayNameFor(model => model.FirstOrDefault().OptionType)
+        </div>
+        <div class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Expiry)
+        </div>
+        <div class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstOrDefault().ProfitLoss)
+        </div>
+        <div class="col-sm-1">
+            @Html.DisplayNameFor(model => model.FirstOrDefault().MaxPosition)
+        </div>
+        <div class="col-sm-1">
+            Pct
+        </div>
+        <div class="col-sm-1">
+            Open and Close Prices
+        </div>
+
+
+    </div>
+    @foreach (var item in Model)
+    {
+<div class="row htx-ilist-row">
+    @{
+        HTORowCtrlList rowctrls = new HTORowCtrlList()
+        {
+            DefaultController = "Trades",
+            ID = item.TradeID,
+            Controls = new List<HTORowControl>() {
+                        new HTORowDetails(),
+                        new HTORowEdit()
+                    }
+        };
+        @await Component.InvokeAsync(nameof(HTORowControlGroup), new { ctrlgroup = rowctrls })
+        @*
+
+        *@
+
+        var profitclass = item.ProfitLoss > 0 ? "profit-fmt" : (item.ProfitLoss < 0 ? "loss-fmt" : "");
+
+    }
+
+    <div class="col-sm-1">
+        @Html.DisplayFor(model => item.TradeType)
+        @if (item.MissFire)
+        {
+            @Html.Raw(" ")<span class="glyphicons glyphicons-warning-sign"></span>
+        }
+    </div>
+    <div class="col-sm-2">
+        @Html.DisplayFor(model => item.OpenDateTime) <br />
+        @Html.DisplayFor(model => item.CloseDateTime)
+    </div>
+    <div class="col-sm-1">
+        @Html.DisplayFor(model => item.Symbol)
+    </div>
+    <div class="col-sm-1">
+        @Html.DisplayFor(model => item.OptionType)
+    </div>
+    <div class="col-sm-2">
+        @Html.DisplayFor(model => item.Expiry) @Html.DisplayFor(model => item.Strike)
+    </div>
+    <div class="col-sm-2 @profitclass">
+        @Html.DisplayFor(model => item.ProfitLoss)
+    </div>
+    <div class="col-sm-1">
+        @Html.DisplayFor(model => item.MaxPosition)
+    </div>
+    <div class="col-sm-1 @profitclass">
+        @Html.DisplayFor(model => item.ProfitPctOfAccount) <br />
+        @Html.DisplayFor(model => item.ProfitPct)
+    </div>
+    <div class="col-sm-1">
+        @Html.DisplayFor(model => item.AvgOpenPrice) <br />
+        @Html.DisplayFor(model => item.AvgClosePrice)
+    </div>
+
+    @if (!string.IsNullOrEmpty(item.NotesText))
+    {
+        <div class="col-sm-12">
+            @Html.DisplayFor(c => item.Notes, "Notes")
+
+        </div>
+    }
+
+
+    @if (item.TradeAlert != null)
+    {
+
+        <div class="col-sm-9">
+            @if (!string.IsNullOrEmpty(item.TradeAlert.Notes))
+            {
+                @Html.DisplayFor(c => item.TradeAlert.Notes, "Notes")
+            }
+            @Html.DisplayFor(model => item.TradeAlert.AlertDt) @Html.DisplayFor(model => item.TradeAlert.Message)
+        </div>
+        <div class="col-sm-3">
+            @Html.DisplayFor(c => item.TradeAlert, "TradeAlertMiniDashboard")
+        </div>
+    }
+
+</div>
+    }
+
+</div>

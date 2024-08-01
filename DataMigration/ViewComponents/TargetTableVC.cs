@@ -21,11 +21,14 @@ namespace DataMigration.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync(string tablename)
         {
 
+            //2024.08.01 - Include ChildPaths -> ChildTable to provide a count of records
+
             var targetTable = await _dbcontext.Tables
                 .Include(c => c.Columns)
                 .ThenInclude(m => m.ColumnSources)
                 .Include(c => c.ParentPaths)
                 .Include(c => c.ChildPaths)
+                .ThenInclude(cp => cp.ChildTable)
                 .Where(c => c.TableName == tablename)
                 .FirstOrDefaultAsync();
 

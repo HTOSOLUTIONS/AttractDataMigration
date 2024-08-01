@@ -1,12 +1,13 @@
 ﻿using DataMigration.Constants;
 using DataMigration.Data;
 using DataMigration.Models;
-using DataMigration.Services.HTOTools.Implementations;
 using DataMigration.ViewModels;
 using HTOTools;
+using HTOTools.Implementations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Sakura.AspNetCore;
 using TargetDDContext.Data;
 using TargetDDContext.Models;
 
@@ -25,10 +26,12 @@ namespace DataMigration.Controllers
 
         [ClearHistory(Order = 1)]
         [AddHistory("Target Tables",ClassNames.TargetTable, Order = 2)]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
+            var pageSize = 10;
+            int pageNumber = (page ?? 1);
 
-            var returnlist = await _dbcontext.Tables.ToListAsync();
+            var returnlist = await _dbcontext.Tables.Include(c => c.Columns).ToPagedListAsync(pageSize,pageNumber);
 
 
 
