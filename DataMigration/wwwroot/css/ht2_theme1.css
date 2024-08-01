@@ -1713,11 +1713,15 @@ label.hto-form-radio:first-of-type {
     top: unset;
     border-radius: 0 !important;
     margin: unset;
+    max-height: 20px;
+    min-width: 20px;
 }
 
 span.hto-form-radio {
-    margin: auto 0;
+    margin: 0 0;
     padding-right: 2em;
+    vertical-align: top;
+    display: inline-block;
 }
 
 

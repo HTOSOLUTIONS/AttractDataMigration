@@ -37,11 +37,14 @@ namespace DataMigration.ViewModels
 
             if (targetTable.ChildPaths != null)
             {
-                ChildPaths = targetTable.ChildPaths;
+                ChildPaths = targetTable.ChildPaths.Select(c => new FamilyPathViewModel(c));
+
+                ChildPathsView = ChildPaths.Select(c => new ChildPathViewModel(c.FktableOwner, c.FktableName, c.ChildPath))
+                    .GroupBy(c => new {c.ChildPath, c.FktableName }).Select(g => g.First());
             }
             else
             {
-                ChildPaths = new List<FamilyPath>();
+                ChildPaths = new List<FamilyPathViewModel>();
             }
 
 
@@ -95,8 +98,9 @@ namespace DataMigration.ViewModels
 
 
         [JsonIgnore]
-        public IEnumerable<TargetDDContext.Models.FamilyPath> ChildPaths { get; set; }
+        public IEnumerable<FamilyPathViewModel> ChildPaths { get; set; }
 
+        public IEnumerable<ChildPathViewModel> ChildPathsView { get; set; }
 
 
     }

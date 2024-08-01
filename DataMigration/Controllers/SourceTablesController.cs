@@ -123,6 +123,7 @@ namespace DataMigration.Controllers
         {
             var dbrecord = await _dbcontext.Tables
                 .Include(m => m.Columns)
+                .ThenInclude(c => c.ColumnTargets)
                 .FirstOrDefaultAsync(m => m.TableSchema == tableschema && m.TableName == tablename);
 
             return dbrecord;

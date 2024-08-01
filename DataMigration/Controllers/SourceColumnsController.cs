@@ -103,8 +103,8 @@ namespace DataMigration.Controllers
                 {
                     dbrecord.Description = viewmodel.Description;
                     dbrecord.NeedsMigration = viewmodel.NeedsMigration;
-                    dbrecord.DestinationTable = viewmodel.DestinationTable;
-                    dbrecord.DestinationColumn = viewmodel.DestinationColumn;
+                    //dbrecord.DestinationTable = viewmodel.DestinationTable;
+                    //dbrecord.DestinationColumn = viewmodel.DestinationColumn;
                     dbrecord.NeedsFollowUp = viewmodel.NeedsFollowUp;
                     dbrecord.Notes = viewmodel.Notes;
 

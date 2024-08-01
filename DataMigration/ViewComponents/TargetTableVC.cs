@@ -23,6 +23,7 @@ namespace DataMigration.ViewComponents
 
             var targetTable = await _dbcontext.Tables
                 .Include(c => c.Columns)
+                .ThenInclude(m => m.ColumnSources)
                 .Include(c => c.ParentPaths)
                 .Include(c => c.ChildPaths)
                 .Where(c => c.TableName == tablename)

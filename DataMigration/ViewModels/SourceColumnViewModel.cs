@@ -1,6 +1,9 @@
 ﻿using HTOTools;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Identity.Client;
 using SourceDDContext.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace DataMigration.ViewModels
 {
@@ -104,11 +107,53 @@ namespace DataMigration.ViewModels
         public virtual SourceTableViewModel SourceTable { get; set; }
 
 
+        [Display(Name = "Target Column(s)")]
+        public ICollection<ColumnTargetViewModel> ColumnTargets {
+            
+            get
+            {
+                if (_sourceColumn?.ColumnTargets != null && _sourceColumn.ColumnTargets.Count > 0)
+                {
+                    return _sourceColumn.ColumnTargets.Select(c => new ColumnTargetViewModel(c)).ToList();
+                } else
+                {
+                    return new List<ColumnTargetViewModel>();
+                }
+            }
+        
+        }
+
+
+        [Display(Name = "Target Column(s)")]
+        public string ColumnTargetsDisp
+        {
+            get
+            {
+                var disp = "";
+                if (ColumnTargets != null && ColumnTargets.Count > 0)
+                {
+                    var list = ColumnTargets.Select(c => new { target = c.TargetTable + '.' + c.TargetColumn }).ToList();
+                    disp = String.Join(",", list.Select(c => c.target));
+                }
+
+
+                return disp;
+
+            }
+
+        }
+
+
         public IDictionary<string,string> RouteValues { get => _routeValues; }
 
 
         public HTORowCtrlList RowCtrls { get; set; }
 
+
+        public string TSQLName { get {
+                return "[" + TableName + "].[" + ColumnName + "]";
+            } 
+        }
 
 
     }

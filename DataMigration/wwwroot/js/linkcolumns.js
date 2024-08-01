@@ -15,6 +15,13 @@ $(document).ready(function () {
     });
 
 
+    $("#targettablename").on('keypress', function (e) {
+        if (e.which == 13) {
+            loadTargetTable($("#targettablename").val());
+        }
+    });
+
+
 });
 
 
@@ -22,12 +29,16 @@ function processPostedMatch(data) {
 
     var model = JSON.parse(data);
 
-    $("[data-sourcecolumn].selected .destinationtable").html(model.targetColumn.tableName);
-    $("[data-sourcecolumn].selected .destinationcolumn").html(model.targetColumn.columnName);
+    //$("[data-sourcecolumn].selected .destinationtable").html(model.targetColumn.tableName);
+    //$("[data-sourcecolumn].selected .destinationcolumn").html(model.targetColumn.columnName);
 
-    $("[data-targetcolumn].selected .sourcetable").html(model.sourceColumn.tableName);
-    $("[data-targetcolumn].selected .sourcecolumn").html(model.sourceColumn.columnName);
+    $("[data-sourcecolumn].selected .columntargets").html(model.sourceColumn.columnTargetsDisp);
 
+
+    //$("[data-targetcolumn].selected .sourcetable").html(model.sourceColumn.tableName);
+    //$("[data-targetcolumn].selected .sourcecolumn").html(model.sourceColumn.columnName);
+
+    $("[data-targetcolumn].selected .columntargets").html(model.targetColumn.columnSourcesDisp);
 
 
     $("[data-sourcecolumn].selected").data("sourcecolumn", model.sourceColumn);
@@ -79,11 +90,18 @@ function configsourcecolumns() {
 function configtargetcolumns() {
 
     $(".targetcolumns tr").on("click", function () {
+        if ($(this).is(".selected")) {
+            $(this).removeClass("selected");
 
-        $(".targetcolumns .selected").removeClass("selected");
-        $(this).addClass("selected");
+        } else {
+            $(".targetcolumns .selected").removeClass("selected");
+            $(this).addClass("selected");
+        }
 
     });
+
+    var targetTable = $("[data-targettablename]").data("targettablename");
+    $("#targettablename").val(targetTable);
 
 
 }
@@ -95,12 +113,12 @@ function openpreview() {
     var tgtcolumn = $("[data-targetcolumn].selected").data("targetcolumn");
     var parms = {
 
-        SrcTableSchema: srccolumn.TableSchema,
-        SrcTableName: srccolumn.TableName,
-        SrcColumnName: srccolumn.ColumnName,
-        TgtTableSchema: tgtcolumn.TableSchema,
-        TgtTableName: tgtcolumn.TableName,
-        TgtColumnName: tgtcolumn.ColumnName
+        SrcTableSchema: srccolumn.tableSchema,
+        SrcTableName: srccolumn.tableName,
+        SrcColumnName: srccolumn.columnName,
+        TgtTableSchema: tgtcolumn.tableSchema,
+        TgtTableName: tgtcolumn.tableName,
+        TgtColumnName: tgtcolumn.columnName
 
     };
 

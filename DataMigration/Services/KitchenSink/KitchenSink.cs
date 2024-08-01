@@ -56,22 +56,64 @@ namespace DataMigration.Services.KitchenSink
             }
 
             //Clear out any existing targets
-            var existTargets = await _tgtdbcontext.Columns.Where(c => c.SourceTable == parms.SrcTableName && c.SourceColumn == parms.SrcColumnName).ToListAsync();
-            foreach (var item in existTargets)
-            {
-                _tgtdbcontext.Update(item);
-                item.SourceColumn = null;
-                item.SourceTable = null;
-            }
+            //No longer needed...a SourceColumn can have multiple targets
+            //var existTargets = await _tgtdbcontext.Columns.Where(c => c.SourceTable == parms.SrcTableName && c.SourceColumn == parms.SrcColumnName).ToListAsync();
+            //foreach (var item in existTargets)
+            //{
+            //    _tgtdbcontext.Update(item);
+            //    item.SourceColumn = null;
+            //    item.SourceTable = null;
+            //}
 
             //Update the Source Column
-            _srcdbcontext.Update(srcc);
-            srcc.DestinationTable = parms.TgtTableName;
-            srcc.DestinationColumn = parms.TgtColumnName;
+            var colTgtExists = srcc.ColumnTargets.Any(x => x.SourceSchema == parms.SrcTableSchema 
+                && x.SourceColumn == parms.SrcColumnName
+                && x.SourceTable == parms.SrcTableName
+                && x.TargetColumn == parms.TgtColumnName
+                && x.TargetTable == parms.TgtTableName);
 
-            _tgtdbcontext.Update(tgtc);
-            tgtc.SourceTable = parms.SrcTableName;
-            tgtc.SourceColumn = parms.SrcColumnName;
+
+            if (!colTgtExists) {
+
+                _srcdbcontext.ColumnTargets.Add(new SourceDDContext.Models.ColumnTarget()
+                {
+                    SourceSchema = parms.SrcTableSchema
+                    , SourceColumn = parms.SrcColumnName
+                    , SourceTable = parms.SrcTableName
+                    , TargetSchema= parms.TgtTableSchema
+                    , TargetColumn = parms.TgtColumnName
+                    , TargetTable = parms.TgtTableName
+                });
+
+            }
+
+            var colSrcExists = tgtc.ColumnSources.Any(x => x.TargetSchema == parms.TgtTableSchema
+                && x.SourceColumn == parms.SrcColumnName
+                && x.SourceTable == parms.SrcTableName
+                && x.TargetColumn == parms.TgtColumnName
+                && x.TargetTable == parms.TgtTableName);
+
+
+            if (!colSrcExists)
+            {
+
+                _tgtdbcontext.ColumnSources.Add(new TargetDDContext.Models.ColumnSource()
+                {
+                    SourceSchema = parms.SrcTableSchema
+                    ,SourceColumn = parms.SrcColumnName
+                    ,SourceTable = parms.SrcTableName
+                    ,TargetSchema = parms.TgtTableSchema
+                    ,TargetColumn = parms.TgtColumnName
+                    ,TargetTable = parms.TgtTableName
+                });
+
+            }
+
+
+            //Update the Target Column
+            //_tgtdbcontext.Update(tgtc);
+            //tgtc.SourceTable = parms.SrcTableName;
+            //tgtc.SourceColumn = parms.SrcColumnName;
 
             await _srcdbcontext.SaveChangesAsync();
             await _tgtdbcontext.SaveChangesAsync();
@@ -91,6 +133,7 @@ namespace DataMigration.Services.KitchenSink
         {
             var dbrecord = await _srcdbcontext.Columns
                 .Include(m => m.Table)
+                .Include(m => m.ColumnTargets)
                 .FirstOrDefaultAsync(m => m.TableSchema == tableschema && m.TableName == tablename && m.ColumnName == columnname);
 
             return dbrecord;
@@ -101,6 +144,7 @@ namespace DataMigration.Services.KitchenSink
         {
             var dbrecord = await _tgtdbcontext.Columns
                 .Include(m => m.Table)
+                .Include(m => m.ColumnSources)
                 .FirstOrDefaultAsync(m => m.TableSchema == tableschema && m.TableName == tablename && m.ColumnName == columnname);
 
             return dbrecord;

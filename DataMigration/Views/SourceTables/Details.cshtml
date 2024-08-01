@@ -8,7 +8,10 @@
     ViewData["Title"] = "Source Table Details";
 
     Model.RowCtrls.Controls.Add(new HTORowEdit());
-
+    var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            };
 
 }
 
@@ -35,13 +38,24 @@
 
         var previewlinkmoalmgr = new htoModalMgr(previewlinkmodalconfig);
 
-
-
-
-
-
-
     </script>
+    <style>
+
+        div.sqlstatement {
+            border: 1px solid grey;
+            max-height: 100px;
+            overflow-y: scroll;
+            max-width: 100%;
+            width: 100%;
+        }
+
+        td.columnsources {
+            max-width: 50px;
+            word-wrap: break-word;
+            font-size: .8em;
+        }
+
+    </style>
 
 
 }
@@ -54,12 +68,15 @@
 
 <button id="previewlinkbtn">Preview Link</button>
 
+<div class="hto-rtitle">Source Table:  @Html.DisplayFor(model => model.TableName)</div>
+
+
+
 <div class="container-fluid">
 
     <div class="row">
 
         <div class="col">
-            <div class="hto-rtitle">Source Table</div>
             <div class="hto-details">
                 <dl class="row">
                     <dt class="col-sm-2">
@@ -67,12 +84,6 @@
                     </dt>
                     <dd class="col-sm-10">
                         @Html.DisplayFor(model => model.TableSchema)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.TableName)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.TableName)
                     </dd>
                     <dt class="col-sm-2" data-destinationtable="@Model.DestinationTable">
                         @Html.DisplayNameFor(model => model.DestinationTable)
@@ -97,19 +108,50 @@
 
         </div>
         <div class="col">
-            @*
-            @if (!string.IsNullOrEmpty(Model?.DestinationTable))
-            {
-            @await Component.InvokeAsync(nameof(TaregetTablesBranchesVC), new { tablename = Model.DestinationTable })
-
-
-            }
-
-            *@
+            <div class="hto-details">
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.RowCount)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.RowCount)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.ColCount)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.ColCount)
+                    </dd>
+                </dl>
+            </div>
 
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="hto-panel">
+                <a data-bs-toggle="collapse" href="#sourcetablesql" aria-expanded="false" aria-controls="sourcetablesql" class="collapsed">SQL Distinct Columns</a>
+            </div>
+            <div id="sourcetablesql" class="panel-collapse collapse">
+                <div spellcheck="false" class="sqlstatement">
+                    @Html.Raw(Model.TSQLSelectDistinctColumns)
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+        </div>
+        <div class="col-sm-6">
+            <input type="text" id="targettablename" value="@Model.DestinationTable" style="max-width: 100%; width: 100%;" />
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-sm-6">
@@ -126,11 +168,17 @@
                                 @Html.DisplayNameFor(model => Model.Columns.FirstOrDefault().DataType)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => Model.Columns.FirstOrDefault().DestinationTable)
+                                @Html.DisplayNameFor(model => Model.Columns.FirstOrDefault().ColumnTargets)
                             </th>
-                            <th>
-                                @Html.DisplayNameFor(model => Model.Columns.FirstOrDefault().DestinationColumn)
-                            </th>
+                            @*
+                        <th>
+                        @Html.DisplayNameFor(model => Model.Columns.FirstOrDefault().DestinationTable)
+                        </th>
+                        <th>
+                        @Html.DisplayNameFor(model => Model.Columns.FirstOrDefault().DestinationColumn)
+                        </th>
+
+                            *@
                             <th>
                                 @Html.DisplayNameFor(model => Model.Columns.FirstOrDefault().NonNulls)
                             </th>
@@ -147,7 +195,7 @@
                     {
                         var dClass = item.DistinctValues == null || item.DistinctValues < 2 ? " class=lowvalue" : "";
 
-                        <tr data-sourcecolumn='@JsonSerializer.Serialize(item)' @dClass>
+                        <tr data-sourcecolumn='@JsonSerializer.Serialize(item, options)' @dClass>
                             @*
 
                     <a asp-controller="SourceColumns" asp-action="Details" asp-route-tablename="@item.TableName" asp-route-tableschema="@item.TableSchema" asp-route-columnname="@item.ColumnName">
@@ -167,16 +215,23 @@
                                 </a>
                             </td>
                             <td>@Html.DisplayFor(c => item.DataType)</td>
-                            <td class="destinationtable">@Html.DisplayFor(c => item.DestinationTable)</td>
-                            <td class="destinationcolumn">@Html.DisplayFor(c => item.DestinationColumn)</td>
+                            <td class="columntargets">
+                                @Html.DisplayFor(c => item.ColumnTargets, "ColumnTargets")
+                            </td>
+                            @*
+                    <td class="destinationtable">@Html.DisplayFor(c => item.DestinationTable)</td>
+                    <td class="destinationcolumn">@Html.DisplayFor(c => item.DestinationColumn)</td>
+
+                            *@
                             <td>@Html.DisplayFor(c => item.NonNulls)</td>
                             <td>@Html.DisplayFor(c => item.DistinctValues)</td>
                             <td>
-                                @if (item.NeedsFollowUp != null)
+                                @if (item.NeedsFollowUp == true)
                                 {
-                                    @Html.DisplayFor(c => item.NeedsFollowUp)
+                                    <i class="fas fa-check-square" style="font-size: 1.5em;"></i>
 
-                                }
+                                } 
+
                             </td>
 
                         </tr>

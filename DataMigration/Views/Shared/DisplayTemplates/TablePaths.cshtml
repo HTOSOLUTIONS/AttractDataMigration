@@ -6,14 +6,21 @@
 @{
 
     var displayString = "";
-    var links = new List<string>();
-    var pathparts = Model.Split("~");
-    @foreach (var part in pathparts)
+    if (!string.IsNullOrEmpty(Model))
     {
-        links.Add("<a href=javascript:void(0) class='pathpart'>" + part + "</a>");
-    }
+        var links = new List<string>();
+        var pathparts = Model.Split("~");
+        @foreach (var part in pathparts)
+        {
+            links.Add("<a href=javascript:void(0) class='pathpart'>" + part + "</a>");
+        }
+        if (links.Count > 0)
+        {
+            displayString = string.Join("~", links);
 
-    displayString = string.Join("~",links);
+        }
+
+    }
 
 
 }

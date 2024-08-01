@@ -53,16 +53,19 @@
                             <booleanyesnonull asp-for="NeedsMigration" current-value="@Model.NeedsMigration"></booleanyesnonull>
                             <span asp-validation-for="NeedsMigration" class="text-danger"></span>
                         </div>
+                        @*
                         <div class="form-group">
-                            <label asp-for="DestinationTable" class="control-label"></label>
-                            <input asp-for="DestinationTable" class="form-control" />
-                            <span asp-validation-for="DestinationTable" class="text-danger"></span>
+                        <label asp-for="DestinationTable" class="control-label"></label>
+                        <input asp-for="DestinationTable" class="form-control" />
+                        <span asp-validation-for="DestinationTable" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="DestinationColumn" class="control-label"></label>
-                            <input asp-for="DestinationColumn" class="form-control" />
-                            <span asp-validation-for="DestinationColumn" class="text-danger"></span>
+                        <label asp-for="DestinationColumn" class="control-label"></label>
+                        <input asp-for="DestinationColumn" class="form-control" />
+                        <span asp-validation-for="DestinationColumn" class="text-danger"></span>
                         </div>
+
+                        *@
                         <div class="form-group">
                             <label asp-for="Description" class="control-label"></label>
                             <textarea asp-for="Description" class="form-control" rows="10"></textarea>

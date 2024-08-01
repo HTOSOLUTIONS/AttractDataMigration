@@ -96,8 +96,56 @@ namespace DataMigration.ViewModels
         public IDictionary<string, string> RouteValues { get => _routeValues; }
 
 
+        [Display(Name = "Source Column(s)")]
+        public ICollection<ColumnSourceViewModel> ColumnSources
+        {
+
+            get
+            {
+                if (_targetColumn?.ColumnSources != null && _targetColumn?.ColumnSources.Count > 0)
+                {
+                    return _targetColumn.ColumnSources.Select(c => new ColumnSourceViewModel(c)).ToList();
+                }
+                else
+                {
+                    return new List<ColumnSourceViewModel>();
+                }
+            }
+
+        }
+
+
+        [Display(Name = "Source Column(s)")]
+        public string ColumnSourcesDisp
+        {
+            get
+            {
+                var disp = "";
+                if (ColumnSources != null && ColumnSources.Count > 0)
+                {
+                    var list = ColumnSources.Select(c => new { target = c.SourceTable + '.' + c.SourceColumn }).ToList();
+                    disp = String.Join(",", list.Select(c => c.target));
+                }
+
+
+                return disp;
+
+            }
+
+        }
+
+
+
+
         public HTORowCtrlList RowCtrls { get; set; }
 
+        public string TSQLName
+        {
+            get
+            {
+                return "[" + TableName + "].[" + ColumnName + "]";
+            }
+        }
 
 
 

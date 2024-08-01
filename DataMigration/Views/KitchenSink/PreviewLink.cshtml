@@ -49,17 +49,12 @@
                         @Html.DisplayFor(model => model.SourceColumn.ColumnName)
                     </dd>
                     <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.SourceColumn.DestinationTable)
+                        @Html.DisplayNameFor(model => model.SourceColumn.ColumnTargets)
                     </dt>
                     <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.SourceColumn.DestinationTable)
+                        @Html.DisplayFor(model => model.SourceColumn.ColumnTargets, "ColumnTargets")
                     </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.SourceColumn.DestinationColumn)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.SourceColumn.DestinationColumn)
-                    </dd>
+
 
                 </dl>
             </div>
@@ -89,16 +84,10 @@
                         @Html.DisplayFor(model => model.TargetColumn.ColumnName)
                     </dd>
                     <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.TargetColumn.SourceTable)
+                        @Html.DisplayNameFor(model => model.TargetColumn.ColumnSources)
                     </dt>
                     <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.TargetColumn.SourceTable)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.TargetColumn.SourceColumn)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.TargetColumn.SourceColumn)
+                        @Html.DisplayFor(model => model.TargetColumn.ColumnSources, "ColumnSources")
                     </dd>
 
                 </dl>
