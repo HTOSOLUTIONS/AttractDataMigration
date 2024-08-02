@@ -1,25 +1,13 @@
-﻿@*
-    @model IEnumerable<MyTrader.Models.Stock>
-
-*@
-
-@addTagHelper *, Sakura.AspNetCore.Mvc.PagedList
-@model Sakura.AspNetCore.IPagedList<TargetDDContext.Models.Table>
+﻿@model Sakura.AspNetCore.IPagedList<TargetDDContext.Models.Table>
 
 @{
+    ViewData["Title"] = "Index";
     var viewList = Model.Select(c => new TargetTableWithColumnsViewModel(c)).ToList();
 }
 
+<h1>Target Tables</h1>
 
-<div id="pagerTemplate" data-openfilter="@ViewBag.openFilter" style="display: none;">
-    <pager setting-list-attr-data-totalCount="@Model.TotalCount" 
-           setting-link-attr-data-ajax="true" 
-           setting-link-attr-data-ajax-update="#htxAjaxList" 
-           setting-link-attr-data-ajax-loading="#htoajaxloadspinner" 
-           setting-link-attr-data-ajax-success="movePagers" />
-</div>
-
-
+<pager />
 
 <table class="table">
     <thead>
@@ -43,25 +31,24 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in viewList)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TableSchema)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TableName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RowCount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NeedsMigration)
-                </td>
-                <td>
+@foreach (var item in viewList) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TableSchema)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TableName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RowCount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NeedsMigration)
+            </td>
+            <td>
                     <a asp-action="Details" asp-route-tableschema="@item?.TableSchema" asp-route-tablename="@item?.TableName">Details</a> |
                     <a asp-action="Edit" asp-route-tableschema="@item?.TableSchema" asp-route-tablename="@item?.TableName">Edit</a> |
                     @*
@@ -70,8 +57,8 @@
                 <a asp-action="Delete" asp-route-id="@item.MigrationHistoryId">Delete</a>
 
                 *@
-                </td>
-            </tr>
-        }
+            </td>
+        </tr>
+}
     </tbody>
 </table>

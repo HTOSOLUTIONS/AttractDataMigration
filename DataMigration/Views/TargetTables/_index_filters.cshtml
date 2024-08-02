@@ -3,13 +3,10 @@
 *@
 @{
 
-    var _fromDate = ViewBag.FromDate != null ? ViewBag.FromDate.ToString("yyyy-MM-dd") : null;
-    var _toDate = ViewBag.ToDate != null ? ViewBag.ToDate.ToString("yyyy-MM-dd") : null;
-
 
 }
 
-@model MyTrader.Models.ModelFilters.TradesFilter
+@model DataMigration.ModelFilters.TargetTablesFilter
 
 <form asp-action="@ViewData["listaction"]" id="filterForm" class="form-horizontal" data-ajax="true" data-ajax-method="post" data-ajax-update="#htxAjaxList" data-ajax-success="movePagers">
 
@@ -21,43 +18,11 @@
                 <div class="form-group">
                 </div>
                 <div class="form-group">
-                    <label class="control-label" for="Symbol">Symbol:</label>
+                    <label class="control-label" for="Symbol">Table:</label>
                     <div>
-                        <input asp-for="Symbol" type="text" value="@ViewBag.Symbol" />
+                        <input asp-for="TableName" type="text" value="@ViewBag.TableName" />
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label" for="TradeType">Type:</label>
-                    <div>
-                        <select class="form-control" asp-items="ViewBag.SelectTradeType" asp-for="TradeType"></select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="OptionType">Option Type:</label>
-                    <div>
-                        <select class="form-control" asp-items="ViewBag.SelectOptionType" asp-for="OptionType"></select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label" for="FromDate">From date:</label>
-                    <div>
-                        <input class="form-control" type="date" asp-for="FromDate" value="@_fromDate" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="ToDate">Through date:</label>
-                    <div>
-                        <input class="form-control" type="date" asp-for="ToDate" value="@_toDate" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="status">Misfires:</label>
-                    <div>
-                        <booleanyesnonull asp-for="IncludeMisfires" current-value="@ViewBag.IncludeMisfires" null-label="Not Filtered"></booleanyesnonull>
-                    </div>
-                </div>
-
 
                 <input type="hidden" name="fromForm" id="fromForm" value="true" />
 

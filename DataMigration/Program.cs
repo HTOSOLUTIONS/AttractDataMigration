@@ -5,6 +5,9 @@ using TargetDDContext.Data;
 using SourceDDContext.Data;
 using Sakura.AspNetCore.Mvc;
 using DataMigration.Services.KitchenSink;
+using HTOTools;
+using HTOTools.UserHistoryManager;
+using DataMigration.Services.HTOTools.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +43,9 @@ builder.Services.AddBootstrapPagerGenerator(options =>
 });
 
 builder.Services.AddTransient<IKitchenSink, KitchenSink>();
+builder.Services.AddTransient<IIndexFilterManager, IndexFilterManager>();
+
+builder.Services.AddTransient<IUserHistoryManager, MTUserHistoryManager>();
 
 var app = builder.Build();
 

@@ -1,64 +1,62 @@
-﻿@model Sakura.AspNetCore.IPagedList<TargetDDContext.Models.Table>
+﻿
+@addTagHelper *, Sakura.AspNetCore.Mvc.PagedList
+@model Sakura.AspNetCore.IPagedList<TargetDDContext.Models.Table>
+
 
 @{
-    ViewData["Title"] = "Index";
-    var viewList = Model.Select(c => new TargetTableWithColumnsViewModel(c)).ToList();
+    ViewData["Title"] = "Target Tables";
+    ViewData["CountTitle"] = "Target Tables";
+    ViewData["Icon"] = "glyphicons-message-full";
 }
 
-<h1>Target Tables</h1>
+@section Scripts {
 
-<pager />
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => viewList.FirstOrDefault().TableSchema)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => viewList.FirstOrDefault().TableName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => viewList.FirstOrDefault().Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => viewList.FirstOrDefault().RowCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => viewList.FirstOrDefault().NeedsMigration)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in viewList) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TableSchema)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TableName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RowCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NeedsMigration)
-            </td>
-            <td>
-                    <a asp-action="Details" asp-route-tableschema="@item?.TableSchema" asp-route-tablename="@item?.TableName">Details</a> |
-                    <a asp-action="Edit" asp-route-tableschema="@item?.TableSchema" asp-route-tablename="@item?.TableName">Edit</a> |
-                    @*
-                <a asp-action="Edit" asp-route-id="@item.MigrationHistoryId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MigrationHistoryId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MigrationHistoryId">Delete</a>
+    <script src="~/js/hto_pagedlist.js" asp-append-version="true"></script>
 
-                *@
-            </td>
-        </tr>
+    <script>
+
+        $(document).ready(function () {
+
+            moveIListHeader();
+            fixbelowtopnav_wrapperFloating();
+            var pageNum = $(".htx-ilist-pagenumber").data("pagenumber");
+
+            $("#htxAjaxList").load("/TargetTables/@ViewData["listaction"]?page=" + pageNum, function () { movePagers(); });
+
+        });
+
+
+    </script>
+
+
 }
-    </tbody>
-</table>
+
+@*
+    This shared view component has the page elements needed as a container for htx-ilist-pagectrl.  The reason htx-ilist-pagectrl is 
+    a separate element in each cshtml file is because it allows custom buttons and links similar to the toggleFilter shown below.
+*@
+@await Html.PartialAsync("_htx_ilist_header_nomodel")
+
+<div class="htx-ilist-pagectrl" style="display: none;">
+    <div class="htx-ilist-pager-parent">
+    </div>
+    <span class="glyphicons glyphicons-disk-export" onclick="exportList()"></span>
+    <span class="glyphicons glyphicons-filter" onclick="toggleFilter()"></span>
+</div>
+
+
+
+<div class="htx-ilist-wrapper">
+    <div class="htx-ilist-filtercol right">
+        @await Html.PartialAsync("_index_filters", ViewData)
+    </div>
+    <div class="htx-ilist-main">
+        <div id="htxAjaxList">
+        </div>
+    </div>
+</div>
+

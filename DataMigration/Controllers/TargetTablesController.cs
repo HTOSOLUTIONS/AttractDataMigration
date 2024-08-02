@@ -1,5 +1,6 @@
 ﻿using DataMigration.Constants;
 using DataMigration.Data;
+using DataMigration.ModelFilters;
 using DataMigration.Models;
 using DataMigration.ViewModels;
 using HTOTools;
@@ -17,26 +18,62 @@ namespace DataMigration.Controllers
     public class TargetTablesController : Controller
     {
         private readonly TargetDDDbContext _dbcontext;
+        private IIndexFilterManager _filtermanager;
 
-        public TargetTablesController(TargetDDDbContext dbcontext) { 
+        public TargetTablesController(TargetDDDbContext dbcontext,
+            IIndexFilterManager filtermanager) { 
 
             _dbcontext = dbcontext;
+            _filtermanager = filtermanager;
         }
 
 
         [ClearHistory(Order = 1)]
         [AddHistory("Target Tables",ClassNames.TargetTable, Order = 2)]
-        public async Task<IActionResult> Index(int? page)
+        public async Task<IActionResult> Index(int? page, TargetTablesFilter indexFilter)
         {
-            var pageSize = 10;
+            indexFilter = _filtermanager.ProcFilter<TargetTablesFilter>(indexFilter, this);
+
+            ViewData["Title"] = "Target Tables";
+            ViewData["listaction"] = "indexlist";
+
+
+            return View();
+
+
+        }
+
+
+        /// <summary>
+        /// The third parameter in the AddHistory is useReferrerAction.  This flag makes sure that 
+        /// return links created from this Action will go to Index, not indexlist.
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="indexFilter"></param>
+        /// <returns></returns>
+        [ClearHistory(Order = 1)]
+        [AddHistory("Target Tables", ClassNames.TargetTable, 1, Order = 2)]
+        public async Task<IActionResult> indexlist(int? page, TargetTablesFilter indexFilter)
+        {
+            try
+            {
+                indexFilter = _filtermanager.ProcFilter<TargetTablesFilter>(indexFilter, this);
+            }
+            catch (Exception o)
+            {
+                var x = o;
+
+            }
+
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
 
-            var returnlist = await _dbcontext.Tables.Include(c => c.Columns).ToPagedListAsync(pageSize,pageNumber);
+            var returnlist =  await _dbcontext.Tables.Include(c => c.Columns).Where(indexFilter.ModelFilter)
+                .OrderBy(c => c.TableSchema)
+                .ThenBy(c => c.TableName)
+                .ToPagedListAsync(pageSize, pageNumber);
 
-
-
-            return View(returnlist);
-
+            return PartialView("_indexlist", returnlist);
 
         }
 
