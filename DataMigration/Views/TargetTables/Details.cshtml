@@ -1,34 +1,39 @@
-﻿@model TargetDDContext.Models.Table
+﻿@model TargetTableWithColumnsViewModel
 
 @{
     ViewData["Title"] = "Details";
-    var baseColumn = Model?.Columns != null ? Model.Columns.FirstOrDefault() : new TargetDDContext.Models.Column();
+    var baseColumn = Model?.Columns != null ? Model.Columns.FirstOrDefault() : new TargetColumnViewModel( new TargetDDContext.Models.Column());
+
+    Model.RowCtrls.Controls.Add(new HTORowEdit());
 
 
 }
 
-<h1>Details</h1>
+<div class="hto-pgtitle">Details</div>
 
-<div>
-    <a asp-action="Edit" asp-route-route-tableschema="@Model?.TableSchema" asp-route-route-tablename="@Model?.TableName">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<crud-links record-controls="@Model.RowCtrls" last-action="@ActionHistory.GetLastHistoryItem(ViewContext.HttpContext)" class="crudctrls"></crud-links>
 
-<div>
-    <h4>Source Table</h4>
-    <hr />
+<div class="hto-rtitle">Target Table:  @Html.DisplayFor(model => model.TableName)</div>
+
+<div class="hto-details">
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TableSchema)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TableSchema)
-        </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TableName)
+            @Html.DisplayNameFor(model => model.UseType)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TableName)
+            @Html.DisplayFor(model => model.UseType)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UseDomain)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UseDomain)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RowCount)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RowCount)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Description)
@@ -45,51 +50,67 @@
     </dl>
 </div>
 
+
+
+
+
+
 @if (baseColumn != null && Model != null)
 {
-<table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => baseColumn.ColumnName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => baseColumn.DataType)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => baseColumn.SourceTable)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => baseColumn.SourceColumn)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => baseColumn.NonNulls)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => baseColumn.DistinctValues)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        
-        @foreach (var item in Model.Columns.OrderBy(c => c.ColumnName))
-        {
 
-            <tr>
+    @foreach (var useType in Model.Columns.GroupBy(c => c.UseType).OrderBy(g => g.Key))
+    {
+        <p>Use type:  @Html.Raw(useType.Key)</p>
 
-                <td>@Html.DisplayFor(c => item.ColumnName)</td>
-                <td>@Html.DisplayFor(c => item.DataType)</td>
-                <td>@Html.DisplayFor(c => item.SourceTable)</td>
-                <td>@Html.DisplayFor(c => item.SourceColumn)</td>
-                <td>@Html.DisplayFor(c => item.NonNulls)</td>
-                <td>@Html.DisplayFor(c => item.DistinctValues)</td>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => baseColumn.ColumnName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => baseColumn.DataType)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => baseColumn.ColumnSources)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => baseColumn.NonNulls)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => baseColumn.DistinctValues)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
 
-            </tr>
+                @foreach (var column in useType.ToList())
+                {
+                    <tr>
+
+                        <td>@Html.DisplayFor(c => column.ColumnName)</td>
+                        <td>@Html.DisplayFor(c => column.DataType)</td>
+                        <td>@Html.DisplayFor(c => column.ColumnSources, "ColumnSources")</td>
+                        <td>@Html.DisplayFor(c => column.NonNulls)</td>
+                        <td>@Html.DisplayFor(c => column.DistinctValues)</td>
+
+                    </tr>
+                }
+
+            </tbody>
 
 
-        }
+        </table>
 
-</table>
+
+
+
+
+
+    }
+
+
     
 }
 

@@ -6,7 +6,7 @@
 
 }
 
-@model DataMigration.ModelFilters.TargetTablesFilter
+@model DataMigration.ModelFilters.SourceTablesFilter
 
 <form asp-action="@ViewData["listaction"]" id="filterForm" class="form-horizontal" data-ajax="true" data-ajax-method="post" data-ajax-update="#htxAjaxList" data-ajax-success="movePagers">
 
@@ -18,21 +18,9 @@
                 <div class="form-group">
                 </div>
                 <div class="form-group">
-                    <label class="control-label" for="TableSchema">Schema:</label>
-                    <div>
-                        <input asp-for="TableSchema" type="text" value="@ViewBag.TableSchema" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="TableName">Table:</label>
+                    <label class="control-label" for="Symbol">Table:</label>
                     <div>
                         <input asp-for="TableName" type="text" value="@ViewBag.TableName" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="Symbol">Non-Tenant Schemas:</label>
-                    <div>
-                        <booleanyesnonull asp-for="xNonProductionData" current-value="@ViewBag.xNonProductionData"></booleanyesnonull>
                     </div>
                 </div>
 

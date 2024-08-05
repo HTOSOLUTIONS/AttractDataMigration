@@ -27,6 +27,7 @@ namespace DataMigration.ViewComponents
                 .Include(c => c.Columns)
                 .ThenInclude(m => m.ColumnSources)
                 .Include(c => c.ParentPaths)
+                .ThenInclude(pp => pp.ParentTable)
                 .Include(c => c.ChildPaths)
                 .ThenInclude(cp => cp.ChildTable)
                 .Where(c => c.TableName == tablename)

@@ -1,5 +1,6 @@
 ﻿using DataMigration.ParameterModels;
 using DataMigration.ViewModels;
+using IDataMigrations.Interfaces;
 
 namespace DataMigration.Services.KitchenSink
 {
@@ -8,6 +9,9 @@ namespace DataMigration.Services.KitchenSink
         Task<MatchedColumnsViewModel> GetMatchPreviewVM(MatchColumnsParms parms);
 
         Task<MatchedColumnsViewModel> LinkColumns(MatchColumnsParms parms);
+
+        Task<bool> UnlinkColumns(IColumnMapping parms);
+
 
     }
 }

@@ -6,36 +6,39 @@ using HTOTools.Implementations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Sakura.AspNetCore;
-using SourceDDContext.Data;
+using TargetDDContext.Data;
+
+
 
 namespace DataMigration.Controllers
 {
-    public class SourceColumnsController : Controller
+    public class TargetColumnsController : Controller
     {
-        private SourceDDDbContext _dbcontext;
+        private readonly TargetDDDbContext _dbcontext;
         private IIndexFilterManager _filtermanager;
 
-        public SourceColumnsController(SourceDDDbContext dbContext,
+        public TargetColumnsController(TargetDDDbContext dbcontext,
             IIndexFilterManager filtermanager)
         {
 
-            _dbcontext = dbContext;
+            _dbcontext = dbcontext;
             _filtermanager = filtermanager;
-
         }
 
-        [ClearHistory(Order = 1)]
-        [AddHistory("Source Columns", ClassNames.SourceColumn, Order = 2)]
-        public async Task<IActionResult> Index(int? page, SourceColumnsFilter indexFilter)
-        {
-            indexFilter = _filtermanager.ProcFilter<SourceColumnsFilter>(indexFilter, this);
 
-            ViewData["Title"] = "Source Columns";
+        [ClearHistory(Order = 1)]
+        [AddHistory("Target Columns", ClassNames.TargetColumn, Order = 2)]
+        public async Task<IActionResult> Index(int? page, TargetColumnsFilter indexFilter)
+        {
+            indexFilter = _filtermanager.ProcFilter<TargetColumnsFilter>(indexFilter, this);
+
+            ViewData["Title"] = "Target Tables";
             ViewData["listaction"] = "indexlist";
 
+
             return View();
+
 
         }
 
@@ -48,12 +51,12 @@ namespace DataMigration.Controllers
         /// <param name="indexFilter"></param>
         /// <returns></returns>
         [ClearHistory(Order = 1)]
-        [AddHistory("Source Columns", ClassNames.SourceColumn, 1, Order = 2)]
-        public async Task<IActionResult> indexlist(int? page, SourceColumnsFilter indexFilter)
+        [AddHistory("Target Columns", ClassNames.TargetColumn, 1, Order = 2)]
+        public async Task<IActionResult> indexlist(int? page, TargetColumnsFilter indexFilter)
         {
             try
             {
-                indexFilter = _filtermanager.ProcFilter<SourceColumnsFilter>(indexFilter, this);
+                indexFilter = _filtermanager.ProcFilter<TargetColumnsFilter>(indexFilter, this);
             }
             catch (Exception o)
             {
@@ -66,7 +69,6 @@ namespace DataMigration.Controllers
 
             var returnlist = await _dbcontext.Columns
                 .Include(c => c.Table)
-                .Include(cc => cc.ColumnTargets)
                 .Where(indexFilter.ModelFilter)
                 .OrderBy(c => c.ColumnName)
                 .ThenBy(c => c.TableName)
@@ -77,7 +79,8 @@ namespace DataMigration.Controllers
         }
 
 
-        [AddHistory("Source Columns Details", ClassNames.SourceColumn)]
+
+        [AddHistory("Target Column Details", ClassNames.TargetColumn, 1, Order = 2)]
         public async Task<IActionResult> Details(string tableschema, string tablename, string columnname)
         {
             if (string.IsNullOrEmpty(tableschema) || string.IsNullOrEmpty(tablename) || string.IsNullOrEmpty(columnname))
@@ -92,10 +95,12 @@ namespace DataMigration.Controllers
                 return NotFound();
             }
 
-            return View(new SourceColumnViewModel(dbrecord));
+            return View(new TargetColumnViewModel(dbrecord));
 
 
         }
+
+
 
 
         public async Task<IActionResult> Edit(string tableschema, string tablename, string columnname)
@@ -113,21 +118,21 @@ namespace DataMigration.Controllers
             }
 
 
-            return View(new SourceColumnViewModel(dbrecord));
+            return View(new TargetColumnViewModel(dbrecord));
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[Bind("MigrationHistoryId,Description,DateTime")]
-        public async Task<IActionResult> Edit(string tableschema, string tablename, string columnname, SourceDDContext.Models.Column viewmodel)
+        public async Task<IActionResult> Edit(string tableschema, string tablename, string columnname, TargetDDContext.Models.Column viewmodel)
         {
             if (string.IsNullOrEmpty(tableschema) || string.IsNullOrEmpty(tablename) || string.IsNullOrEmpty(columnname))
             {
                 return NotFound();
             }
 
-            ModelState.Remove<SourceDDContext.Models.Column>(c => c.Table);
+            ModelState.Remove<TargetDDContext.Models.Column>(c => c.Table);
 
             if (ModelState.IsValid)
             {
@@ -142,11 +147,7 @@ namespace DataMigration.Controllers
                 {
                     dbrecord.Description = viewmodel.Description;
                     dbrecord.NeedsMigration = viewmodel.NeedsMigration;
-                    //dbrecord.DestinationTable = viewmodel.DestinationTable;
-                    //dbrecord.DestinationColumn = viewmodel.DestinationColumn;
-                    dbrecord.NeedsFollowUp = viewmodel.NeedsFollowUp;
-                    dbrecord.Notes = viewmodel.Notes;
-
+                    dbrecord.UseType = viewmodel.UseType;
                     _dbcontext.Update(dbrecord);
                     await _dbcontext.SaveChangesAsync();
                 }
@@ -155,19 +156,22 @@ namespace DataMigration.Controllers
 
                     throw;
                 }
-                return ActionHistory.ReturntoPreviousAction(HttpContext);
                 //return RedirectToAction(nameof(Index));
+                return ActionHistory.ReturntoPreviousAction(HttpContext);
+
             }
             return View(viewmodel);
         }
 
 
 
-        private async Task<SourceDDContext.Models.Column> _getRecord(string tableschema, string tablename, string columnname)
+        private async Task<TargetDDContext.Models.Column?> _getRecord(string tableschema, string tablename, string columnname)
         {
             var dbrecord = await _dbcontext.Columns
                 .Include(m => m.Table)
-                .Include(m => m.ColumnTargets)
+                .ThenInclude(m => m.ChildPaths)
+                .Include(m => m.Table)
+                .ThenInclude(m => m.ParentPaths)
                 .FirstOrDefaultAsync(m => m.TableSchema == tableschema && m.TableName == tablename && m.ColumnName == columnname);
 
             return dbrecord;
@@ -175,5 +179,4 @@ namespace DataMigration.Controllers
         }
 
     }
-
 }

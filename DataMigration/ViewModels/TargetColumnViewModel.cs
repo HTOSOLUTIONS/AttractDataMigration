@@ -19,6 +19,9 @@ namespace DataMigration.ViewModels
 
         private bool? _needsmigration;
 
+        protected string? _useType;
+
+
         private IDictionary<string, string> _routeValues;
 
 
@@ -30,6 +33,7 @@ namespace DataMigration.ViewModels
             _sourcetable = sourceColumn.SourceTable;
             _sourcecolumn = sourceColumn.SourceColumn;
             _needsmigration = sourceColumn.NeedsMigration;
+            _useType = sourceColumn.UseType;
             _routeValues = new Dictionary<string, string>() { { "tableschema", _targetColumn.TableSchema }, { "tablename", _targetColumn.TableName }, { "columnname", _targetColumn.ColumnName } };
 
             RowCtrls = new HTORowCtrlList()
@@ -91,6 +95,10 @@ namespace DataMigration.ViewModels
 
 
         public virtual TargetTableViewModel TargetTable { get; set; }
+
+
+        [Display(Name = "Use Type")]
+        public string? UseType { get => _useType; set => _useType = value; }
 
 
         public IDictionary<string, string> RouteValues { get => _routeValues; }

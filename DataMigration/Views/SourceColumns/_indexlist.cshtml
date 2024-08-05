@@ -4,10 +4,10 @@
 *@
 
 @addTagHelper *, Sakura.AspNetCore.Mvc.PagedList
-@model Sakura.AspNetCore.IPagedList<TargetDDContext.Models.Table>
+@model Sakura.AspNetCore.IPagedList<SourceDDContext.Models.Column>
 
 @{
-    var viewList = Model.Select(c => new TargetTableWithColumnsViewModel(c)).ToList();
+    var viewList = Model.Select(c => new SourceColumnViewModel(c)).ToList();
 }
 
 
@@ -25,25 +25,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => viewList.FirstOrDefault().TableSchema)
+                @Html.DisplayNameFor(model => viewList.FirstOrDefault().TableName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => viewList.FirstOrDefault().TableName)
+                @Html.DisplayNameFor(model => viewList.FirstOrDefault().ColumnName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => viewList.FirstOrDefault().Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => viewList.FirstOrDefault().UseType)
+                @Html.DisplayNameFor(model => viewList.FirstOrDefault().DistinctValues)
             </th>
             <th>
-                @Html.DisplayNameFor(model => viewList.FirstOrDefault().UseDomain)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => viewList.FirstOrDefault().RowCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => viewList.FirstOrDefault().NeedsMigration)
+                @Html.DisplayNameFor(model => viewList.FirstOrDefault().ColumnTargetsDisp)
             </th>
             <th></th>
         </tr>
@@ -53,29 +47,25 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TableSchema)
+                    <a asp-controller="SourceTables" asp-action="Details" asp-all-route-data="@item.SourceTable.RouteValues">
+                        @Html.DisplayFor(modelItem => item.TableName)
+                    </a>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TableName)
+                    @Html.DisplayFor(modelItem => item.ColumnName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.UseType)
+                    @Html.DisplayFor(modelItem => item.DistinctValues)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.UseDomain)
+                    @Html.DisplayFor(modelItem => item.ColumnTargetsDisp)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.RowCount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NeedsMigration)
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-tableschema="@item?.TableSchema" asp-route-tablename="@item?.TableName">Details</a> |
-                    <a asp-action="Edit" asp-route-tableschema="@item?.TableSchema" asp-route-tablename="@item?.TableName">Edit</a> |
+                    <a asp-action="Details" asp-all-route-data=@item.RouteValues>Details</a> |
+                    <a asp-action="Edit" asp-all-route-data=@item.RouteValues>Edit</a> |
                     @*
                 <a asp-action="Edit" asp-route-id="@item.MigrationHistoryId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.MigrationHistoryId">Details</a> |

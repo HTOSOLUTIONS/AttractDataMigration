@@ -27,6 +27,8 @@ namespace DataMigration.ViewModels
 
         private IDictionary<string, string> _routeValues;
 
+        private ICollection<ColumnTargetViewModel> _columnTargets;
+
         public SourceColumnViewModel(Column sourceColumn)
         {
 
@@ -53,6 +55,12 @@ namespace DataMigration.ViewModels
             {
                 SourceTable = new SourceTableViewModel(sourceColumn.Table);
             }
+
+            _columnTargets = new List<ColumnTargetViewModel>();
+            if (_sourceColumn?.ColumnTargets != null && _sourceColumn.ColumnTargets.Count > 0)
+            {
+                _columnTargets =  _sourceColumn.ColumnTargets.Select(c => new ColumnTargetViewModel(c)).ToList();
+            };
 
 
         }
@@ -104,24 +112,11 @@ namespace DataMigration.ViewModels
         public string? Notes { get => _notes; set => _notes = value; }
 
 
-        public virtual SourceTableViewModel SourceTable { get; set; }
+        public virtual SourceTableViewModel? SourceTable { get; set; }
 
 
         [Display(Name = "Target Column(s)")]
-        public ICollection<ColumnTargetViewModel> ColumnTargets {
-            
-            get
-            {
-                if (_sourceColumn?.ColumnTargets != null && _sourceColumn.ColumnTargets.Count > 0)
-                {
-                    return _sourceColumn.ColumnTargets.Select(c => new ColumnTargetViewModel(c)).ToList();
-                } else
-                {
-                    return new List<ColumnTargetViewModel>();
-                }
-            }
-        
-        }
+        public ICollection<ColumnTargetViewModel> ColumnTargets => _columnTargets;
 
 
         [Display(Name = "Target Column(s)")]

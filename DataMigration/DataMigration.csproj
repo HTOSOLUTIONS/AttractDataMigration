@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="HTOTools" Version="3.12.0" />
+    <PackageReference Include="IDataMigrations" Version="1.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.7">
       <PrivateAssets>all</PrivateAssets>
@@ -18,8 +19,23 @@
     <PackageReference Include="Sakura.AspNetCore.Mvc.TagHelpers" Version="1.4.3" />
     <PackageReference Include="Sakura.AspNetCore.PagedList.Abstractions" Version="3.0.0" />
     <PackageReference Include="Sakura.AspNetCore.PagedList.Async" Version="1.1.1" />
-    <PackageReference Include="SourceDDContext" Version="1.3.0" />
-    <PackageReference Include="TargetDDContext" Version="1.4.0" />
+    <PackageReference Include="SourceDDContext" Version="1.7.0" />
+    <PackageReference Include="TargetDDContext" Version="1.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\TargetColumns\Details.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\TargetColumns\Edit.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\TargetColumns\Index.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

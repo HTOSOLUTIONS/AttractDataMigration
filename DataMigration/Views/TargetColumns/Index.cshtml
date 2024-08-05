@@ -1,11 +1,11 @@
 ﻿
 @addTagHelper *, Sakura.AspNetCore.Mvc.PagedList
-@model Sakura.AspNetCore.IPagedList<SourceDDContext.Models.Table>
+@model Sakura.AspNetCore.IPagedList<TargetDDContext.Models.Column>
 
 
 @{
-    ViewData["Title"] = "Source Tables";
-    ViewData["CountTitle"] = "Source Tables";
+    ViewData["Title"] = "Target Columns";
+    ViewData["CountTitle"] = "Target Columns";
     ViewData["Icon"] = "glyphicons-database";
 }
 
@@ -25,7 +25,7 @@
             fixbelowtopnav_wrapperFloating();
             var pageNum = $(".htx-ilist-pagenumber").data("pagenumber");
 
-            $("#htxAjaxList").load("/SourceTables/@ViewData["listaction"]?page=" + pageNum, function () { movePagers(); });
+            $("#htxAjaxList").load("/TargetColumns/@ViewData["listaction"]?page=" + pageNum, function () { movePagers(); });
 
         });
 

@@ -65,20 +65,26 @@
     </div>
 }
 
-@if (Model.ParentPaths != null && Model.ParentPaths.ToList().Count > 0)
+@if (Model.ParentPathsView != null && Model.ParentPathsView.ToList().Count > 0)
 {
     <div class="left-menu-subhead1 collapsible"><a data-bs-toggle="collapse" href="#parentpathspane" aria-expanded="false" aria-controls="parentpathspane" class="collapsed" style="text-decoration: none;">Parent Paths</a></div>
     <div id="parentpathspane" class="panel-collapse collapse">
         <table class="table">
 
-            @foreach (var item in Model.ParentPaths)
+            @foreach (var item in Model.ParentPathsView.OrderBy(c => c.ParentPath))
             {
                 <tr>
                     <td>
-                        <p>@Html.DisplayFor(c => item.Parentpath, "TablePaths")</p>
+                        <p>@Html.DisplayFor(c => item.ParentPath, "TablePaths")</p>
+                    </td>
+                    <td>
+                        <p>@Html.DisplayFor(c => item.PktableOwner)</p>
                     </td>
                     <td>
                         <p>@Html.DisplayFor(c => item.PktableName)</p>
+                    </td>
+                    <td>
+                        <p>@Html.DisplayFor(c => item.Records)</p>
                     </td>
                 </tr>
             }

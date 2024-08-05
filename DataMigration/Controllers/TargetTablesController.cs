@@ -1,16 +1,12 @@
 ﻿using DataMigration.Constants;
-using DataMigration.Data;
 using DataMigration.ModelFilters;
-using DataMigration.Models;
 using DataMigration.ViewModels;
 using HTOTools;
 using HTOTools.Implementations;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Sakura.AspNetCore;
 using TargetDDContext.Data;
-using TargetDDContext.Models;
 
 
 namespace DataMigration.Controllers
@@ -30,7 +26,7 @@ namespace DataMigration.Controllers
 
         [ClearHistory(Order = 1)]
         [AddHistory("Target Tables",ClassNames.TargetTable, Order = 2)]
-        public async Task<IActionResult> Index(int? page, TargetTablesFilter indexFilter)
+        public IActionResult Index(int? page, TargetTablesFilter indexFilter)
         {
             indexFilter = _filtermanager.ProcFilter<TargetTablesFilter>(indexFilter, this);
 
@@ -69,6 +65,7 @@ namespace DataMigration.Controllers
             int pageNumber = (page ?? 1);
 
             var returnlist =  await _dbcontext.Tables.Include(c => c.Columns).Where(indexFilter.ModelFilter)
+                .Where(indexFilter.ModelFilter)
                 .OrderBy(c => c.TableSchema)
                 .ThenBy(c => c.TableName)
                 .ToPagedListAsync(pageSize, pageNumber);
@@ -79,7 +76,7 @@ namespace DataMigration.Controllers
 
 
 
-        [AddHistory("Target Table Details", ClassNames.TargetTable, 1, Order = 2)]
+        [AddHistory("Target Table Details", ClassNames.TargetTable)]
         public async Task<IActionResult> Details(string tableschema, string tablename)
         {
             if (string.IsNullOrEmpty(tableschema) || string.IsNullOrEmpty(tablename))
@@ -94,12 +91,10 @@ namespace DataMigration.Controllers
                 return NotFound();
             }
 
-            return View(dbrecord);
+            return View(new TargetTableWithColumnsViewModel(dbrecord));
 
 
         }
-
-
 
 
         public async Task<IActionResult> Edit(string tableschema, string tablename)
@@ -117,7 +112,7 @@ namespace DataMigration.Controllers
             }
 
 
-            return View(dbrecord);
+            return View(new TargetTableWithColumnsViewModel(dbrecord));
         }
 
 
@@ -144,6 +139,8 @@ namespace DataMigration.Controllers
                 {
                     dbrecord.Description = viewmodel.Description;
                     dbrecord.NeedsMigration = viewmodel.NeedsMigration;
+                    dbrecord.UseDomain = viewmodel.UseDomain;
+                    dbrecord.UseType = viewmodel.UseType;
                     _dbcontext.Update(dbrecord);
                     await _dbcontext.SaveChangesAsync();
                 }
@@ -177,6 +174,7 @@ namespace DataMigration.Controllers
         {
             var dbrecord = await _dbcontext.Tables
                 .Include(m => m.Columns)
+                .ThenInclude(c => c.ColumnSources)
                 .Include(m => m.ChildPaths)
                 .Include(m => m.ParentPaths)
                 .FirstOrDefaultAsync(m => m.TableSchema == tableschema && m.TableName == tablename);

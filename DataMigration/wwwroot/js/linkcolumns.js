@@ -113,12 +113,12 @@ function openpreview() {
     var tgtcolumn = $("[data-targetcolumn].selected").data("targetcolumn");
     var parms = {
 
-        SrcTableSchema: srccolumn.tableSchema,
-        SrcTableName: srccolumn.tableName,
-        SrcColumnName: srccolumn.columnName,
-        TgtTableSchema: tgtcolumn.tableSchema,
-        TgtTableName: tgtcolumn.tableName,
-        TgtColumnName: tgtcolumn.columnName
+        SourceSchema: srccolumn.tableSchema,
+        SourceTable: srccolumn.tableName,
+        SourceColumn: srccolumn.columnName,
+        TargetSchema: tgtcolumn.tableSchema,
+        TargetTable: tgtcolumn.tableName,
+        TargetColumn: tgtcolumn.columnName
 
     };
 

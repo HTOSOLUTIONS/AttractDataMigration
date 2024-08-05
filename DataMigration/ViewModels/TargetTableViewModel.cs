@@ -15,6 +15,10 @@ namespace DataMigration.ViewModels
 
         protected bool? _needsmigration;
 
+        protected string? _useType;
+
+        protected string? _useDomain;
+
         protected IDictionary<string, string> _routeValues;
 
 
@@ -25,14 +29,21 @@ namespace DataMigration.ViewModels
             _description = targetTable.Description;
             _sourcetable = targetTable.SourceTable;
             _needsmigration = targetTable.NeedsMigration;
+            _useType = targetTable.UseType;
+            _useDomain = targetTable.UseDomain;
+
             _routeValues = new Dictionary<string, string>() { { "tableschema", _targetTable.TableSchema }, { "tablename", _targetTable.TableName } };
 
             if (targetTable.ParentPaths != null )
             {
-                ParentPaths = targetTable.ParentPaths;
-            } else
+                ParentPaths = targetTable.ParentPaths.Select(c => new FamilyPathViewModel(c));
+
+                ParentPathsView = targetTable.ParentPaths.Select(c => new ParentPathViewModel(c))
+                    .GroupBy(c => new { c.ParentPath, c.PktableName }).Select(g => g.First());
+            }
+            else
             {
-                ParentPaths = new List<FamilyPath>();
+                ParentPaths = new List<FamilyPathViewModel>();
             }
 
             if (targetTable.ChildPaths != null)
@@ -50,7 +61,7 @@ namespace DataMigration.ViewModels
 
             RowCtrls = new HTORowCtrlList()
             {
-                DefaultController = "SourceTables",
+                DefaultController = "TargetTables",
                 RouteValues = _routeValues,
                 Controls = new List<HTORowControl>()
                 {
@@ -81,9 +92,20 @@ namespace DataMigration.ViewModels
 
         public string? Description { get => _description; set => _description = value; }
 
+        public string TableCatalog { get => _targetTable.TableCatalog; }
+
 
         [Display(Name = "Needs Migration")]
         public bool? NeedsMigration { get => _needsmigration; set => _needsmigration = value; }
+
+
+        [Display(Name = "Use Type")]
+        public string? UseType { get => _useType; set => _useType = value; }
+
+
+        [Display(Name = "Use Domain")]
+        public string? UseDomain { get => _useDomain; set => _useDomain = value; }
+
 
 
         public IDictionary<string, string> RouteValues { get => _routeValues; }
@@ -94,13 +116,17 @@ namespace DataMigration.ViewModels
 
 
         [JsonIgnore]
-        public IEnumerable<TargetDDContext.Models.FamilyPath> ParentPaths { get; set; }
+        public IEnumerable<FamilyPathViewModel> ParentPaths { get; set; }
+
+        public IEnumerable<ParentPathViewModel> ParentPathsView { get; set; }
 
 
         [JsonIgnore]
         public IEnumerable<FamilyPathViewModel> ChildPaths { get; set; }
 
+        
         public IEnumerable<ChildPathViewModel> ChildPathsView { get; set; }
+
 
 
     }

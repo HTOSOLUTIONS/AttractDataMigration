@@ -1,22 +1,56 @@
-﻿namespace DataMigration.ParameterModels
+﻿using IDataMigrations.Interfaces;
+
+namespace DataMigration.ParameterModels
 {
-    public class MatchColumnsParms
+    public class MatchColumnsParms : IColumnMapping
     {
-        public string SrcTableSchema { get; set; } = String.Empty;
+        private string? _SourceSchema;
+        private string? _TargetSchema;
+        private string _SourceTable;
+        private string _TargetTable;
+        private string _SourceColumn;
+        private string _TargetColumn;
 
-        public string SrcTableName { get; set; } = String.Empty;
+        public MatchColumnsParms() { 
+            _SourceSchema = null;
+            _TargetSchema = null;
+            _SourceColumn = string.Empty; _TargetColumn = string.Empty;
+            _SourceTable = string.Empty; _TargetTable = string.Empty;
+        }
 
-        public string SrcColumnName { get; set; } = String.Empty;
+        public MatchColumnsParms(IColumnMapping columnMapping)
+        {
+            _SourceSchema = columnMapping.SourceSchema;
+            _TargetSchema = columnMapping.TargetSchema;
+            _SourceTable = columnMapping.SourceTable;
+            _TargetTable = columnMapping.TargetTable;
+            _SourceColumn = columnMapping.SourceColumn;
+            _TargetColumn = columnMapping.TargetColumn;
 
-        public string TgtTableSchema { get; set; } = String.Empty;
 
-        public string TgtTableName { get; set; } = String.Empty;
+        }
 
-        public string TgtColumnName { get; set; } = String.Empty;
+        //SrcTableSchema
+        public string? SourceSchema { get => _SourceSchema; set => _SourceSchema = value; } 
+
+        //SrcTableName
+        public string SourceTable { get => _SourceTable; set => _SourceTable = value; }
+
+        //SrcColumnName
+        public string SourceColumn { get => _SourceColumn ; set => _SourceColumn = value; }
+
+        //TgtTableSchema
+        public string? TargetSchema { get => _TargetSchema; set => _TargetSchema = value; }
+
+        //TgtTableName
+        public string TargetTable { get => _TargetTable; set => _TargetTable = value; }
+
+        //TgtColumnName
+        public string TargetColumn { get => _TargetColumn ; set => _TargetColumn = value; }
 
 
-        public bool AllThere => !string.IsNullOrEmpty(SrcTableSchema) && !string.IsNullOrEmpty(SrcTableName) && !string.IsNullOrEmpty(SrcColumnName)
-            && !string.IsNullOrEmpty(TgtTableSchema) && !string.IsNullOrEmpty(TgtTableName) && !string.IsNullOrEmpty(TgtColumnName);
+        public bool AllThere => !string.IsNullOrEmpty(SourceSchema) && !string.IsNullOrEmpty(SourceTable) && !string.IsNullOrEmpty(SourceColumn)
+            && !string.IsNullOrEmpty(TargetSchema) && !string.IsNullOrEmpty(TargetTable) && !string.IsNullOrEmpty(TargetColumn);
 
 
     }

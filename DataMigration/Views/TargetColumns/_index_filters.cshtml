@@ -6,7 +6,7 @@
 
 }
 
-@model DataMigration.ModelFilters.TargetTablesFilter
+@model DataMigration.ModelFilters.TargetColumnsFilter
 
 <form asp-action="@ViewData["listaction"]" id="filterForm" class="form-horizontal" data-ajax="true" data-ajax-method="post" data-ajax-update="#htxAjaxList" data-ajax-success="movePagers">
 
@@ -18,7 +18,7 @@
                 <div class="form-group">
                 </div>
                 <div class="form-group">
-                    <label class="control-label" for="TableSchema">Schema:</label>
+                    <label class="control-label" for="TableSchema">Table:</label>
                     <div>
                         <input asp-for="TableSchema" type="text" value="@ViewBag.TableSchema" />
                     </div>
@@ -30,9 +30,33 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="control-label" for="ColumnName">Column:</label>
+                    <div>
+                        <input asp-for="ColumnName" type="text" value="@ViewBag.ColumnName" />
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="control-label" for="Symbol">Non-Tenant Schemas:</label>
                     <div>
                         <booleanyesnonull asp-for="xNonProductionData" current-value="@ViewBag.xNonProductionData"></booleanyesnonull>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="PrimaryKeys">Primary Keys:</label>
+                    <div>
+                        <booleanyesnonull asp-for="PrimaryKeys" current-value="@ViewBag.PrimaryKeys"></booleanyesnonull>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="ForeignKeys">Foreign Keys:</label>
+                    <div>
+                        <booleanyesnonull asp-for="ForeignKeys" current-value="@ViewBag.ForeignKeys"></booleanyesnonull>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="CreateModifyTrackers">Create Modify Trackers:</label>
+                    <div>
+                        <booleanyesnonull asp-for="CreateModifyTrackers" current-value="@ViewBag.CreateModifyTrackers"></booleanyesnonull>
                     </div>
                 </div>
 

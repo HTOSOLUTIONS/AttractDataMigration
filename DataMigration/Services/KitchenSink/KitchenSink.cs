@@ -1,5 +1,6 @@
 ﻿using DataMigration.ParameterModels;
 using DataMigration.ViewModels;
+using IDataMigrations.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using SourceDDContext.Data;
 using TargetDDContext.Data;
@@ -23,12 +24,12 @@ namespace DataMigration.Services.KitchenSink
 
         public async Task<MatchedColumnsViewModel> GetMatchPreviewVM(MatchColumnsParms parms)
         {
-            var srcc = await _getSrcColumn(parms.SrcTableSchema, parms.SrcTableName, parms.SrcColumnName);
+            var srcc = await _getSrcColumn(parms.SourceSchema, parms.SourceTable, parms.SourceColumn);
             if (srcc == null)
             {
                 throw new Exception("Source Column Not Found." );
             }
-            var tgtc = await _getTgtColumn(parms.TgtTableSchema, parms.TgtTableName, parms.TgtColumnName);
+            var tgtc = await _getTgtColumn(parms.TargetSchema, parms.TargetTable, parms.TargetColumn);
             if (tgtc == null)
             {
                 throw new Exception("Target Column Not Found.");
@@ -41,15 +42,14 @@ namespace DataMigration.Services.KitchenSink
 
         }
 
-
         public async Task<MatchedColumnsViewModel> LinkColumns(MatchColumnsParms parms)
         {
-            var srcc = await _getSrcColumn(parms.SrcTableSchema, parms.SrcTableName, parms.SrcColumnName);
+            var srcc = await _getSrcColumn(parms.SourceSchema, parms.SourceTable, parms.SourceColumn);
             if (srcc == null)
             {
                 throw new Exception("Source Column Not Found.");
             }
-            var tgtc = await _getTgtColumn(parms.TgtTableSchema, parms.TgtTableName, parms.TgtColumnName);
+            var tgtc = await _getTgtColumn(parms.TargetSchema, parms.TargetTable, parms.TargetColumn);
             if (tgtc == null)
             {
                 throw new Exception("Target Column Not Found.");
@@ -66,32 +66,32 @@ namespace DataMigration.Services.KitchenSink
             //}
 
             //Update the Source Column
-            var colTgtExists = srcc.ColumnTargets.Any(x => x.SourceSchema == parms.SrcTableSchema 
-                && x.SourceColumn == parms.SrcColumnName
-                && x.SourceTable == parms.SrcTableName
-                && x.TargetColumn == parms.TgtColumnName
-                && x.TargetTable == parms.TgtTableName);
+            var colTgtExists = srcc.ColumnTargets.Any(x => x.SourceSchema == parms.SourceSchema 
+                && x.SourceColumn == parms.SourceColumn
+                && x.SourceTable == parms.SourceTable
+                && x.TargetColumn == parms.TargetColumn
+                && x.TargetTable == parms.TargetTable);
 
 
             if (!colTgtExists) {
 
                 _srcdbcontext.ColumnTargets.Add(new SourceDDContext.Models.ColumnTarget()
                 {
-                    SourceSchema = parms.SrcTableSchema
-                    , SourceColumn = parms.SrcColumnName
-                    , SourceTable = parms.SrcTableName
-                    , TargetSchema= parms.TgtTableSchema
-                    , TargetColumn = parms.TgtColumnName
-                    , TargetTable = parms.TgtTableName
+                    SourceSchema = parms.SourceSchema
+                    , SourceColumn = parms.SourceColumn
+                    , SourceTable = parms.SourceTable
+                    , TargetSchema= parms.TargetSchema
+                    , TargetColumn = parms.TargetColumn
+                    , TargetTable = parms.TargetTable
                 });
 
             }
 
-            var colSrcExists = tgtc.ColumnSources.Any(x => x.TargetSchema == parms.TgtTableSchema
-                && x.SourceColumn == parms.SrcColumnName
-                && x.SourceTable == parms.SrcTableName
-                && x.TargetColumn == parms.TgtColumnName
-                && x.TargetTable == parms.TgtTableName);
+            var colSrcExists = tgtc.ColumnSources.Any(x => x.TargetSchema == parms.TargetSchema
+                && x.SourceColumn == parms.SourceColumn
+                && x.SourceTable == parms.SourceTable
+                && x.TargetColumn == parms.TargetColumn
+                && x.TargetTable == parms.TargetTable);
 
 
             if (!colSrcExists)
@@ -99,12 +99,12 @@ namespace DataMigration.Services.KitchenSink
 
                 _tgtdbcontext.ColumnSources.Add(new TargetDDContext.Models.ColumnSource()
                 {
-                    SourceSchema = parms.SrcTableSchema
-                    ,SourceColumn = parms.SrcColumnName
-                    ,SourceTable = parms.SrcTableName
-                    ,TargetSchema = parms.TgtTableSchema
-                    ,TargetColumn = parms.TgtColumnName
-                    ,TargetTable = parms.TgtTableName
+                    SourceSchema = parms.SourceSchema
+                    ,SourceColumn = parms.SourceColumn
+                    ,SourceTable = parms.SourceTable
+                    ,TargetSchema = parms.TargetSchema
+                    ,TargetColumn = parms.TargetColumn
+                    ,TargetTable = parms.TargetTable
                 });
 
             }
@@ -126,11 +126,53 @@ namespace DataMigration.Services.KitchenSink
 
         }
 
-
-
-
-        private async Task<SourceDDContext.Models.Column> _getSrcColumn(string tableschema, string tablename, string columnname)
+        public async Task<bool> UnlinkColumns(IColumnMapping parms)
         {
+            bool succ = false;
+
+            var srcc = await _srcdbcontext.ColumnTargets.
+                Where(c => c.SourceTable == parms.SourceTable
+                            && c.SourceColumn == parms.SourceColumn
+                            && c.TargetTable == parms.TargetTable
+                            && c.TargetColumn == parms.TargetColumn
+            ).FirstOrDefaultAsync();
+
+            if (srcc == null)
+            {
+                throw new Exception("Source Column Not Found.");
+            }
+
+            var tgtc = await _tgtdbcontext.ColumnSources.
+                Where(c => c.SourceTable == parms.SourceTable
+                            && c.SourceColumn == parms.SourceColumn
+                            && c.TargetTable == parms.TargetTable
+                            && c.TargetColumn == parms.TargetColumn
+            ).FirstOrDefaultAsync();
+
+            if (tgtc == null)
+            {
+                throw new Exception("Target Column Not Found.");
+            }
+
+            _srcdbcontext.Remove(srcc);
+            _tgtdbcontext.Remove(tgtc);
+            await _srcdbcontext.SaveChangesAsync();
+            await _tgtdbcontext.SaveChangesAsync();
+
+            succ = true;
+
+            return succ;
+        }
+
+
+        private async Task<SourceDDContext.Models.Column?> _getSrcColumn(string? tableschema, string tablename, string columnname)
+        {
+            if (string.IsNullOrEmpty(tableschema))
+            {
+                throw new Exception("No Table Schema");
+            }
+
+
             var dbrecord = await _srcdbcontext.Columns
                 .Include(m => m.Table)
                 .Include(m => m.ColumnTargets)
@@ -140,8 +182,12 @@ namespace DataMigration.Services.KitchenSink
 
         }
 
-        private async Task<TargetDDContext.Models.Column> _getTgtColumn(string tableschema, string tablename, string columnname)
+        private async Task<TargetDDContext.Models.Column?> _getTgtColumn(string? tableschema, string tablename, string columnname)
         {
+            if (string.IsNullOrEmpty(tableschema))
+            {
+                throw new Exception("No Table Schema");
+            }
             var dbrecord = await _tgtdbcontext.Columns
                 .Include(m => m.Table)
                 .Include(m => m.ColumnSources)

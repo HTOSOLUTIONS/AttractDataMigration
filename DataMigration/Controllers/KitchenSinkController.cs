@@ -1,5 +1,6 @@
 ﻿using DataMigration.ParameterModels;
 using DataMigration.Services.KitchenSink;
+using IDataMigrations.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SourceDDContext.Data;
@@ -58,6 +59,24 @@ namespace DataMigration.Controllers
             try
             {
                 var vm = await _kitchensink.LinkColumns(parms);
+                return new JsonResult(vm);
+
+            }
+            catch (Exception oe)
+            {
+                Response.StatusCode = 404;
+                return new JsonResult(new { responseText = oe.Message });
+            }
+
+        }
+
+
+        [HttpPost]
+        public async Task<JsonResult> UnlinkColumns(MatchColumnsParms parms)
+        {
+            try
+            {
+                var vm = await _kitchensink.UnlinkColumns(parms);
                 return new JsonResult(vm);
 
             }

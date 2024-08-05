@@ -1,18 +1,14 @@
 ﻿using HTOTools;
 using System.Linq.Expressions;
 using System.Security.Claims;
-using TargetDDContext.Models;
+using SourceDDContext.Models;
 
 namespace DataMigration.ModelFilters
 {
-    public class TargetTablesFilter : BaseIndexFilters
+    public class SourceTablesFilter : BaseIndexFilters
     {
 
         public string? TableName { get; set; }
-
-        public string? TableSchema { get; set; }
-
-        public bool? xNonProductionData { get; set; }
 
 
         public override void SetFilter(ClaimsPrincipal user)
@@ -31,26 +27,13 @@ namespace DataMigration.ModelFilters
                 selectfilter = selectfilter.And(c => c.TableName.ToUpper().Contains(TableName.ToUpper()));
                 filterOn = true;
             }
-            if (xNonProductionData != null)
-            {
-                var nonproductionschemas = new List<string>() { "XSTG", "UI", "REC", "PROCESS", "MSG", "EVT" };
-
-                if (xNonProductionData == false)
-                {
-                    selectfilter = selectfilter.And(c => !nonproductionschemas.Contains( c.TableSchema.ToUpper()));
-                } else
-                {
-                    selectfilter = selectfilter.And(c => nonproductionschemas.Contains(c.TableSchema.ToUpper()));
-
-                }
-                filterOn = true;
-
-            }
 
 
             return selectfilter;
 
         }
+
+
 
     }
 }

@@ -4,10 +4,10 @@
 *@
 
 @addTagHelper *, Sakura.AspNetCore.Mvc.PagedList
-@model Sakura.AspNetCore.IPagedList<TargetDDContext.Models.Table>
+@model Sakura.AspNetCore.IPagedList<SourceDDContext.Models.Table>
 
 @{
-    var viewList = Model.Select(c => new TargetTableWithColumnsViewModel(c)).ToList();
+    var viewList = Model.Select(c => new SourceTableWithColumnsViewModel(c)).ToList();
 }
 
 
@@ -34,16 +34,10 @@
                 @Html.DisplayNameFor(model => viewList.FirstOrDefault().Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => viewList.FirstOrDefault().UseType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => viewList.FirstOrDefault().UseDomain)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => viewList.FirstOrDefault().RowCount)
             </th>
             <th>
-                @Html.DisplayNameFor(model => viewList.FirstOrDefault().NeedsMigration)
+                @Html.DisplayNameFor(model => viewList.FirstOrDefault().TargetTables)
             </th>
             <th></th>
         </tr>
@@ -62,16 +56,10 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.UseType)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UseDomain)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.RowCount)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.NeedsMigration)
+                    @Html.DisplayFor(modelItem => item.TargetTables)
                 </td>
                 <td>
                     <a asp-action="Details" asp-route-tableschema="@item?.TableSchema" asp-route-tablename="@item?.TableName">Details</a> |

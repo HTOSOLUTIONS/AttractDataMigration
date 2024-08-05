@@ -69,6 +69,10 @@ namespace DataMigration.ViewModels
 
 
         public string? Description { get => _description; set => _description = value; }
+        
+
+        public string TableCatalog { get => _sourceTable.TableCatalog; }
+
 
 
         [Display(Name = "Needs Migration")]

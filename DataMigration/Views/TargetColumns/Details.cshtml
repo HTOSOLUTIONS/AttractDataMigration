@@ -1,10 +1,10 @@
 ﻿@using System.Text.Json
 
-@model SourceColumnViewModel
+@model TargetColumnViewModel
 
 @{
     ViewData["Title"] = "Details";
-    ViewData["Title"] = "Source Column Details";
+    ViewData["Title"] = "Target Column Details";
 
     Model.RowCtrls.Controls.Add(new HTORowEdit());
 
@@ -46,7 +46,7 @@
 <crud-links record-controls="@Model.RowCtrls" last-action="@ActionHistory.GetLastHistoryItem(ViewContext.HttpContext)" class="crudctrls"></crud-links>
 
 
-<div class="hto-rtitle">Source Column: @Html.DisplayFor(model => model.ColumnName) </div>
+<div class="hto-rtitle">Target Column: @Html.DisplayFor(model => model.ColumnName) </div>
 
 
 <div class="container-fluid">
@@ -67,10 +67,10 @@
                         @Html.DisplayFor(model => model.TableName)
                     </dd>
                     <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.ColumnTargets)
+                        @Html.DisplayNameFor(model => model.ColumnSources)
                     </dt>
                     <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.ColumnTargets, "ColumnTargets")
+                        @Html.DisplayFor(model => model.ColumnSources, "ColumnSources")
                     </dd>
                     <dt class="col-sm-2">
                         @Html.DisplayNameFor(model => model.Description)
@@ -86,22 +86,22 @@
             <div class="hto-details">
                 <dl class="row">
                     <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.NeedsMigration)
+                        @Html.DisplayNameFor(model => model.TargetTable.RowCount)
                     </dt>
                     <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.NeedsMigration)
+                        @Html.DisplayFor(model => model.TargetTable.RowCount)
                     </dd>
                     <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.NeedsFollowUp)
+                        @Html.DisplayNameFor(model => model.NonNulls)
                     </dt>
                     <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.NeedsFollowUp)
+                        @Html.DisplayFor(model => model.NonNulls)
                     </dd>
                     <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Notes)
+                        @Html.DisplayNameFor(model => model.UseType)
                     </dt>
                     <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Notes)
+                        @Html.DisplayFor(model => model.UseType)
                     </dd>
                 </dl>
             </div>
@@ -111,19 +111,19 @@
 
 <div class="hto-relatedtitle">Target Columns</div>
 
-@if (Model.ColumnTargets != null && Model.ColumnTargets.Count > 0)
+@if (Model.ColumnSources != null && Model.ColumnSources.Count > 0)
 {
     <div class="hto-relatedlist">
         <table class="table">
             <thead>
                 <tr>
                     <th></th>
-                    <th>@Html.DisplayNameFor(c => Model.ColumnTargets.FirstOrDefault().TargetTable)</th>
-                    <th>@Html.DisplayNameFor(c => Model.ColumnTargets.FirstOrDefault().TargetColumn)</th>
+                    <th>@Html.DisplayNameFor(c => Model.ColumnSources.FirstOrDefault().TargetTable)</th>
+                    <th>@Html.DisplayNameFor(c => Model.ColumnSources.FirstOrDefault().TargetColumn)</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.ColumnTargets)
+                @foreach (var item in Model.ColumnSources)
                 {
                     <tr data-columntarget='@JsonSerializer.Serialize(item, options)'>
                         <td><span class='removetarget glyphicons glyphicons-remove-sign'></span></td>
@@ -143,9 +143,3 @@
 }
 
 
-@if (!string.IsNullOrEmpty(Model?.SourceTable?.DestinationTable) && 1 > 2)
-{
-    @await Component.InvokeAsync(nameof(TaregetTablesBranchesVC), new { tablename = Model.SourceTable.DestinationTable})
-    
-
-}
