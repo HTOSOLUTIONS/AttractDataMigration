@@ -26,6 +26,8 @@ namespace DataMigration.ViewModels
 
         public string Fullpath => _oChildPath.Fullpath;
 
+        public string? ChildUseType => _oChildPath?.ChildTable != null ? _oChildPath.ChildTable.UseType : null;
+
         public int? Records => _oChildPath?.ChildTable != null ? _oChildPath.ChildTable.RowCount : null;
 
         public int? Columns => _oChildPath?.ChildTable != null ? _oChildPath.ChildTable.ColCount : null;

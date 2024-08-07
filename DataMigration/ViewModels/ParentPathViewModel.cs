@@ -23,9 +23,28 @@ namespace DataMigration.ViewModels
 
         public string Fullpath => _oParentPath.Fullpath;
 
+        public string? ParentUseType => _oParentPath?.ParentTable != null ? _oParentPath.ParentTable.UseType : null;
+
+        public string? ParentUseDomain => _oParentPath?.ParentTable != null ? _oParentPath.ParentTable.UseDomain : null;
+
         public int? Records => _oParentPath?.ParentTable != null ? _oParentPath.ParentTable.RowCount : null;
 
         public int? Columns => _oParentPath?.ParentTable != null ? _oParentPath.ParentTable.ColCount : null;
+
+        public string? SqlInnerJoin
+        {
+            get { 
+                string? sql = null;
+                if (_oParentPath?.ForeignKey != null) {
+                    sql = " INNER JOIN [" + _oParentPath.PktableOwner + "].[" + _oParentPath.PktableName + "] ON " 
+                        + "[" + _oParentPath.PktableName + "].[" + _oParentPath.ForeignKey.PkcolumnName + "] "
+                        + " = [" + _oParentPath.FktableName + "].[" + _oParentPath.ForeignKey.FkcolumnName + "] " ;
+
+                }
+
+                return sql;
+            }
+        } 
 
 
         //public string? ChildPath => _childpath;

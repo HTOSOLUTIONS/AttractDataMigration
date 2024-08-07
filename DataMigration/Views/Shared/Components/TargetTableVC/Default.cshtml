@@ -12,89 +12,20 @@
 }
 @model TargetTableWithColumnsViewModel
 
-<h4 data-targettablename="@Model.TableName">@Html.DisplayFor(c => Model.TableName)</h4>
-<div class="hto-panel">
-    <a data-bs-toggle="collapse" href="#targettablesql" aria-expanded="false" aria-controls="targettablesql" class="collapsed">SQL Distinct Columns</a>
-</div>
-<div id="targettablesql" class="panel-collapse collapse">
-    <div spellcheck="false" class="sqlstatement">
-        @Html.Raw(Model.TSQLSelectDistinctColumns)
-    </div>
-</div>
-
-@if (Model.ChildPathsView != null && Model.ChildPathsView.ToList().Count > 0)
-{
-    @*
-
-    //To start open:
-        a tag:
-        - aria-expaned="true"
-        - class does not include 'collapsed'
-        referenced item:
-        - include 'show' in the class
-    <div class="left-menu-subhead1 collapsible"><a data-bs-toggle="collapse" href="#childpathspane" aria-expanded="true" aria-controls="childpathspane" style="text-decoration: none;">Child Paths</a></div>
-    <div id="childpathspane" class="panel-collapse collapse show">
+<a asp-controller="TargetTables" asp-action="Details" asp-all-route-data="@Model.RouteValues">
+    <h4 data-targettablename="@Model.TableName">@Html.DisplayFor(c => Model.TableName)</h4>
+</a>
 
 
-    *@
+@Html.DisplayFor(m => Model.TSQLSelectDistinctColumns, "TSQLSelectDistinctColumns")
 
 
-    <div class="left-menu-subhead1 collapsible"><a data-bs-toggle="collapse" href="#childpathspane" aria-expanded="false" aria-controls="childpathspane" class="collapsed" style="text-decoration: none;">Child Paths</a></div>
-    <div id="childpathspane" class="panel-collapse collapse">
-        <table class="table">
-            @foreach (var item in Model.ChildPathsView)
-            {
-                <tr>
-                    <td>
-                        <p>@Html.DisplayFor(c => item.ChildPath, "TablePaths")</p>
-                    </td>
-                    <td>
-                        <p>@Html.DisplayFor(c => item.FktableOwner)</p>
-                    </td>
-                    <td>
-                        <p>@Html.DisplayFor(c => item.FktableName)</p>
-                    </td>
-                    <td>
-                        <p>@Html.DisplayFor(c => item.Records)</p>
-                    </td>
-                </tr>
-            }
-
-        </table>
-
-    </div>
-}
-
-@if (Model.ParentPathsView != null && Model.ParentPathsView.ToList().Count > 0)
-{
-    <div class="left-menu-subhead1 collapsible"><a data-bs-toggle="collapse" href="#parentpathspane" aria-expanded="false" aria-controls="parentpathspane" class="collapsed" style="text-decoration: none;">Parent Paths</a></div>
-    <div id="parentpathspane" class="panel-collapse collapse">
-        <table class="table">
-
-            @foreach (var item in Model.ParentPathsView.OrderBy(c => c.ParentPath))
-            {
-                <tr>
-                    <td>
-                        <p>@Html.DisplayFor(c => item.ParentPath, "TablePaths")</p>
-                    </td>
-                    <td>
-                        <p>@Html.DisplayFor(c => item.PktableOwner)</p>
-                    </td>
-                    <td>
-                        <p>@Html.DisplayFor(c => item.PktableName)</p>
-                    </td>
-                    <td>
-                        <p>@Html.DisplayFor(c => item.Records)</p>
-                    </td>
-                </tr>
-            }
+@await Html.PartialAsync("ChildPathsView", Model.ChildPathsView)
 
 
-        </table>
+@Html.DisplayFor(m => Model.ParentPathsView, "ParentPathsView")
 
-    </div>
 
-}
 
 
 
@@ -106,11 +37,6 @@
             <tr>
                 <th>@Html.DisplayNameFor(c => Model.Columns.FirstOrDefault().ColumnName)</th>
                 <th>@Html.DisplayNameFor(c => Model.Columns.FirstOrDefault().DataType)</th>
-                @*
-            <th>@Html.DisplayNameFor(c => Model.Columns.FirstOrDefault().SourceTable)</th>
-            <th>@Html.DisplayNameFor(c => Model.Columns.FirstOrDefault().SourceColumn)</th>
-
-                *@
                 <th>@Html.DisplayNameFor(c => Model.Columns.FirstOrDefault().ColumnSources)</th>
                 <th>@Html.DisplayNameFor(c => Model.Columns.FirstOrDefault().NonNulls)</th>
                 <th>@Html.DisplayNameFor(c => Model.Columns.FirstOrDefault().DistinctValues)</th>
@@ -125,11 +51,6 @@
             <tr data-targetcolumn='@JsonSerializer.Serialize(column, options)' @dClass>
                 <td>@Html.DisplayFor(c => column.ColumnName)</td>
                 <td>@Html.DisplayFor(c => column.DataType)</td>
-                @*
-        <td class="sourcetable">@Html.DisplayFor(c => column.SourceTable)</td>
-        <td class="sourcecolumn">@Html.DisplayFor(c => column.SourceColumn)</td>
-
-                *@
                 <td class="columnsources" style="max-width: 50px; overflow: visible;">@Html.DisplayFor(c => column.ColumnSources, "ColumnSources")</td>
                 <td>@Html.DisplayFor(c => column.NonNulls)</td>
                 <td>@Html.DisplayFor(c => column.DistinctValues)</td>

@@ -30,9 +30,15 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label" for="Symbol">Non-Tenant Schemas:</label>
+                    <label class="control-label" for="xNonProductionData">Non-Tenant Schemas:</label>
                     <div>
                         <booleanyesnonull asp-for="xNonProductionData" current-value="@ViewBag.xNonProductionData"></booleanyesnonull>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="vt_Tables">vt_ Tables:</label>
+                    <div>
+                        <booleanyesnonull asp-for="vt_Tables" current-value="@ViewBag.vt_Tables"></booleanyesnonull>
                     </div>
                 </div>
 

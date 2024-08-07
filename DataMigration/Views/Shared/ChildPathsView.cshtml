@@ -1,0 +1,57 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<ChildPathViewModel>
+
+@if (Model != null && Model.ToList().Count > 0)
+{
+    @*
+
+    //To start open:
+        a tag:
+        - aria-expaned="true"
+        - class does not include 'collapsed'
+        referenced item:
+        - include 'show' in the class
+    <div class="left-menu-subhead1 collapsible"><a data-bs-toggle="collapse" href="#childpathspane" aria-expanded="true" aria-controls="childpathspane" style="text-decoration: none;">Child Paths</a></div>
+    <div id="childpathspane" class="panel-collapse collapse show">
+
+
+    *@
+
+
+    <div class="hto-panel">
+        <a data-bs-toggle="collapse" href="#childpathspane" aria-expanded="false" aria-controls="childpathspane" class="collapsed">Child Paths</a>
+    </div>
+    <div id="childpathspane" class="panel-collapse collapse">
+        <table class="table">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <p>@Html.DisplayFor(c => item.ChildPath, "TablePaths")</p>
+                    </td>
+                    <td>
+                        <p>@Html.DisplayFor(c => item.FktableOwner)</p>
+                    </td>
+                    <td>
+                        <p>@Html.DisplayFor(c => item.FktableName)</p>
+                    </td>
+                    <td>
+                        <p>@Html.DisplayFor(c => item.ChildUseType)</p>
+                    </td>
+                    <td>
+                        <p>@Html.DisplayFor(c => item.Records)</p>
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+    </div>
+}
+
+
+

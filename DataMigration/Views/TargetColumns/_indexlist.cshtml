@@ -31,6 +31,9 @@
                 @Html.DisplayNameFor(model => viewList.FirstOrDefault().TableName)
             </th>
             <th>
+                @Html.DisplayNameFor(model => viewList.FirstOrDefault().TargetTable.UseType)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => viewList.FirstOrDefault().ColumnName)
             </th>
             <th>
@@ -53,6 +56,9 @@
                     <a asp-controller="TargetTables" asp-action="Details" asp-all-route-data="@item.TargetTable.RouteValues">
                         @Html.DisplayFor(modelItem => item.TableName)
                     </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TargetTable.UseType)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ColumnName)

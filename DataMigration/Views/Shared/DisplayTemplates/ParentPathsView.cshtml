@@ -1,0 +1,65 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<ParentPathViewModel>
+
+@if (Model != null && Model.ToList().Count > 0)
+{
+    <div class="hto-panel">
+        <a data-bs-toggle="collapse" href="#parentpathspane" aria-expanded="false" aria-controls="parentpathspane" class="collapsed">Parent Paths</a>
+    </div>
+    <div id="parentpathspane" class="panel-collapse collapse">
+
+        @foreach (var useType in Model.ToList().GroupBy(p => p.ParentUseType))
+        {
+            <div class="listgroupkey">@Html.Raw("Table Use: " + useType.Key)</div>
+            <table class="table">
+
+                @foreach (var pkTable in useType.GroupBy(c => new { c.PktableName, c.PktableOwner, c.ParentUseDomain, c.Records }))
+                {
+
+                    <tr>
+                        <td>
+                            <p>@Html.DisplayFor(c => pkTable.Key.PktableOwner)</p>
+                        </td>
+                        <td>
+                            <p>@Html.DisplayFor(c => pkTable.Key.PktableName)</p>
+                            <p>@Html.DisplayFor(c => pkTable.FirstOrDefault().SqlInnerJoin)</p>
+                        </td>
+                        <td>
+                            <p>@Html.DisplayFor(c => pkTable.Key.Records)</p>
+                        </td>
+                        <td>
+                            <p>@Html.DisplayFor(c => pkTable.Key.ParentUseDomain)</p>
+                        </td>
+                    </tr>
+                    @foreach (var path in pkTable.ToList())
+                    {
+                        <tr>
+                            <td>
+                            </td>
+                            <td>
+                                <p>@Html.DisplayFor(c => path.ParentPath, "TablePaths")</p>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+
+                    }
+
+                }
+
+
+            </table>
+
+        }
+
+
+
+    </div>
+
+}

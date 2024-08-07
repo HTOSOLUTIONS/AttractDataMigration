@@ -20,7 +20,7 @@
     <PackageReference Include="Sakura.AspNetCore.PagedList.Abstractions" Version="3.0.0" />
     <PackageReference Include="Sakura.AspNetCore.PagedList.Async" Version="1.1.1" />
     <PackageReference Include="SourceDDContext" Version="1.7.0" />
-    <PackageReference Include="TargetDDContext" Version="1.6.0" />
+    <PackageReference Include="TargetDDContext" Version="1.8.0" />
   </ItemGroup>
 
   <ItemGroup>

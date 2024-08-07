@@ -1,0 +1,65 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<TargetColumnViewModel>
+
+@if (Model != null)
+{
+
+    @foreach (var useType in Model.GroupBy(c => c.UseType).OrderBy(g => g.Key))
+    {
+        <p>Use type:  @Html.Raw(useType.Key)</p>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => Model.FirstOrDefault().ColumnName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => Model.FirstOrDefault().DataType)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => Model.FirstOrDefault().ColumnSources)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => Model.FirstOrDefault().NonNulls)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => Model.FirstOrDefault().DistinctValues)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var column in useType.ToList())
+                {
+                    <tr>
+
+                        <td>@Html.DisplayFor(c => column.ColumnName)</td>
+                        <td>@Html.DisplayFor(c => column.DataType)</td>
+                        <td>@Html.DisplayFor(c => column.ColumnSources, "ColumnSources")</td>
+                        <td>@Html.DisplayFor(c => column.NonNulls)</td>
+                        <td>@Html.DisplayFor(c => column.DistinctValues)</td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+
+        </table>
+
+
+
+
+
+
+    }
+
+
+
+}

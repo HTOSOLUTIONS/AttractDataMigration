@@ -1,0 +1,16 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+}
+@model string
+
+<div class="hto-panel">
+    <a data-bs-toggle="collapse" href="#targettablesql" aria-expanded="false" aria-controls="targettablesql" class="collapsed">SQL Distinct Columns</a>
+</div>
+<div id="targettablesql" class="panel-collapse collapse">
+    <div spellcheck="false" class="sqlstatement">
+        @Html.Raw(Model)
+    </div>
+</div>

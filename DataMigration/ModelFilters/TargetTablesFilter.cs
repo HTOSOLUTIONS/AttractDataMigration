@@ -14,6 +14,8 @@ namespace DataMigration.ModelFilters
 
         public bool? xNonProductionData { get; set; }
 
+        public bool? vt_Tables { get; set; }
+
 
         public override void SetFilter(ClaimsPrincipal user)
         {
@@ -41,6 +43,21 @@ namespace DataMigration.ModelFilters
                 } else
                 {
                     selectfilter = selectfilter.And(c => nonproductionschemas.Contains(c.TableSchema.ToUpper()));
+
+                }
+                filterOn = true;
+
+            }
+            if (vt_Tables != null)
+            {
+
+                if (vt_Tables == false)
+                {
+                    selectfilter = selectfilter.And(c => !c.TableName.ToUpper().Contains("vt_") && !c.TableName.ToUpper().Contains("v_"));
+                }
+                else
+                {
+                    selectfilter = selectfilter.And(c => c.TableName.ToUpper().Contains("vt_") || c.TableName.ToUpper().Contains("v_"));
 
                 }
                 filterOn = true;

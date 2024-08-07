@@ -173,11 +173,16 @@ namespace DataMigration.Controllers
         private async Task<TargetDDContext.Models.Table?> _getRecord(string tableschema, string tablename)
         {
             var dbrecord = await _dbcontext.Tables
-                .Include(m => m.Columns)
-                .ThenInclude(c => c.ColumnSources)
-                .Include(m => m.ChildPaths)
-                .Include(m => m.ParentPaths)
-                .FirstOrDefaultAsync(m => m.TableSchema == tableschema && m.TableName == tablename);
+                .Include(c => c.Columns)
+                .ThenInclude(m => m.ColumnSources)
+                .Include(c => c.ParentPaths)
+                .ThenInclude(pp => pp.ParentTable)
+                .Include(c => c.ParentPaths)
+                .ThenInclude(pp => pp.ForeignKey)
+                .Include(c => c.ChildPaths)
+                .ThenInclude(cp => cp.ChildTable)
+                .Where(c => c.TableName == tablename)
+                .FirstOrDefaultAsync();
 
             return dbrecord;
 
