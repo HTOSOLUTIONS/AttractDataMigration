@@ -8,6 +8,9 @@
     var displayString = "";
     if (!string.IsNullOrEmpty(Model))
     {
+
+        string connector = "<span class='glyphicons glyphicons-arrow-right joiner'></span>";
+
         var links = new List<string>();
         var pathparts = Model.Split("~");
         @foreach (var part in pathparts)
@@ -16,7 +19,7 @@
         }
         if (links.Count > 0)
         {
-            displayString = string.Join("~", links);
+            displayString = string.Join(connector, links);
 
         }
 

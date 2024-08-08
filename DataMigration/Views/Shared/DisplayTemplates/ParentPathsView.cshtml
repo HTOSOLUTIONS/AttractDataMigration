@@ -7,54 +7,53 @@
 
 @if (Model != null && Model.ToList().Count > 0)
 {
-    <div class="hto-panel">
+    <div class="hto-panel collapser">
         <a data-bs-toggle="collapse" href="#parentpathspane" aria-expanded="false" aria-controls="parentpathspane" class="collapsed">Parent Paths</a>
     </div>
     <div id="parentpathspane" class="panel-collapse collapse">
 
         @foreach (var useType in Model.ToList().GroupBy(p => p.ParentUseType))
         {
+
             <div class="listgroupkey">@Html.Raw("Table Use: " + useType.Key)</div>
-            <table class="table">
+            @foreach (var pkTable in useType.GroupBy(c => new { c.PktableName, c.PktableOwner, c.ParentUseDomain, c.Records }))
+            {
+                var tablepaneId = pkTable.Key.PktableName + "pane";
 
-                @foreach (var pkTable in useType.GroupBy(c => new { c.PktableName, c.PktableOwner, c.ParentUseDomain, c.Records }))
-                {
-
+                <div class="hto-panel">
+                    <a data-bs-toggle="collapse" href="#@tablepaneId" aria-expanded="false" aria-controls="@tablepaneId" class="collapsed listgroupkey">
+                        @Html.DisplayFor(c => pkTable.Key.PktableOwner).@Html.DisplayFor(c => pkTable.Key.PktableName)
+                    </a>
+                </div>
+                <table>
+                    <tr>
+                        <td><p class="sqlcode">@Html.DisplayFor(c => pkTable.FirstOrDefault().SqlInnerJoin)</p></td>
+                    </tr>
                     <tr>
                         <td>
-                            <p>@Html.DisplayFor(c => pkTable.Key.PktableOwner)</p>
-                        </td>
-                        <td>
-                            <p>@Html.DisplayFor(c => pkTable.Key.PktableName)</p>
-                            <p>@Html.DisplayFor(c => pkTable.FirstOrDefault().SqlInnerJoin)</p>
-                        </td>
-                        <td>
-                            <p>@Html.DisplayFor(c => pkTable.Key.Records)</p>
+                            <p>Records:  @Html.DisplayFor(c => pkTable.Key.Records)</p>
                         </td>
                         <td>
                             <p>@Html.DisplayFor(c => pkTable.Key.ParentUseDomain)</p>
                         </td>
                     </tr>
+
+                </table>
+                <div id="@tablepaneId" class="panel-collapse collapse">
                     @foreach (var path in pkTable.ToList())
                     {
-                        <tr>
-                            <td>
-                            </td>
-                            <td>
-                                <p>@Html.DisplayFor(c => path.ParentPath, "TablePaths")</p>
-                            </td>
-                            <td>
-                            </td>
-                            <td>
-                            </td>
-                        </tr>
-
+                        <p data-foreignkey="@path.FkName" class="parentpath">
+                            <span data-parentpath="@path.ParentPath" class="glyphicons glyphicons-circle-arrow-right"></span>
+                            @Html.DisplayFor(c => path.ParentPath, "TablePaths")
+                        </p>
                     }
 
-                }
+                </div>
 
 
-            </table>
+
+            }
+
 
         }
 

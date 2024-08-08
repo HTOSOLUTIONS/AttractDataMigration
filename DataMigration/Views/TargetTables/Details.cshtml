@@ -11,7 +11,27 @@
 
 @section Scripts {
 
+
+    <script src="~/js/htomodalmgr.js" asp-append-version="true"></script>
+    <script src="~/js/htomodalmgrconfig.js" asp-append-version="true"></script>
+
+    <script src="~/lib/jqueryui/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="~/lib/jqueryui/jquery-ui.min.css" asp-append-version="true" />
+
+
     <script>
+
+        var htoconfigbuilder = new htoModalConfigBuilder();
+        
+        var snapshotmodalconfig = htoconfigbuilder.getForeignKeySnapshotModalConfig();
+        var snapshotmodalmgr = new htoModalMgr(snapshotmodalconfig);
+
+        var fullparentpathmodalconfig = htoconfigbuilder.getFullParentPathModalConfig();
+        var fullparentpathmodalmgr = new htoModalMgr(fullparentpathmodalconfig);
+
+        var targettablesnapshotmodalconfig = htoconfigbuilder.getTargetTableSnapshotModalConfig();
+        var targettablesnapshotmodalmgr = new htoModalMgr(targettablesnapshotmodalconfig);
+
 
         $(document).ready(function () {
 
@@ -27,11 +47,62 @@
                 var nameparts = tablewithschema.split(".");
                 var schemaname = nameparts[0];
                 var tablename = nameparts[1];
-                window.location.href = "/TargetTables/Details?tablename=" + tablename + "&tableschema=" + schemaname;
+                //window.location.href = "/TargetTables/Details?tablename=" + tablename + "&tableschema=" + schemaname;
+
+                var parms = {
+                    tableschema: schemaname,
+                    tablename: tablename
+                };
+
+                targettablesnapshotmodalmgr.loadModalParams(parms);
+
+
             });
+
+            $("span.glyphicons.joiner").on("click", function () {
+
+                showJoinDetails(this);
+
+            });
+
+            $("[data-parentpath]").on("click", function () {
+
+                var ftn = $("[data-fulltablename]").data("fulltablename");
+
+                console.log($(this).data("parentpath") + ftn);
+                var parms = {
+                    fullpath: $(this).data("parentpath") + ftn
+                }
+
+                fullparentpathmodalmgr.loadModalParams(parms);
+
+            });
+
 
         }
 
+
+        function showJoinDetails(joiner) {
+
+            var child = $(joiner).next().html();
+            var parent = $(joiner).prev().html();
+            
+            if (child.length > 0 && parent.length > 0) {
+
+                var parms = {
+
+                    parenttable: parent,
+                    childtable: child
+
+                };
+
+                snapshotmodalmgr.loadModalParams(parms);
+
+
+            }
+
+
+        }
 
 
     </script>
@@ -45,7 +116,7 @@
 
 <crud-links record-controls="@Model.RowCtrls" last-action="@ActionHistory.GetLastHistoryItem(ViewContext.HttpContext)" class="crudctrls"></crud-links>
 
-<div class="hto-rtitle">Target Table:  @Html.DisplayFor(model => model.TableName)</div>
+<div data-fulltablename="@Model.FullTableName" class="hto-rtitle">Target Table: @Html.DisplayFor(model => model.FullTableName)</div>
 
 
 <div class="container-fluid">

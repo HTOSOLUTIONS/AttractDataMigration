@@ -71,6 +71,11 @@ namespace DataMigration.ViewModels
 
         }
 
+
+        [Display(Name = "Table Name")]
+        public string FullTableName => TableSchema + "." + TableName;
+
+
         [Display(Name = "Table Schema")]
         public string TableSchema { get => _targetTable?.TableSchema != null ? _targetTable.TableSchema : ""; }
 

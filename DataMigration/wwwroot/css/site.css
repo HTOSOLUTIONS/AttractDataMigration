@@ -20,3 +20,40 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+p.parentpath {
+    overflow-wrap: anywhere;
+    font-style: italic;
+    font-size: .9em;
+    text-indent: -10px;
+    padding-left: 15px;
+}
+
+p.sqlcode {
+    text-indent: -10px;
+    padding-left: 15px;
+}
+
+.listgroupkey {
+    border: 1px solid grey;
+    border-radius: 5px;
+    padding: 8px;
+    margin-bottom: 5px;
+}
+
+.hto-panel.collapser {
+    border-radius: 5px;
+    padding: 8px;
+    margin-bottom: 5px;
+    background-color: lightsteelblue;
+}
+
+span.glyphicons.joiner {
+    margin-left: 25px;
+}
+
+span.glyphicons.joiner:hover {
+
+    cursor: pointer;
+
+}

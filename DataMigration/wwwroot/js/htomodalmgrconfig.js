@@ -182,6 +182,56 @@ function htoModalConfigBuilder() {
         return modalconfig;
     }
 
+    this.getForeignKeySnapshotModalConfig = function () {
+        var modalconfig = {
+            formid: "#foreignkeysnapshot",
+            configBeforeOpen: true,
+            openAfterLoad: true,
+            baseurl: "/TargetTables/ForeignKeySnapshot",
+            dialogoptions: {
+                title: "Foreign Key Snapshot",
+                maxWidth: "800px"
+            }
+
+        };
+
+        return modalconfig;
+    }
+
+    this.getTargetTableSnapshotModalConfig = function () {
+        var modalconfig = {
+            formid: "#targettablesnapshot",
+            configBeforeOpen: true,
+            openAfterLoad: true,
+            baseurl: "/TargetTables/Snapshot",
+            dialogoptions: {
+                title: "Target Table Snapshot",
+                maxWidth: "800px"
+            }
+
+        };
+
+        return modalconfig;
+    }
+
+
+
+    this.getFullParentPathModalConfig = function () {
+
+        var modalconfig = {
+            formid: "#fullparentpathmodal",
+            configBeforeOpen: true,
+            openAfterLoad: true,
+            baseurl: "/TargetTables/FullParentPath",
+            dialogoptions: {
+                title: "Full Parent Path",
+                maxWidth: "800px"
+            }
+
+        };
+
+        return modalconfig;
+    }
 
 
 

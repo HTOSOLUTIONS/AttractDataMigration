@@ -8,12 +8,14 @@ namespace DataMigration.ViewModels
         private readonly string _fktablename;
         private readonly string _childpath;
         private readonly FamilyPath _oParentPath;
+        //private readonly ForeignKeyViewModel _foreignKeyViewModel;
 
         //, string fktablowner, string fktablename, string childpath
 
         public ParentPathViewModel(FamilyPath familypath)
         {
             _oParentPath = familypath;
+            //_foreignKeyViewModel = new ForeignKeyViewModel(_oParentPath.ForeignKey);
 
         }
 
@@ -22,6 +24,8 @@ namespace DataMigration.ViewModels
         public string PktableName => _oParentPath.PktableName;
 
         public string Fullpath => _oParentPath.Fullpath;
+
+        public string FkName => _oParentPath.FkName;
 
         public string? ParentUseType => _oParentPath?.ParentTable != null ? _oParentPath.ParentTable.UseType : null;
 
@@ -44,7 +48,9 @@ namespace DataMigration.ViewModels
 
                 return sql;
             }
-        } 
+        }
+
+        //public ForeignKeyViewModel ForeignKey => _foreignKeyViewModel;
 
 
         //public string? ChildPath => _childpath;

@@ -1,0 +1,20 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model TargetTableWithColumnsViewModel
+
+
+<div class="snapshot">
+
+    <div data-fulltablename="@Model.FullTableName" class="hto-rtitle">
+        <a asp-controller="TargetTables" asp-action="Details" asp-all-route-data="@Model.RouteValues">@Html.DisplayFor(model => model.FullTableName)</a>
+    </div>
+
+    <div spellcheck="false" class="sqlstatement">
+        @Html.Raw(Model.TSQLSelectNonNullColumns)
+    </div>
+
+
+</div>

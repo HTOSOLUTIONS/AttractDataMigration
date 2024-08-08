@@ -1,0 +1,21 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model ForeignKeyViewModel
+
+<form id="foreignkeysnapshot">
+</form>
+
+<table class="table">
+    <tr>
+        <td>Parent Path</td>
+        <td><p class="sqlcode">@Html.DisplayFor(m => Model.SqlJoinParent)</p></td>
+    </tr>
+    <tr>
+        <td>Child Path</td>
+        <td><p class="sqlcode">@Html.DisplayFor(m => Model.SqlJoinChildren)</p></td>
+    </tr>
+
+</table>

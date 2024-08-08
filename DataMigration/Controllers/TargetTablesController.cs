@@ -97,6 +97,26 @@ namespace DataMigration.Controllers
         }
 
 
+        public async Task<IActionResult> Snapshot(string tableschema, string tablename)
+        {
+            if (string.IsNullOrEmpty(tableschema) || string.IsNullOrEmpty(tablename))
+            {
+                return NotFound();
+            }
+
+            var dbrecord = await _getRecord(tableschema, tablename);
+
+            if (dbrecord == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView(new TargetTableWithColumnsViewModel(dbrecord));
+
+
+        }
+
+
         public async Task<IActionResult> Edit(string tableschema, string tablename)
         {
             if (string.IsNullOrEmpty(tableschema) || string.IsNullOrEmpty(tablename))
@@ -166,6 +186,68 @@ namespace DataMigration.Controllers
         public IActionResult TargetTableVC(string tablename)
         {
             return ViewComponent(nameof(TargetTableVC), new { tablename });
+        }
+
+
+        public async Task<IActionResult> ForeignKeySnapshot(string? parenttable, string? childtable)
+        {
+            if (string.IsNullOrEmpty(parenttable) || string.IsNullOrEmpty(childtable))
+            {
+                return RedirectToAction("AjaxNotFound", "Home", new { message ="Insufficient paramters" });
+            }
+            var parentParts = parenttable.Split(".");
+            var childParts = childtable.Split(".");
+
+            var keyrelationship = await _dbcontext.ForeignKeys
+                .Where(k => k.PktableOwner == parentParts[0] && k.PktableName == parentParts[1] && k.FktableOwner == childParts[0] && k.FktableName == childParts[1])
+                .FirstOrDefaultAsync();
+
+            if (keyrelationship == null)
+            {
+                return RedirectToAction("AjaxNotFound", "Home", new { message = "No relationship found." });
+
+            }
+            var viewModel = new ForeignKeyViewModel(keyrelationship);
+            return PartialView(viewModel);
+
+
+        }
+
+
+        public async Task<IActionResult> FullParentPath(string? fullpath)
+        {
+            if (string.IsNullOrEmpty(fullpath) )
+            {
+                return RedirectToAction("AjaxNotFound", "Home", new { message = "Insufficient paramters" });
+            }
+            var fullpathParts = fullpath.Split("~");
+            Array.Reverse(fullpathParts);
+
+            var foreignKeys = new List<ForeignKeyViewModel>();
+
+            for (int i = 1; i < fullpathParts.Length; i++)
+            {
+                var parenttable = fullpathParts[i];
+                var childtable = fullpathParts[i -1 ];
+
+                var parentParts = parenttable.Split(".");
+                var childParts = childtable.Split(".");
+
+                var keyrelationship = await _dbcontext.ForeignKeys
+                    .Where(k => k.PktableOwner == parentParts[0] && k.PktableName == parentParts[1] && k.FktableOwner == childParts[0] && k.FktableName == childParts[1])
+                    .FirstOrDefaultAsync();
+
+                if (keyrelationship != null)
+                {
+                    foreignKeys.Add(new ForeignKeyViewModel(keyrelationship));
+                }
+
+            }
+
+
+            return PartialView(foreignKeys);
+
+
         }
 
 

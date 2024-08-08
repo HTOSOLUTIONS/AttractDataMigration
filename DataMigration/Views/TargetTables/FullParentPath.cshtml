@@ -1,0 +1,26 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var level = 0;
+}
+@model List<ForeignKeyViewModel>
+
+<div>
+
+    <p class="sqlcode">
+        @foreach (var item in Model)
+        {
+            level++;
+            var className = "joinlevel" + level;
+
+            <span class="@className">@Html.DisplayFor(m => item.SqlJoinParent)</span>
+
+            <br />
+
+        }
+
+    </p>
+
+
+</div>
