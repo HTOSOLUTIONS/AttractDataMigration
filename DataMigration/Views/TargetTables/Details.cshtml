@@ -32,6 +32,9 @@
         var targettablesnapshotmodalconfig = htoconfigbuilder.getTargetTableSnapshotModalConfig();
         var targettablesnapshotmodalmgr = new htoModalMgr(targettablesnapshotmodalconfig);
 
+        var targettablecreatesqlmodalconfig = htoconfigbuilder.getTargetTableCreateSQLModalConfig();
+        var targettablecreatesqlmodalmgr = new htoModalMgr(targettablecreatesqlmodalconfig);
+
 
         $(document).ready(function () {
 
@@ -101,6 +104,17 @@
 
             }
 
+
+        }
+
+        function showCreateSQL() {
+            var parms = {
+
+                tableschema: 'acc',
+                tablename: 'accounts'
+
+            };
+            targettablecreatesqlmodalmgr.loadModalParams(parms);
 
         }
 

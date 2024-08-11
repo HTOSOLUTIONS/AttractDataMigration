@@ -1,6 +1,7 @@
 ﻿using HTOTools;
 using TargetDDContext.Models;
 using System.ComponentModel.DataAnnotations;
+using DataMigration.Services.HTOTools;
 
 
 namespace DataMigration.ViewModels
@@ -53,6 +54,9 @@ namespace DataMigration.ViewModels
 
 
         }
+
+        [Display(Name = "Snake Case")]
+        public string ColumnNameSnakeCase => _targetColumn.ColumnName.ToSnakeCase2();
 
 
         [Display(Name = "Table Schema")]

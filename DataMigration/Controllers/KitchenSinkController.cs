@@ -4,6 +4,7 @@ using IDataMigrations.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SourceDDContext.Data;
+using SQLTools;
 using TargetDDContext.Data;
 
 namespace DataMigration.Controllers
@@ -13,16 +14,16 @@ namespace DataMigration.Controllers
         private readonly SourceDDDbContext _srcdbcontext;
         private readonly TargetDDDbContext _tgtdbcontext;
         private readonly IKitchenSink _kitchensink;
+        private readonly ISQLWriter _sQLWriter;
 
 
-
-        public KitchenSinkController(SourceDDDbContext srcdb, TargetDDDbContext tgtdb, IKitchenSink kitchenSink)
+        public KitchenSinkController(SourceDDDbContext srcdb, TargetDDDbContext tgtdb, IKitchenSink kitchenSink, ISQLWriter sQLWriter)
         {
 
             _srcdbcontext = srcdb;
             _tgtdbcontext = tgtdb;
             _kitchensink = kitchenSink;
-
+            _sQLWriter = sQLWriter;
         }
 
 

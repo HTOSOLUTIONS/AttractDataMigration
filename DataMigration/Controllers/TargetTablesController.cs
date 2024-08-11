@@ -6,6 +6,7 @@ using HTOTools.Implementations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sakura.AspNetCore;
+using SQLTools;
 using TargetDDContext.Data;
 
 
@@ -15,12 +16,14 @@ namespace DataMigration.Controllers
     {
         private readonly TargetDDDbContext _dbcontext;
         private IIndexFilterManager _filtermanager;
+        private readonly ISQLWriter _sQLWriter;
 
         public TargetTablesController(TargetDDDbContext dbcontext,
-            IIndexFilterManager filtermanager) { 
+            IIndexFilterManager filtermanager, ISQLWriter sQLWriter) { 
 
             _dbcontext = dbcontext;
             _filtermanager = filtermanager;
+            _sQLWriter = sQLWriter;
         }
 
 
@@ -133,6 +136,31 @@ namespace DataMigration.Controllers
 
 
             return View(new TargetTableWithColumnsViewModel(dbrecord));
+        }
+
+        public async Task<IActionResult> CreateSQLStatement(string tableschema, string tablename)
+        {
+
+            if (string.IsNullOrEmpty(tableschema) || string.IsNullOrEmpty(tablename))
+            {
+                return NotFound();
+            }
+
+            var dbrecord = await _getRecord(tableschema, tablename);
+
+            if (dbrecord == null)
+            {
+                return NotFound();
+            }
+
+            WriteParms parms = new WriteParms() { UseBrackets = true};
+            var sql = _sQLWriter.CreateTable(dbrecord, parms);
+
+            SQLStatementViewModel vm = new SQLStatementViewModel() { SQLStatement = sql };
+
+            return PartialView("SQLStatement",vm);
+
+
         }
 
 
@@ -257,12 +285,15 @@ namespace DataMigration.Controllers
             var dbrecord = await _dbcontext.Tables
                 .Include(c => c.Columns)
                 .ThenInclude(m => m.ColumnSources)
+                .Include(c => c.Columns)
+                .ThenInclude(m => m.DefaultConstraints)
                 .Include(c => c.ParentPaths)
                 .ThenInclude(pp => pp.ParentTable)
                 .Include(c => c.ParentPaths)
                 .ThenInclude(pp => pp.ForeignKey)
                 .Include(c => c.ChildPaths)
                 .ThenInclude(cp => cp.ChildTable)
+                .Include(c => c.PrimaryKeys)
                 .Where(c => c.TableName == tablename)
                 .FirstOrDefaultAsync();
 

@@ -214,6 +214,21 @@ function htoModalConfigBuilder() {
         return modalconfig;
     }
 
+    this.getTargetTableCreateSQLModalConfig = function () {
+        var modalconfig = {
+            formid: "#targettablesnapshot",
+            configBeforeOpen: true,
+            openAfterLoad: true,
+            baseurl: "/TargetTables/CreateSQLStatement",
+            dialogoptions: {
+                title: "Target Table Create Statement",
+                maxWidth: "800px"
+            }
+
+        };
+
+        return modalconfig;
+    }
 
 
     this.getFullParentPathModalConfig = function () {

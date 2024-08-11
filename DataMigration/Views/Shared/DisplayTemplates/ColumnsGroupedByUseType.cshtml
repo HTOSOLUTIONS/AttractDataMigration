@@ -30,6 +30,9 @@
                     <th>
                         @Html.DisplayNameFor(model => Model.FirstOrDefault().DistinctValues)
                     </th>
+                    <th>
+                        @Html.DisplayNameFor(model => Model.FirstOrDefault().ColumnNameSnakeCase)
+                    </th>
                     <th></th>
                 </tr>
             </thead>
@@ -44,6 +47,7 @@
                         <td>@Html.DisplayFor(c => column.ColumnSources, "ColumnSources")</td>
                         <td>@Html.DisplayFor(c => column.NonNulls)</td>
                         <td>@Html.DisplayFor(c => column.DistinctValues)</td>
+                        <td>@Html.DisplayFor(c => column.ColumnNameSnakeCase)</td>
 
                     </tr>
                 }

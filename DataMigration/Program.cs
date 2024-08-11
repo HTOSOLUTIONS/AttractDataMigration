@@ -8,6 +8,7 @@ using DataMigration.Services.KitchenSink;
 using HTOTools;
 using HTOTools.UserHistoryManager;
 using DataMigration.Services.HTOTools.Implementations;
+using SQLTools;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +47,7 @@ builder.Services.AddTransient<IKitchenSink, KitchenSink>();
 builder.Services.AddTransient<IIndexFilterManager, IndexFilterManager>();
 
 builder.Services.AddTransient<IUserHistoryManager, MTUserHistoryManager>();
+builder.Services.AddTransient<ISQLWriter, SQLWriter>();
 
 var app = builder.Build();
 
