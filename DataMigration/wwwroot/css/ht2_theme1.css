@@ -1685,6 +1685,13 @@ input[type="radio"].hto-form-radio:checked::before {
     transform: rotate(40deg);
 }
 
+.hto-radio-group.sm input[type="radio"].hto-form-radio:checked::before {
+    left: unset;
+    top: unset;
+}
+
+
+
 input[type="radio"].hto-form-radio:hover {
     background-color: #f7f7f7;
 }
@@ -1717,11 +1724,24 @@ label.hto-form-radio:first-of-type {
     min-width: 20px;
 }
 
+.hto-radio-group.sm input[type="radio"].hto-form-radio {
+    max-height: 15px;
+    min-width: 15px;
+    height: 15px;
+    width: 15px;
+}
+
+
+
 span.hto-form-radio {
     margin: 0 0;
     padding-right: 2em;
     vertical-align: top;
     display: inline-block;
+}
+
+.hto-radio-group.sm span.hto-form-radio {
+    font-size: .8em;
 }
 
 

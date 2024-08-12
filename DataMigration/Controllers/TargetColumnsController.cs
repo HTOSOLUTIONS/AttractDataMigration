@@ -164,6 +164,53 @@ namespace DataMigration.Controllers
         }
 
 
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        //[Bind("MigrationHistoryId,Description,DateTime")]
+        public async Task<JsonResult> EditModal(string tableschema, string tablename, string columnname, TargetDDContext.Models.Column viewmodel)
+        {
+            if (string.IsNullOrEmpty(tableschema) || string.IsNullOrEmpty(tablename) || string.IsNullOrEmpty(columnname))
+            {
+                Response.StatusCode = 404;
+                return new JsonResult(new { responseText = "Insufficient Parameters" });
+            }
+
+            ModelState.Remove<TargetDDContext.Models.Column>(c => c.Table);
+            ModelState.Remove<TargetDDContext.Models.Column>(c => c.TableCatalog);
+            ModelState.Remove<TargetDDContext.Models.Column>(c => c.IDDTable);
+
+            if (ModelState.IsValid)
+            {
+                var dbrecord = await _getRecord(tableschema, tablename, columnname);
+
+                if (dbrecord == null)
+                {
+                    Response.StatusCode = 404;
+                    return new JsonResult(new { responseText = "Insufficient Parameters" });
+                }
+
+                try
+                {
+                    dbrecord.NeedsMigration = viewmodel.NeedsMigration;
+                    _dbcontext.Update(dbrecord);
+                    await _dbcontext.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    Response.StatusCode = 404;
+                    return new JsonResult(new { responseText = "Concurrency exception" });
+                }
+                //return RedirectToAction(nameof(Index));
+                return new JsonResult(dbrecord);
+            }
+            else
+            {
+                Response.StatusCode = 404;
+                return new JsonResult(new { responseText = "Invalid model." });
+
+            }
+        }
+
 
         private async Task<TargetDDContext.Models.Column?> _getRecord(string tableschema, string tablename, string columnname)
         {

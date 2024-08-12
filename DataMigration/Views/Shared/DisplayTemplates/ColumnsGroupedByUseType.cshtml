@@ -48,7 +48,7 @@
                         <td>@Html.DisplayFor(c => column.NonNulls)</td>
                         <td>@Html.DisplayFor(c => column.DistinctValues)</td>
                         <td>@Html.DisplayFor(c => column.ColumnNameSnakeCase)</td>
-
+                        <td><booleanyesnonull null-label="?" asp-for="NeedsMigration_@column.ColumnName" input-class="needsMigration" current-value="@column.NeedsMigration"></booleanyesnonull></td>
                     </tr>
                 }
 

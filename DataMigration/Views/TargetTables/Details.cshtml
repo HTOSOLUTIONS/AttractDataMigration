@@ -40,8 +40,36 @@
 
             configTableLinks();
 
+            $(".hto-details dl dt").addClass("col-sm-3");
+            $(".hto-details dl dd").addClass("col-sm-9");
+            $(".hto-radio-group").addClass("sm");
+
+            $("#createsqlbtn").on("click", function () { showCreateSQL(); });
+
+            $(".needsMigration").on("click", function () {
+                setMigration(this);
+            });
+
+
         });
 
+        function setMigration(ctrl) {
+
+            var ftn = $("[data-fulltablename]").data("fulltablename");
+            var nameparts = ftn.split(".");
+
+            var parms = {
+
+                tableschema: nameparts[0],
+                tablename: nameparts[1],
+                columnname: $(ctrl).attr("id").split("_")[1],
+                needsmigration: $(ctrl).val()
+
+            };
+
+            $.post("/TargetColumns/EditModal", parms);
+
+        }
 
         function configTableLinks() {
             $("a.pathpart").on("click", function () {
@@ -108,10 +136,15 @@
         }
 
         function showCreateSQL() {
+
+            var ftn = $("[data-fulltablename]").data("fulltablename");
+            var nameparts = ftn.split(".");
+
+
             var parms = {
 
-                tableschema: 'acc',
-                tablename: 'accounts'
+                tableschema: nameparts[0],
+                tablename: nameparts[1]
 
             };
             targettablecreatesqlmodalmgr.loadModalParams(parms);
@@ -130,43 +163,45 @@
 
 <crud-links record-controls="@Model.RowCtrls" last-action="@ActionHistory.GetLastHistoryItem(ViewContext.HttpContext)" class="crudctrls"></crud-links>
 
+<button id="createsqlbtn">Create SQL</button>
+
 <div data-fulltablename="@Model.FullTableName" class="hto-rtitle">Target Table: @Html.DisplayFor(model => model.FullTableName)</div>
 
 
 <div class="container-fluid">
 
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-5">
             <div class="hto-details">
                 <dl class="row">
-                    <dt class="col-sm-2">
+                    <dt>
                         @Html.DisplayNameFor(model => model.UseType)
                     </dt>
-                    <dd class="col-sm-10">
+                    <dd>
                         @Html.DisplayFor(model => model.UseType)
                     </dd>
-                    <dt class="col-sm-2">
+                    <dt>
                         @Html.DisplayNameFor(model => model.UseDomain)
                     </dt>
-                    <dd class="col-sm-10">
+                    <dd>
                         @Html.DisplayFor(model => model.UseDomain)
                     </dd>
-                    <dt class="col-sm-2">
+                    <dt>
                         @Html.DisplayNameFor(model => model.RowCount)
                     </dt>
-                    <dd class="col-sm-10">
+                    <dd>
                         @Html.DisplayFor(model => model.RowCount)
                     </dd>
-                    <dt class="col-sm-2">
+                    <dt>
                         @Html.DisplayNameFor(model => model.Description)
                     </dt>
-                    <dd class="col-sm-10">
+                    <dd>
                         @Html.DisplayFor(model => model.Description)
                     </dd>
-                    <dt class="col-sm-2">
+                    <dt>
                         @Html.DisplayNameFor(model => model.NeedsMigration)
                     </dt>
-                    <dd class="col-sm-10">
+                    <dd>
                         @Html.DisplayFor(model => model.NeedsMigration)
                     </dd>
                 </dl>
@@ -180,7 +215,7 @@
             @Html.DisplayFor(m => Model.ParentPathsView, "ParentPathsView")
 
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-7">
 
             @Html.DisplayFor(m => Model.Columns, "ColumnsGroupedByUseType")
 

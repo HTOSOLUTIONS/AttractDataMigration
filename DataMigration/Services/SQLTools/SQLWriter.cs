@@ -47,6 +47,19 @@ namespace SQLTools
                     sb.AppendLine("");
                 }
             }
+            var parentKeys = table.ParentPaths.Select(c => c.ForeignKey).ToList();
+            if (parentKeys.Any()) {
+                foreach (var foreignKey in parentKeys)
+                {
+                    sb.AppendLine("ALTER TABLE " + fullTableName + " WITH CHECK ADD CONSTRAINT " + ob + foreignKey.FkName + cb
+                        + " FOREIGN KEY(" + ob + foreignKey.ForeignKeyColumn.ColumnName.ToSnakeCase2() + cb + ")");
+                    sb.AppendLine("REFERENCES " + ob + foreignKey.PktableOwner + cb + "." + ob + foreignKey.PktableName + cb + " (" + ob + foreignKey.PkcolumnName.ToSnakeCase2() + cb + ")");
+                    sb.AppendLine("GO");
+                    sb.AppendLine("");
+                }
+
+            }
+
 
             
             return sb.ToString();
