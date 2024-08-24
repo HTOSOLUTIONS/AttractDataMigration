@@ -1,4 +1,5 @@
-﻿@*
+﻿@using DataMigration.Services.HTOTools;
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
@@ -19,6 +20,12 @@
                         @Html.DisplayNameFor(model => Model.FirstOrDefault().ColumnName)
                     </th>
                     <th>
+                        Camel Case
+                    </th>
+                    <th>
+                        Snake Case
+                    </th>
+                    <th>
                         @Html.DisplayNameFor(model => Model.FirstOrDefault().DataType)
                     </th>
                     <th>
@@ -30,9 +37,6 @@
                     <th>
                         @Html.DisplayNameFor(model => Model.FirstOrDefault().DistinctValues)
                     </th>
-                    <th>
-                        @Html.DisplayNameFor(model => Model.FirstOrDefault().ColumnNameSnakeCase)
-                    </th>
                     <th></th>
                 </tr>
             </thead>
@@ -43,11 +47,12 @@
                     <tr>
 
                         <td>@Html.DisplayFor(c => column.ColumnName)</td>
+                        <td>@Html.Raw(column.ColumnName.ConvertPascal(CaseTypes.CamelCase))</td>
+                        <td>@Html.Raw(column.ColumnName.ConvertPascal(CaseTypes.SnakeCase))</td>
                         <td>@Html.DisplayFor(c => column.DataType)</td>
                         <td>@Html.DisplayFor(c => column.ColumnSources, "ColumnSources")</td>
                         <td>@Html.DisplayFor(c => column.NonNulls)</td>
                         <td>@Html.DisplayFor(c => column.DistinctValues)</td>
-                        <td>@Html.DisplayFor(c => column.ColumnNameSnakeCase)</td>
                         <td><booleanyesnonull null-label="?" asp-for="NeedsMigration_@column.ColumnName" input-class="needsMigration" current-value="@column.NeedsMigration"></booleanyesnonull></td>
                     </tr>
                 }

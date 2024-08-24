@@ -216,7 +216,7 @@ function htoModalConfigBuilder() {
 
     this.getTargetTableCreateSQLModalConfig = function () {
         var modalconfig = {
-            formid: "#targettablesnapshot",
+            formid: "#targettablecommitsql",
             configBeforeOpen: true,
             openAfterLoad: true,
             baseurl: "/TargetTables/CreateSQLStatement",

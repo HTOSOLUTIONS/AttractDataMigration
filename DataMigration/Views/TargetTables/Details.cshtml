@@ -33,6 +33,10 @@
         var targettablesnapshotmodalmgr = new htoModalMgr(targettablesnapshotmodalconfig);
 
         var targettablecreatesqlmodalconfig = htoconfigbuilder.getTargetTableCreateSQLModalConfig();
+        targettablecreatesqlmodalconfig.successpost = function (data) {
+            console.log(data);
+        }
+
         var targettablecreatesqlmodalmgr = new htoModalMgr(targettablecreatesqlmodalconfig);
 
 
@@ -62,7 +66,7 @@
 
                 tableschema: nameparts[0],
                 tablename: nameparts[1],
-                columnname: $(ctrl).attr("id").split("_")[1],
+                columnname: $(ctrl).attr("id").split("NeedsMigration_")[1],
                 needsmigration: $(ctrl).val()
 
             };
@@ -171,7 +175,7 @@
 <div class="container-fluid">
 
     <div class="row">
-        <div class="col-sm-5">
+        <div class="col-sm-4">
             <div class="hto-details">
                 <dl class="row">
                     <dt>
@@ -215,7 +219,7 @@
             @Html.DisplayFor(m => Model.ParentPathsView, "ParentPathsView")
 
         </div>
-        <div class="col-sm-7">
+        <div class="col-sm-8">
 
             @Html.DisplayFor(m => Model.Columns, "ColumnsGroupedByUseType")
 

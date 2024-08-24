@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Sakura.AspNetCore;
 using SQLTools;
 using TargetDDContext.Data;
+using TargetDDContext.Models;
 
 
 namespace DataMigration.Controllers
@@ -156,12 +157,49 @@ namespace DataMigration.Controllers
             WriteParms parms = new WriteParms() { UseBrackets = true};
             var sql = _sQLWriter.CreateTable(dbrecord, parms);
 
-            SQLStatementViewModel vm = new SQLStatementViewModel() { SQLStatement = sql };
+            SQLStatementViewModel vm = new SQLStatementViewModel() { SQLStatement = sql, Table = dbrecord };
 
             return PartialView("SQLStatement",vm);
 
 
         }
+
+
+        public async Task<JsonResult> CommitSQLStatement(string tableschema, string tablename)
+        {
+
+            if (string.IsNullOrEmpty(tableschema) || string.IsNullOrEmpty(tablename))
+            {
+                Response.StatusCode = 404;
+                return new JsonResult(new { responseText = "Insufficient Parameters" });
+            }
+
+            var dbrecord = await _getRecord(tableschema, tablename);
+
+            if (dbrecord == null)
+            {
+                Response.StatusCode = 404;
+                return new JsonResult(new { responseText = "Record not found." });
+            }
+
+            var committed = new PushLog() {PushDt = DateTime.Now, PushColumns = new List<PushColumn>() };
+            foreach (var col in dbrecord.Columns.Where(c => c.NeedsMigration == true))
+            {
+                committed.PushColumns.Add(new PushColumn() {Column = col, Note = "Commit" });
+            }
+            _dbcontext.PushLogs.Add(committed);
+            await _dbcontext.SaveChangesAsync();
+
+            WriteParms parms = new WriteParms() { UseBrackets = true };
+            var sql = _sQLWriter.CreateTable(dbrecord, parms);
+
+            SQLStatementViewModel vm = new SQLStatementViewModel() { SQLStatement = sql };
+
+            return new JsonResult(new { responseText = "Saved" });
+
+
+        }
+
 
 
         [HttpPost]

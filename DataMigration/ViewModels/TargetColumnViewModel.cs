@@ -56,7 +56,7 @@ namespace DataMigration.ViewModels
         }
 
         [Display(Name = "Snake Case")]
-        public string ColumnNameSnakeCase => _targetColumn.ColumnName.ToSnakeCase2();
+        public string ColumnNameSnakeCase => _targetColumn.ColumnName.PascalToSnake();
 
 
         [Display(Name = "Table Schema")]

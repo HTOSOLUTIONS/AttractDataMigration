@@ -34,7 +34,7 @@ namespace DataMigration.Services.HTOTools
             return sb.ToString();
         }
 
-        public static string ToSnakeCase2(this string text)
+        public static string PascalToSnake(this string text)
         {
             if (text == null)
             {
@@ -89,8 +89,112 @@ namespace DataMigration.Services.HTOTools
             return sb.ToString();
         }
 
+
+        public static string PascalToCamel(this string text)
+        {
+            if (text == null)
+            {
+                throw new ArgumentNullException(nameof(text));
+            }
+            var firstCharRaw = text[0];
+
+            if (char.IsLower(firstCharRaw))
+            {
+                return text;
+            }
+
+            var firstLowerCasePos = 0;
+
+            StringBuilder sb = new StringBuilder();
+            //sb.Append(char.ToLowerInvariant(text[0]));
+            for (int i = 1; i < text.Length; i++)
+            {
+                if (char.IsLower(text[i]))
+                {
+                    firstLowerCasePos = i;
+                    if (i == 1)
+                    {
+                        sb.Append(char.ToLowerInvariant(text[i - 1]));
+                        //var firstCharLower = char.ToLowerInvariant(firstCharRaw);
+                        //var fullName = firstCharLower.ToString() + text.Substring(1);
+                        firstLowerCasePos = 2;
+                    }
+                    break;
+                } else
+                {
+                    sb.Append(char.ToLowerInvariant(text[i-1]));
+                }
+            }
+            if (firstLowerCasePos == 0)
+            {
+                //Never found a Lower case character, convert the entire string
+                return text.ToLower();
+            }
+            else {
+                var fullName = sb.ToString() + text.Substring(firstLowerCasePos - 1);
+                var namelen = fullName.Length;
+                if (namelen > 2 && fullName.Substring(namelen - 2, 2) == "ID")
+                {
+                    var prevChar = fullName[namelen - 3];
+                    if (char.IsLower(prevChar))
+                    {
+                        fullName = fullName.Substring(0, namelen - 2) + "Id";
+                    }
+                }
+
+                return fullName;
+            }
+
+
+        }
+
+        public static string PascalToCamelOld(this string text)
+        {
+            if (text == null)
+            {
+                throw new ArgumentNullException(nameof(text));
+            }
+
+            var firstChar = char.ToLowerInvariant(text[0]);
+            var fullName = firstChar.ToString() + text.Substring(1);
+            var namelen = fullName.Length;
+            if (namelen > 2 && fullName.Substring(namelen - 2, 2) == "ID")
+            {
+                var prevChar = fullName[namelen - 3];
+                if (char.IsLower(prevChar))
+                {
+                    fullName = fullName.Substring(0, namelen - 2) + "Id";
+                }
+            }
+
+            return fullName;
+
+        }
+
+        public static string ConvertPascal(this string text, string caseType)
+        {
+            if (caseType == CaseTypes.SnakeCase)
+            {
+                return text.PascalToSnake();
+            }
+            else if (caseType == CaseTypes.CamelCase)
+            {
+                return text.PascalToCamel();
+            }
+            return text;    
+        }
+
+
+
     }
 
+    public class CaseTypes
+    {
+        public const string SnakeCase = "S";
+        public const string CamelCase = "C";
 
+
+
+    }
 
 }

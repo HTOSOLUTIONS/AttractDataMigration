@@ -16,7 +16,7 @@ namespace SQLTools
 
         public static string CreateLine(this Column column, Table table)
         {
-            string text = "[" + column.ColumnName.ToSnakeCase2() + "] "
+            string text = "[" + column.ColumnName.PascalToSnake() + "] "
                 + "[" + column.DataType + "]";
 
 
