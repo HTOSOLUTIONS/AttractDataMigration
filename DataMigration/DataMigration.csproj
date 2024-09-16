@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <PackageReference Include="HTOTools" Version="3.12.0" />
-    <PackageReference Include="IDataMigrations" Version="1.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.7">
       <PrivateAssets>all</PrivateAssets>
