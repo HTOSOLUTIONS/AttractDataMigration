@@ -69,8 +69,64 @@ namespace SQLTools
 
         }
 
+        public string InsertIntoTable(Table table, WriteParms? writeParms = null)
+        {
+            WriteParms _writeParms = writeParms ?? new WriteParms();
 
-        
+            var indenter = "     ";
+            var ob = _writeParms.UseBrackets ? "[" : "";
+            var cb = _writeParms.UseBrackets ? "]" : "";
+            var sb = new StringBuilder();
+            var fullTableName = ob + table.TableSchema + cb + "." + ob + table.TableName + cb;
+
+            sb.AppendLine("SET IDENTITY_INSERT " + fullTableName + " ON");
+            sb.AppendLine("");
+
+            sb.AppendLine("INSERT INTO " + fullTableName) ;
+            sb.AppendLine(indenter + "(");
+            var colsToUse = table.Columns.Where(c => c.NeedsMigration == true);
+
+            var firstLine = true;
+            foreach (var column in colsToUse.OrderBy(c => c.OrdinalPosition))
+            {
+                string? delim = null;
+                if (firstLine)
+                {
+                    delim = null;
+                    firstLine = false;
+                } else
+                {
+                   delim = ",";
+                };
+                sb.AppendLine(indenter + column.InsertIntoLine(table, delim));
+            }
+            sb.Append(")");
+            sb.Append("SELECT ");
+            firstLine = true;
+            foreach (var column in colsToUse.OrderBy(c => c.OrdinalPosition))
+            {
+                string? delim = null;
+                if (firstLine)
+                {
+                    delim = null;
+                    firstLine = false;
+                }
+                else
+                {
+                    delim = ",";
+                };
+                sb.AppendLine(indenter + column.InsertFromLine(table, delim));
+            }
+            sb.Append("FROM [greenfield_dvt_loaded_20240703184206]." + fullTableName);
+
+            sb.AppendLine("");
+            sb.AppendLine("SET IDENTITY_INSERT " + fullTableName + " OFF");
+
+            return sb.ToString();
+
+        }
+
+
 
 
 

@@ -39,6 +39,10 @@
 
         var targettablecreatesqlmodalmgr = new htoModalMgr(targettablecreatesqlmodalconfig);
 
+        var targettableinsertsqlmodalconfig = htoconfigbuilder.getTargetTableInsertSQLModalConfig();
+
+        var targettableinsertsqlmodalmgr = new htoModalMgr(targettableinsertsqlmodalconfig);
+
 
         $(document).ready(function () {
 
@@ -49,6 +53,7 @@
             $(".hto-radio-group").addClass("sm");
 
             $("#createsqlbtn").on("click", function () { showCreateSQL(); });
+            $("#insertsqlbtn").on("click", function () { showInsertSQL(); });
 
             $(".needsMigration").on("click", function () {
                 setMigration(this);
@@ -155,6 +160,25 @@
 
         }
 
+        function showInsertSQL() {
+
+            var ftn = $("[data-fulltablename]").data("fulltablename");
+            var nameparts = ftn.split(".");
+
+
+            var parms = {
+
+                tableschema: nameparts[0],
+                tablename: nameparts[1]
+
+            };
+            targettableinsertsqlmodalmgr.loadModalParams(parms);
+
+        }
+
+
+
+
 
     </script>
 
@@ -168,6 +192,8 @@
 <crud-links record-controls="@Model.RowCtrls" last-action="@ActionHistory.GetLastHistoryItem(ViewContext.HttpContext)" class="crudctrls"></crud-links>
 
 <button id="createsqlbtn">Create SQL</button>
+
+<button id="insertsqlbtn">Insert SQL</button>
 
 <div data-fulltablename="@Model.FullTableName" class="hto-rtitle">Target Table: @Html.DisplayFor(model => model.FullTableName)</div>
 

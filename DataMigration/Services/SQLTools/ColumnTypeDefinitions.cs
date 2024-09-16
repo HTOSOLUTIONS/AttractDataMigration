@@ -41,6 +41,21 @@ namespace SQLTools
 
         }
 
+        public static string InsertIntoLine(this Column column, Table table, string? delim = null)
+        {
+            string text = delim + "[" + column.ColumnName.PascalToSnake() + "] ";
+
+            return text;
+
+        }
+        public static string InsertFromLine(this Column column, Table table, string? delim = null)
+        {
+            string text = delim + "[" + column.ColumnName + "] ";
+
+            return text;
+
+        }
+
 
     }
 }

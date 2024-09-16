@@ -32,6 +32,7 @@ namespace DataMigration.ViewModels
 
         public int? Columns => _oChildPath?.ChildTable != null ? _oChildPath.ChildTable.ColCount : null;
 
+        public DateTime? LastPushDt => _oChildPath?.ChildTable != null ? _oChildPath.ChildTable.LastPushDt : null;
 
         //public string? ChildPath => _childpath;
 

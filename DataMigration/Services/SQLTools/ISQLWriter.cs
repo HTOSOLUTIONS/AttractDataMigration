@@ -8,5 +8,8 @@ namespace SQLTools
 
         string CreateTable(Table table, WriteParms? writeParms = null);
 
+        string InsertIntoTable(Table table, WriteParms? writeParms = null);
+
+
     }
 }

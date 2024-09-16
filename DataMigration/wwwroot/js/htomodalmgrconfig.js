@@ -230,6 +230,21 @@ function htoModalConfigBuilder() {
         return modalconfig;
     }
 
+    this.getTargetTableInsertSQLModalConfig = function () {
+        var modalconfig = {
+            formid: "#targettablecommitsql",
+            configBeforeOpen: true,
+            openAfterLoad: true,
+            baseurl: "/TargetTables/InsertSQLStatement",
+            dialogoptions: {
+                title: "Target Table Insert Statement",
+                maxWidth: "800px"
+            }
+
+        };
+
+        return modalconfig;
+    }
 
     this.getFullParentPathModalConfig = function () {
 

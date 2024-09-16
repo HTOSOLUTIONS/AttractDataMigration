@@ -182,12 +182,16 @@ namespace DataMigration.Controllers
                 return new JsonResult(new { responseText = "Record not found." });
             }
 
-            var committed = new PushLog() {PushDt = DateTime.Now, PushColumns = new List<PushColumn>() };
+            var pushLogDt = DateTime.Now;
+            var committed = new PushLog() {PushDt = pushLogDt, PushColumns = new List<PushColumn>() };
             foreach (var col in dbrecord.Columns.Where(c => c.NeedsMigration == true))
             {
                 committed.PushColumns.Add(new PushColumn() {Column = col, Note = "Commit" });
             }
             _dbcontext.PushLogs.Add(committed);
+            _dbcontext.Update(dbrecord);
+            dbrecord.LastPushDt = pushLogDt;
+
             await _dbcontext.SaveChangesAsync();
 
             WriteParms parms = new WriteParms() { UseBrackets = true };
@@ -196,6 +200,31 @@ namespace DataMigration.Controllers
             SQLStatementViewModel vm = new SQLStatementViewModel() { SQLStatement = sql };
 
             return new JsonResult(new { responseText = "Saved" });
+
+
+        }
+
+        public async Task<IActionResult> InsertSQLStatement(string tableschema, string tablename)
+        {
+
+            if (string.IsNullOrEmpty(tableschema) || string.IsNullOrEmpty(tablename))
+            {
+                return NotFound();
+            }
+
+            var dbrecord = await _getRecord(tableschema, tablename);
+
+            if (dbrecord == null)
+            {
+                return NotFound();
+            }
+
+            WriteParms parms = new WriteParms() { UseBrackets = true };
+            var sql = _sQLWriter.InsertIntoTable(dbrecord, parms);
+
+            SQLStatementViewModel vm = new SQLStatementViewModel() { SQLStatement = sql, Table = dbrecord };
+
+            return PartialView("SQLStatement", vm);
 
 
         }
